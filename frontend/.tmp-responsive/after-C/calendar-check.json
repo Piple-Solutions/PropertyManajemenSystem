@@ -1,0 +1,15 @@
+{
+  "pageOverflow": false,
+  "gridOverflowsCard": false,
+  "cellSize": {
+    "w": 44.7,
+    "h": 56
+  },
+  "navButtons": [
+    "88x44",
+    "89x44"
+  ],
+  "popupOpens": true,
+  "keyboardOpens": true,
+  "holidayMarkers": 3
+}

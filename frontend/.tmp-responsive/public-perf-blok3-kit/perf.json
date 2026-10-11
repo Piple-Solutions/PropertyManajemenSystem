@@ -1,0 +1,542 @@
+[
+  {
+    "page": "/",
+    "lcpMs": 1284,
+    "cls": 0,
+    "longTasks": 2,
+    "longTaskMaxMs": 144,
+    "domNodes": 481,
+    "requests": 10,
+    "jsKbRaw": 94.6,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 91.5,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D_0VpfVD.js",
+      "/assets/message-circle-zuyRzT0o.js",
+      "/assets/HomePage-BxFEGOr-.js",
+      "/assets/public-D81tI30y.js",
+      "/assets/phone-DuyO3Oy5.js",
+      "/assets/clock-BWL13Eso.js",
+      "/assets/PublicChrome-CZ47RVM8.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1372,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 152,
+        "dom": 481,
+        "requests": 10,
+        "jsRaw": 96842,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1292,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 144,
+        "dom": 481,
+        "requests": 10,
+        "jsRaw": 96842,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1284,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 143,
+        "dom": 481,
+        "requests": 10,
+        "jsRaw": 96842,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1280,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 145,
+        "dom": 481,
+        "requests": 10,
+        "jsRaw": 96842,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1264,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 144,
+        "dom": 481,
+        "requests": 10,
+        "jsRaw": 96842,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/about",
+    "lcpMs": 1304,
+    "cls": 0,
+    "longTasks": 1,
+    "longTaskMaxMs": 150,
+    "domNodes": 226,
+    "requests": 10,
+    "jsKbRaw": 92.5,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 89.4,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D_0VpfVD.js",
+      "/assets/message-circle-zuyRzT0o.js",
+      "/assets/AboutPage-O4AwhdRy.js",
+      "/assets/public-D81tI30y.js",
+      "/assets/phone-DuyO3Oy5.js",
+      "/assets/clock-BWL13Eso.js",
+      "/assets/PublicChrome-CZ47RVM8.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1312,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 152,
+        "dom": 226,
+        "requests": 10,
+        "jsRaw": 94689,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1316,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 157,
+        "dom": 226,
+        "requests": 10,
+        "jsRaw": 94689,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1272,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 148,
+        "dom": 226,
+        "requests": 10,
+        "jsRaw": 94689,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1304,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 148,
+        "dom": 226,
+        "requests": 10,
+        "jsRaw": 94689,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1296,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 150,
+        "dom": 226,
+        "requests": 10,
+        "jsRaw": 94689,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/rooms",
+    "lcpMs": 1320,
+    "cls": 0.0282,
+    "longTasks": 1,
+    "longTaskMaxMs": 153,
+    "domNodes": 304,
+    "requests": 10,
+    "jsKbRaw": 92.9,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 89.8,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D_0VpfVD.js",
+      "/assets/message-circle-zuyRzT0o.js",
+      "/assets/RoomTypesPage-C1jKj0tk.js",
+      "/assets/public-D81tI30y.js",
+      "/assets/phone-DuyO3Oy5.js",
+      "/assets/clock-BWL13Eso.js",
+      "/assets/PublicChrome-CZ47RVM8.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1324,
+        "cls": 0.02816443010022083,
+        "longCount": 1,
+        "longMax": 160,
+        "dom": 304,
+        "requests": 10,
+        "jsRaw": 95086,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1296,
+        "cls": 0.02816443010022083,
+        "longCount": 1,
+        "longMax": 147,
+        "dom": 304,
+        "requests": 10,
+        "jsRaw": 95086,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1320,
+        "cls": 0.02816443010022083,
+        "longCount": 1,
+        "longMax": 163,
+        "dom": 304,
+        "requests": 10,
+        "jsRaw": 95086,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1300,
+        "cls": 0.02816443010022083,
+        "longCount": 1,
+        "longMax": 153,
+        "dom": 304,
+        "requests": 10,
+        "jsRaw": 95086,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1320,
+        "cls": 0.02816443010022083,
+        "longCount": 1,
+        "longMax": 151,
+        "dom": 304,
+        "requests": 10,
+        "jsRaw": 95086,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/gallery",
+    "lcpMs": 1284,
+    "cls": 0,
+    "longTasks": 1,
+    "longTaskMaxMs": 132,
+    "domNodes": 209,
+    "requests": 10,
+    "jsKbRaw": 93.6,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 90.5,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D_0VpfVD.js",
+      "/assets/message-circle-zuyRzT0o.js",
+      "/assets/GalleryPage-th68d2RG.js",
+      "/assets/public-D81tI30y.js",
+      "/assets/phone-DuyO3Oy5.js",
+      "/assets/clock-BWL13Eso.js",
+      "/assets/PublicChrome-CZ47RVM8.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1304,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 138,
+        "dom": 209,
+        "requests": 10,
+        "jsRaw": 95801,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1284,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 132,
+        "dom": 209,
+        "requests": 10,
+        "jsRaw": 95801,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1276,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 129,
+        "dom": 209,
+        "requests": 10,
+        "jsRaw": 95801,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1280,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 130,
+        "dom": 209,
+        "requests": 10,
+        "jsRaw": 95801,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1284,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 138,
+        "dom": 209,
+        "requests": 10,
+        "jsRaw": 95801,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/contact",
+    "lcpMs": 1336,
+    "cls": 0,
+    "longTasks": 1,
+    "longTaskMaxMs": 169,
+    "domNodes": 240,
+    "requests": 10,
+    "jsKbRaw": 92.8,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 89.7,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D_0VpfVD.js",
+      "/assets/message-circle-zuyRzT0o.js",
+      "/assets/phone-DuyO3Oy5.js",
+      "/assets/clock-BWL13Eso.js",
+      "/assets/ContactPage-DvY72tQM.js",
+      "/assets/public-D81tI30y.js",
+      "/assets/PublicChrome-CZ47RVM8.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1348,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 169,
+        "dom": 240,
+        "requests": 10,
+        "jsRaw": 95017,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1336,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 169,
+        "dom": 240,
+        "requests": 10,
+        "jsRaw": 95017,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1340,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 170,
+        "dom": 240,
+        "requests": 10,
+        "jsRaw": 95017,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1324,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 167,
+        "dom": 240,
+        "requests": 10,
+        "jsRaw": 95017,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1332,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 166,
+        "dom": 240,
+        "requests": 10,
+        "jsRaw": 95017,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/route-tidak-ada-xyz",
+    "lcpMs": 1188,
+    "cls": 0,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 143,
+    "requests": 10,
+    "jsKbRaw": 92.2,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 89.1,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D_0VpfVD.js",
+      "/assets/NotFoundPage-G0xDphtd.js",
+      "/assets/message-circle-zuyRzT0o.js",
+      "/assets/public-D81tI30y.js",
+      "/assets/phone-DuyO3Oy5.js",
+      "/assets/clock-BWL13Eso.js",
+      "/assets/PublicChrome-CZ47RVM8.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1188,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 143,
+        "requests": 10,
+        "jsRaw": 94403,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1192,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 143,
+        "requests": 10,
+        "jsRaw": 94403,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1204,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 143,
+        "requests": 10,
+        "jsRaw": 94403,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1188,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 143,
+        "requests": 10,
+        "jsRaw": 94403,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1184,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 143,
+        "requests": 10,
+        "jsRaw": 94403,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  }
+]

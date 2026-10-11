@@ -90,7 +90,8 @@
 
 .fin-grid-2 {
   display: grid;
-  grid-template-columns: 1fr;
+  /* minmax(0,1fr): a wide table/chart must never stretch the track past the page. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   margin-bottom: 16px;
 }
@@ -158,5 +159,113 @@
 @media (prefers-reduced-motion: reduce) {
   .fin-pill {
     transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Sales / Reports cards. Base rules reproduce the former inline styles
+ * (desktop identical); the phone block wraps rows instead of overlapping.
+ * ------------------------------------------------------------------ */
+.fin-grid-2 > * {
+  min-width: 0;
+}
+
+.sc-row,
+.ec-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sc-label {
+  width: 70px;
+}
+
+.sc-bars {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+}
+
+.sc-value {
+  width: 120px;
+  text-align: right;
+}
+
+.sc-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.ec-label {
+  width: 100px;
+}
+
+.ec-bar {
+  flex: 1;
+}
+
+.ec-amount {
+  width: 100px;
+  text-align: right;
+}
+
+.rep-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 12px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 767px) {
+  /* label + value on the first line, bar on its own full-width line */
+  .sc-row,
+  .ec-row {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  .sc-label {
+    flex: 1 1 auto;
+    width: auto;
+  }
+
+  .sc-value {
+    width: auto;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .sc-bars,
+  .ec-bar {
+    flex: 1 1 100%;
+    order: 3;
+    min-width: 0;
+  }
+
+  .sc-legend {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  .ec-label {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ec-amount {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .rep-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
   }
 }

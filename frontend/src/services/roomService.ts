@@ -1,4 +1,4 @@
-import { apiFetch } from './api';
+import { apiFetch, fetchAllPages } from './api';
 import type { Room } from '@/types/auth.types';
 
 export interface RoomPayload {
@@ -15,8 +15,8 @@ export interface RoomPayload {
  */
 class RoomService {
   async getAll(): Promise<Room[]> {
-    const json = await apiFetch<{ data: Room[] }>('/api/rooms?page=1&pageSize=100');
-    return json.data;
+    // FE-002: all pages (was only the first 100 rows).
+    return fetchAllPages<Room>('/api/rooms');
   }
 
   async getById(id: string): Promise<Room | undefined> {

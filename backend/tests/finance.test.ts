@@ -61,13 +61,13 @@ describe('migration 0005_phase6_finance.sql', () => {
     ).toThrow();
   });
 
-  it('seeds 8 invoices (9 items) + 10 expenses + 5 finance permissions', () => {
+  it('seeds 9 invoices (27 items) + 10 expenses + 5 finance permissions', () => {
     const inv = ctx.sqlite.prepare('SELECT COUNT(*) AS c FROM invoices').get() as { c: number };
     const items = ctx.sqlite.prepare('SELECT COUNT(*) AS c FROM invoice_items').get() as { c: number };
     const exp = ctx.sqlite.prepare('SELECT COUNT(*) AS c FROM expenses').get() as { c: number };
     const perms = ctx.sqlite.prepare("SELECT COUNT(*) AS c FROM permissions WHERE resource = 'finance'").get() as { c: number };
-    expect(inv.c).toBe(8);
-    expect(items.c).toBe(9);
+    expect(inv.c).toBe(9);
+    expect(items.c).toBe(27);
     expect(exp.c).toBe(10);
     expect(perms.c).toBe(10); // 5 existing + 5 backend-required
     const grants = ctx.sqlite
@@ -84,7 +84,7 @@ describe('invoices API', () => {
     const list = await api('/api/invoices?page=1&pageSize=100', adminToken);
     expect(list.status).toBe(200);
     const body = (await list.json()) as { data: unknown[]; pagination: { total: number } };
-    expect(body.pagination.total).toBe(8);
+    expect(body.pagination.total).toBe(9);
     const first = body.data[0] as Record<string, unknown>;
     for (const key of ['id', 'invoiceNumber', 'guestName', 'source', 'invoiceDate', 'items', 'subtotal', 'discount', 'total', 'paymentStatus', 'invoiceStatus', 'createdAt', 'updatedAt']) {
       expect(first).toHaveProperty(key);
@@ -118,7 +118,7 @@ describe('invoices API', () => {
     const a = await api('/api/invoices', adminToken, { method: 'POST', body: JSON.stringify(newInvoice()) });
     expect(a.status).toBe(201);
     const ja = (await a.json()) as { data: { invoiceNumber: string } };
-    expect(ja.data.invoiceNumber).toBe('INV-2026-009');
+    expect(ja.data.invoiceNumber).toBe('INV-2026-010');
     // Client count+1 collision falls back to server allocation instead of 409.
     const b = await api('/api/invoices', adminToken, {
       method: 'POST',
@@ -126,7 +126,7 @@ describe('invoices API', () => {
     });
     expect(b.status).toBe(201);
     const jb = (await b.json()) as { data: { invoiceNumber: string } };
-    expect(jb.data.invoiceNumber).toBe('INV-2026-010');
+    expect(jb.data.invoiceNumber).toBe('INV-2026-011');
   });
 
   it('validates input (422) and reservation linkage (409)', async () => {
@@ -145,15 +145,17 @@ describe('invoices API', () => {
     expect(completed.status).toBe(422);
   });
 
-  it('accepts the wide frontend status literals for forward compat', async () => {
+  it('no longer accepts non-default statuses on create (BE-020, Block 6); the defaults are fine', async () => {
     const res = await api('/api/invoices', adminToken, {
       method: 'POST',
       body: JSON.stringify(newInvoice({ invoiceNumber: 'INV-2026-102', paymentStatus: 'Partial', invoiceStatus: 'Sent' })),
     });
-    expect(res.status).toBe(201);
-    const created = (await res.json()) as { data: { paymentStatus: string; invoiceStatus: string } };
-    expect(created.data.paymentStatus).toBe('Partial');
-    expect(created.data.invoiceStatus).toBe('Sent');
+    expect(res.status).toBe(422);
+    const ok = await api('/api/invoices', adminToken, {
+      method: 'POST',
+      body: JSON.stringify(newInvoice({ invoiceNumber: 'INV-2026-102', paymentStatus: 'Pending', invoiceStatus: 'Draft' })),
+    });
+    expect(ok.status).toBe(201);
   });
 
   it('supports search/status/payment filters', async () => {
@@ -162,7 +164,7 @@ describe('invoices API', () => {
     const st = await api('/api/invoices?status=Draft&page=1&pageSize=100', adminToken);
     expect(((await st.json()) as { pagination: { total: number } }).pagination.total).toBe(5);
     const pay = await api('/api/invoices?payment=Paid&page=1&pageSize=100', adminToken);
-    expect(((await pay.json()) as { pagination: { total: number } }).pagination.total).toBe(3);
+    expect(((await pay.json()) as { pagination: { total: number } }).pagination.total).toBe(4);
   });
 
   it('updates + recomputes, rejects terminal edits (409)', async () => {
@@ -212,7 +214,7 @@ describe('invoices API', () => {
   it('next-number preview keeps the INV-YYYY-NNN format', async () => {
     const res = await api('/api/invoices/next-number?date=2026-09-22', adminToken);
     expect(res.status).toBe(200);
-    expect(((await res.json()) as { data: { invoiceNumber: string } }).data.invoiceNumber).toBe('INV-2026-009');
+    expect(((await res.json()) as { data: { invoiceNumber: string } }).data.invoiceNumber).toBe('INV-2026-010');
   });
 });
 
@@ -253,11 +255,11 @@ describe('expenses API', () => {
 });
 
 describe('sales + reports (derived, read-only)', () => {
-  it('derives 8 sales from non-cancelled invoices in the frontend shape', async () => {
+  it('derives 9 sales from non-cancelled invoices in the frontend shape', async () => {
     const res = await api('/api/sales?page=1&pageSize=100', adminToken);
     expect(res.status).toBe(200);
     const body = (await res.json()) as { data: Array<{ id: string; invoiceId: string; date: string; amount: number; source: string; description: string }>; pagination: { total: number } };
-    expect(body.pagination.total).toBe(8);
+    expect(body.pagination.total).toBe(9);
     const row = body.data.find((s) => s.invoiceId === 'inv-002')!;
     expect(row.date).toBe('2026-09-16');
     expect(row.amount).toBe(2160000);
@@ -269,7 +271,7 @@ describe('sales + reports (derived, read-only)', () => {
     const res = await api('/api/sales/breakdown?start=2026-09-01&end=2026-09-30', adminToken);
     const rows = (await res.json()) as { data: Array<{ source: string; totalSales: number; count: number; percentage: number }> };
     const total = rows.data.reduce((s, r) => s + r.totalSales, 0);
-    expect(total).toBe(1500000 + 2160000 + 1500000 + 3600000 + 1800000 + 1500000 + 3780000 + 2300000);
+    expect(total).toBe(1500000 + 2160000 + 1500000 + 3600000 + 1800000 + 1500000 + 3780000 + 2300000 + 22975750);
     expect(rows.data.reduce((s, r) => s + r.percentage, 0)).toBeGreaterThan(95);
   });
 
@@ -277,8 +279,8 @@ describe('sales + reports (derived, read-only)', () => {
     const res = await api('/api/reports/summary?start=2026-09-01&end=2026-09-30', adminToken);
     expect(res.status).toBe(200);
     const s = (await res.json()) as { data: { totalSales: number; totalIncome: number; totalExpenses: number; netRevenue: number; totalInvoices: number; paidInvoices: number; pendingInvoices: number; overdueInvoices: number; expenseByCategory: unknown[] } };
-    expect(s.data.totalInvoices).toBe(8);
-    expect(s.data.paidInvoices).toBe(3);
+    expect(s.data.totalInvoices).toBe(9);
+    expect(s.data.paidInvoices).toBe(4);
     expect(s.data.pendingInvoices).toBe(5);
     expect(s.data.overdueInvoices).toBe(0);
     expect(s.data.totalIncome).toBe(s.data.totalSales);
@@ -293,7 +295,7 @@ describe('sales + reports (derived, read-only)', () => {
     const top = await api('/api/reports/top-invoices?limit=3', adminToken);
     const tops = (await top.json()) as { data: Array<{ total: number }> };
     expect(tops.data).toHaveLength(3);
-    expect(tops.data[0].total).toBe(3780000);
+    expect(tops.data[0].total).toBe(22975750);
   });
 });
 
@@ -320,7 +322,11 @@ describe('finance RBAC + audit', () => {
     const je = (await exp.json()) as { data: { id: string } };
     await api(`/api/expenses/${je.data.id}`, adminToken, { method: 'PATCH', body: JSON.stringify({ status: 'Paid' }) });
     await api(`/api/expenses/${je.data.id}`, adminToken, { method: 'DELETE' });
-    await api(`/api/invoices/${jc.data.id}`, adminToken, { method: 'DELETE' });
+    // Block 6 (BE-019): the paid invoice is kept (409); a Draft may be deleted.
+    expect((await api(`/api/invoices/${jc.data.id}`, adminToken, { method: 'DELETE' })).status).toBe(409);
+    const draft = await api('/api/invoices', adminToken, { method: 'POST', body: JSON.stringify(newInvoice({ invoiceNumber: 'INV-2026-111' })) });
+    const jd = (await draft.json()) as { data: { id: string } };
+    expect((await api(`/api/invoices/${jd.data.id}`, adminToken, { method: 'DELETE' })).status).toBe(204);
     const rows = ctx.sqlite
       .prepare("SELECT action AS a FROM activities WHERE category = 'finance' ORDER BY created_at, id")
       .all() as Array<{ a: string }>;

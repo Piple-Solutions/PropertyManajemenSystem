@@ -1,4 +1,4 @@
-import { apiFetch } from './api';
+import { apiFetch, fetchAllPages } from './api';
 import { roleService } from './roleService';
 
 export interface UserPayload {
@@ -15,8 +15,8 @@ export interface UserPayload {
  */
 class UserService {
   async getAll(): Promise<any[]> {
-    const json = await apiFetch<{ data: any[] }>('/api/users?page=1&pageSize=100');
-    return json.data;
+    // FE-002: all pages (was only the first 100 rows).
+    return fetchAllPages<any>('/api/users');
   }
 
   async getById(id: string): Promise<any | undefined> {

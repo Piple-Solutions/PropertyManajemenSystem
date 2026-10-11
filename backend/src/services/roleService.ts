@@ -1,10 +1,13 @@
-import { and, eq, like, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { permissions, rolePermissions, roles, userRoles } from '../db/schema';
 import type { AppDb } from '../db/client';
-import { conflict, notFound } from '../lib/errors';
+import { chunkByParams, runAtomic, type AtomicStatement } from '../lib/atomic';
+import { conflict, forbidden, notFound } from '../lib/errors';
+import { likeContains } from '../lib/sql';
 import { toPublicRole, type PublicRole } from '../lib/presenters';
 import { newId, nowIso } from '../lib/tokens';
 import type { ListQuery } from '../lib/validation';
+import { MSG, SUPER_ADMIN_CORE_PERMISSIONS, SUPER_ADMIN_ROLE_ID, assertCovers, isSuperAdmin, type Actor } from './authz';
 
 async function permissionNamesFor(db: AppDb, roleId: string): Promise<string[]> {
   const rows = await db
@@ -15,18 +18,62 @@ async function permissionNamesFor(db: AppDb, roleId: string): Promise<string[]> 
   return rows.map((r) => r.name);
 }
 
+/** Permission ids for the given names, in the order of `names` (one query per 90 names). */
+async function permissionIdsFor(db: AppDb, names: string[]): Promise<string[]> {
+  const byName = new Map<string, string>();
+  for (let i = 0; i < names.length; i += 90) {
+    const rows = await db
+      .select({ id: permissions.id, name: permissions.name })
+      .from(permissions)
+      .where(inArray(permissions.name, names.slice(i, i + 90)));
+    for (const r of rows) byName.set(r.name, r.id);
+  }
+  return names.map((n) => byName.get(n) as string);
+}
+
+/** Role-permission links, chunked to D1's bound-parameter cap (2 values per row). */
+function permissionLinkInserts(db: AppDb, roleId: string, permissionIds: string[]): AtomicStatement[] {
+  return chunkByParams(permissionIds.map((permissionId) => ({ roleId, permissionId })), 2, 0).map((chunk) =>
+    db.insert(rolePermissions).values(chunk),
+  );
+}
+
 async function assertPermissionsExist(db: AppDb, names: string[]): Promise<void> {
-  for (const name of names) {
-    const rows = await db.select({ id: permissions.id }).from(permissions).where(eq(permissions.name, name)).limit(1);
-    if (rows.length === 0) {
-      throw conflict(`Permission not found: ${name}`, { permissions: [`Permission not found: ${name}`] });
+  // BE-027: one query per 90 names (was one per permission); the FIRST
+  // missing name in request order is still the one reported.
+  const found = new Set<string>();
+  for (let i = 0; i < names.length; i += 90) {
+    const rows = await db.select({ name: permissions.name }).from(permissions).where(inArray(permissions.name, names.slice(i, i + 90)));
+    for (const r of rows) found.add(r.name);
+  }
+  const missing = names.find((n) => !found.has(n));
+  if (missing !== undefined) {
+    throw conflict(`Permission not found: ${missing}`, { permissions: [`Permission not found: ${missing}`] });
+  }
+}
+
+/** Permission names for many roles in one query per 90 ids (ordered like the per-role query). */
+async function permissionNamesForMany(db: AppDb, roleIds: string[]): Promise<Map<string, string[]>> {
+  const by = new Map<string, string[]>();
+  for (let i = 0; i < roleIds.length; i += 90) {
+    const rows = await db
+      .select({ roleId: rolePermissions.roleId, name: permissions.name })
+      .from(rolePermissions)
+      .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
+      .where(inArray(rolePermissions.roleId, roleIds.slice(i, i + 90)))
+      .orderBy(rolePermissions.roleId, rolePermissions.permissionId);
+    for (const r of rows) {
+      const list = by.get(r.roleId) ?? [];
+      list.push(r.name);
+      by.set(r.roleId, list);
     }
   }
+  return by;
 }
 
 export async function listRoles(db: AppDb, query: ListQuery): Promise<{ items: PublicRole[]; total: number }> {
   const conditions = [];
-  if (query.search) conditions.push(like(roles.name, `%${query.search}%`));
+  if (query.search) conditions.push(likeContains(roles.name, query.search));
   if (query.status !== 'all') conditions.push(eq(roles.status, query.status));
   const where = conditions.length > 0 ? and(...conditions) : undefined;
 
@@ -37,12 +84,12 @@ export async function listRoles(db: AppDb, query: ListQuery): Promise<{ items: P
   const total = Number(totalRows[0]?.count ?? 0);
 
   const offset = (query.page - 1) * query.pageSize;
-  const rows = await db.select().from(roles).where(where).limit(query.pageSize).offset(offset);
+  // BE-035: insertion order (scan or status-equality index), made explicit.
+  const rows = await db.select().from(roles).where(where).orderBy(sql`rowid`).limit(query.pageSize).offset(offset);
 
-  const items: PublicRole[] = [];
-  for (const row of rows) {
-    items.push(toPublicRole(row, await permissionNamesFor(db, row.id)));
-  }
+  // BE-027: permissions for the whole page in one query (was one per role).
+  const perms = await permissionNamesForMany(db, rows.map((r) => r.id));
+  const items: PublicRole[] = rows.map((row) => toPublicRole(row, perms.get(row.id) ?? []));
   return { items, total };
 }
 
@@ -56,29 +103,40 @@ export async function getRole(db: AppDb, id: string): Promise<PublicRole> {
 export async function createRole(
   db: AppDb,
   input: { name: string; description?: string; permissions?: string[]; status?: 'active' | 'inactive' },
+  actor: Actor,
 ): Promise<PublicRole> {
+  // BE-003: attaching permissions is a grant. It needs `permission.assign`
+  // (not just `role.create`) and only permissions the actor holds.
+  const requested = [...new Set(input.permissions ?? [])];
+  if (requested.length > 0) {
+    if (!isSuperAdmin(actor) && !actor.permissions.includes('permission.assign')) {
+      throw forbidden(MSG.needPermissionAssign);
+    }
+    assertCovers(actor, requested, MSG.grantPermission);
+  }
   const name = input.name.trim();
   const existing = await db.select({ id: roles.id }).from(roles).where(eq(roles.name, name)).limit(1);
   if (existing.length > 0) {
     throw conflict('Role name already exists', { name: ['Role name already exists'] });
   }
-  const permNames = [...new Set(input.permissions ?? [])];
+  const permNames = requested;
   await assertPermissionsExist(db, permNames);
 
   const now = nowIso();
   const id = newId('role');
-  await db.insert(roles).values({
-    id,
-    name,
-    description: input.description?.trim() ?? '',
-    status: input.status ?? 'active',
-    createdAt: now,
-    updatedAt: now,
-  });
-  for (const permName of permNames) {
-    const perm = (await db.select({ id: permissions.id }).from(permissions).where(eq(permissions.name, permName)).limit(1))[0];
-    await db.insert(rolePermissions).values({ roleId: id, permissionId: perm.id });
-  }
+  // BE-018: the role and its permissions are ONE transaction.
+  const permIds = permNames.length > 0 ? await permissionIdsFor(db, permNames) : [];
+  await runAtomic(db, [
+    db.insert(roles).values({
+      id,
+      name,
+      description: input.description?.trim() ?? '',
+      status: input.status ?? 'active',
+      createdAt: now,
+      updatedAt: now,
+    }),
+    ...permissionLinkInserts(db, id, permIds),
+  ]);
   return toPublicRole(
     (await db.select().from(roles).where(eq(roles.id, id)).limit(1))[0],
     permNames,
@@ -89,10 +147,17 @@ export async function updateRole(
   db: AppDb,
   id: string,
   input: { name?: string; description?: string; status?: 'active' | 'inactive' },
+  actor: Actor,
 ): Promise<PublicRole> {
   const rows = await db.select().from(roles).where(eq(roles.id, id)).limit(1);
   const row = rows[0] as (typeof rows)[number] | undefined;
   if (!row) throw notFound('Role not found');
+
+  if (id === SUPER_ADMIN_ROLE_ID && input.status === 'inactive') throw forbidden(MSG.superAdminRoleStatus);
+  // BE-002/BE-003: a role that outranks the actor cannot be edited by them
+  // (renaming or deactivating it changes what its holders can do).
+  const currentPermissions = await permissionNamesFor(db, id);
+  assertCovers(actor, currentPermissions, MSG.roleOutranks);
 
   if (input.name !== undefined) {
     const name = input.name.trim();
@@ -111,33 +176,42 @@ export async function updateRole(
 
   await db.update(roles).set(patch).where(eq(roles.id, id));
   const updated = (await db.select().from(roles).where(eq(roles.id, id)).limit(1))[0];
-  return toPublicRole(updated, await permissionNamesFor(db, id));
+  return toPublicRole(updated, currentPermissions);
 }
 
-export async function setRolePermissions(db: AppDb, id: string, permNames: string[]): Promise<PublicRole> {
+export async function setRolePermissions(db: AppDb, id: string, permNames: string[], actor: Actor): Promise<PublicRole> {
   const rows = await db.select().from(roles).where(eq(roles.id, id)).limit(1);
   const row = rows[0] as (typeof rows)[number] | undefined;
   if (!row) throw notFound('Role not found');
   const unique = [...new Set(permNames)];
   await assertPermissionsExist(db, unique);
 
-  await db.delete(rolePermissions).where(eq(rolePermissions.roleId, id));
-  for (const permName of unique) {
-    const perm = (await db.select({ id: permissions.id }).from(permissions).where(eq(permissions.name, permName)).limit(1))[0];
-    await db.insert(rolePermissions).values({ roleId: id, permissionId: perm.id });
+  // BE-003: grant only what you hold, and only on roles you do not rank below.
+  assertCovers(actor, unique, MSG.grantPermission);
+  if (!isSuperAdmin(actor)) assertCovers(actor, await permissionNamesFor(db, id), MSG.roleOutranks);
+  if (id === SUPER_ADMIN_ROLE_ID && !SUPER_ADMIN_CORE_PERMISSIONS.every((p) => unique.includes(p))) {
+    throw forbidden(MSG.superAdminRoleCore);
   }
-  await db.update(roles).set({ updatedAt: nowIso() }).where(eq(roles.id, id));
+
+  // BE-018: replace the permission set atomically (a failure keeps the previous set).
+  const permIds = unique.length > 0 ? await permissionIdsFor(db, unique) : [];
+  await runAtomic(db, [
+    db.delete(rolePermissions).where(eq(rolePermissions.roleId, id)),
+    ...permissionLinkInserts(db, id, permIds),
+    db.update(roles).set({ updatedAt: nowIso() }).where(eq(roles.id, id)),
+  ]);
   const updated = (await db.select().from(roles).where(eq(roles.id, id)).limit(1))[0];
   return toPublicRole(updated, unique);
 }
 
-export async function deleteRole(db: AppDb, id: string): Promise<void> {
+export async function deleteRole(db: AppDb, id: string, actor: Actor): Promise<void> {
   const rows = await db.select().from(roles).where(eq(roles.id, id)).limit(1);
   if (rows.length === 0) throw notFound('Role not found');
+  if (!isSuperAdmin(actor)) assertCovers(actor, await permissionNamesFor(db, id), MSG.roleOutranks);
   const assigned = await db.select({ userId: userRoles.userId }).from(userRoles).where(eq(userRoles.roleId, id)).limit(1);
   if (assigned.length > 0) {
     throw conflict('Role is still assigned to users', { role: ['Reassign users before deleting this role'] });
   }
-  await db.delete(rolePermissions).where(eq(rolePermissions.roleId, id));
-  await db.delete(roles).where(eq(roles.id, id));
+  if (id === SUPER_ADMIN_ROLE_ID) throw forbidden(MSG.superAdminRoleDelete);
+  await runAtomic(db, [db.delete(rolePermissions).where(eq(rolePermissions.roleId, id)), db.delete(roles).where(eq(roles.id, id))]);
 }

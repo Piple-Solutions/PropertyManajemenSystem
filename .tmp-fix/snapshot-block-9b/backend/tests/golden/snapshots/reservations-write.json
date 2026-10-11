@@ -1,0 +1,578 @@
+[
+  {
+    "step": "create",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Guest",
+        "source": "phone",
+        "checkInDate": "2026-11-10",
+        "checkOutDate": "2026-11-12",
+        "status": "reserved",
+        "notes": "golden",
+        "totalAmount": 1300000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:02.000Z",
+        "pricing": {
+          "mode": "different",
+          "nightlyRates": [
+            {
+              "date": "2026-11-10",
+              "rate": 600000
+            },
+            {
+              "date": "2026-11-11",
+              "rate": 700000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "percentage",
+          "dpPercentage": 25
+        },
+        "calc": {
+          "nights": 2,
+          "nightDates": [
+            "2026-11-10",
+            "2026-11-11"
+          ],
+          "roomTotal": 1300000,
+          "dpAmount": 325000,
+          "remainingBalance": 975000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-2>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-05",
+            "roomNumber": "05",
+            "roomTypeName": "Family",
+            "rate": 650000,
+            "subtotal": 1300000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "create validation error",
+    "status": 422,
+    "body": {
+      "message": "Validation failed",
+      "errors": {
+        "guestName": [
+          "Guest name must be at least 2 characters."
+        ]
+      }
+    }
+  },
+  {
+    "step": "create overlapping same room (409)",
+    "status": 409,
+    "body": {
+      "message": "Room(s) already booked for these dates: room-05",
+      "errors": {
+        "rooms": [
+          "Room(s) already booked for these dates: room-05"
+        ]
+      }
+    }
+  },
+  {
+    "step": "edit guest + notes (full payload as the wizard sends)",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Edited",
+        "source": "phone",
+        "checkInDate": "2026-11-10",
+        "checkOutDate": "2026-11-12",
+        "status": "reserved",
+        "notes": "edited",
+        "totalAmount": 1300000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:05.000Z",
+        "pricing": {
+          "mode": "different",
+          "nightlyRates": [
+            {
+              "date": "2026-11-10",
+              "rate": 600000
+            },
+            {
+              "date": "2026-11-11",
+              "rate": 700000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "percentage",
+          "dpPercentage": 25
+        },
+        "calc": {
+          "nights": 2,
+          "nightDates": [
+            "2026-11-10",
+            "2026-11-11"
+          ],
+          "roomTotal": 1300000,
+          "dpAmount": 325000,
+          "remainingBalance": 975000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-3>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-05",
+            "roomNumber": "05",
+            "roomTypeName": "Family",
+            "rate": 650000,
+            "subtotal": 1300000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "edit pricing only",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Edited",
+        "source": "phone",
+        "checkInDate": "2026-11-10",
+        "checkOutDate": "2026-11-12",
+        "status": "reserved",
+        "notes": "edited",
+        "totalAmount": 1000000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:06.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-11-10",
+              "rate": 500000
+            },
+            {
+              "date": "2026-11-11",
+              "rate": 500000
+            }
+          ]
+        },
+        "payment": {
+          "type": "no_dp",
+          "dpType": "percentage"
+        },
+        "calc": {
+          "nights": 2,
+          "nightDates": [
+            "2026-11-10",
+            "2026-11-11"
+          ],
+          "roomTotal": 1000000,
+          "dpAmount": 0,
+          "remainingBalance": 1000000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-4>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-05",
+            "roomNumber": "05",
+            "roomTypeName": "Family",
+            "rate": 500000,
+            "subtotal": 1000000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "edit dates and room",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Edited",
+        "source": "phone",
+        "checkInDate": "2026-11-20",
+        "checkOutDate": "2026-11-21",
+        "status": "reserved",
+        "notes": "edited",
+        "totalAmount": 450000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:07.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-11-20",
+              "rate": 450000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "fixed",
+          "dpFixedAmount": 100000
+        },
+        "calc": {
+          "nights": 1,
+          "nightDates": [
+            "2026-11-20"
+          ],
+          "roomTotal": 450000,
+          "dpAmount": 100000,
+          "remainingBalance": 350000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-5>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-06",
+            "roomNumber": "06",
+            "roomTypeName": "Family",
+            "rate": 450000,
+            "subtotal": 450000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "get after edits",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Edited",
+        "source": "phone",
+        "checkInDate": "2026-11-20",
+        "checkOutDate": "2026-11-21",
+        "status": "reserved",
+        "notes": "edited",
+        "totalAmount": 450000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:07.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-11-20",
+              "rate": 450000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "fixed",
+          "dpFixedAmount": 100000
+        },
+        "calc": {
+          "nights": 1,
+          "nightDates": [
+            "2026-11-20"
+          ],
+          "roomTotal": 450000,
+          "dpAmount": 100000,
+          "remainingBalance": 350000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-5>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-06",
+            "roomNumber": "06",
+            "roomTypeName": "Family",
+            "rate": 450000,
+            "subtotal": 450000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "check-in",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Edited",
+        "source": "phone",
+        "checkInDate": "2026-11-20",
+        "checkOutDate": "2026-11-21",
+        "status": "checked-in",
+        "notes": "edited",
+        "totalAmount": 450000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:09.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-11-20",
+              "rate": 450000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "fixed",
+          "dpFixedAmount": 100000
+        },
+        "calc": {
+          "nights": 1,
+          "nightDates": [
+            "2026-11-20"
+          ],
+          "roomTotal": 450000,
+          "dpAmount": 100000,
+          "remainingBalance": 350000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-5>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-06",
+            "roomNumber": "06",
+            "roomTypeName": "Family",
+            "rate": 450000,
+            "subtotal": 450000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "check-in again (409)",
+    "status": 409,
+    "body": {
+      "message": "Cannot check in from status 'checked-in'."
+    }
+  },
+  {
+    "step": "cancel after check-in (409)",
+    "status": 409,
+    "body": {
+      "message": "Cannot cancel from status 'checked-in'."
+    }
+  },
+  {
+    "step": "check-out",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Golden Edited",
+        "source": "phone",
+        "checkInDate": "2026-11-20",
+        "checkOutDate": "2026-11-21",
+        "status": "checked-out",
+        "notes": "edited",
+        "totalAmount": 450000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:12.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-11-20",
+              "rate": 450000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "fixed",
+          "dpFixedAmount": 100000
+        },
+        "calc": {
+          "nights": 1,
+          "nightDates": [
+            "2026-11-20"
+          ],
+          "roomTotal": 450000,
+          "dpAmount": 100000,
+          "remainingBalance": 350000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-5>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-06",
+            "roomNumber": "06",
+            "roomTypeName": "Family",
+            "rate": 450000,
+            "subtotal": 450000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "check-out again (409)",
+    "status": 409,
+    "body": {
+      "message": "Cannot check out from status 'checked-out'."
+    }
+  },
+  {
+    "step": "create second",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "res-<id-6>",
+        "reservationCode": "RSV-2026-017",
+        "guestName": "Second Guest",
+        "source": "phone",
+        "checkInDate": "2026-11-10",
+        "checkOutDate": "2026-11-12",
+        "status": "reserved",
+        "notes": "golden",
+        "totalAmount": 1300000,
+        "createdAt": "2026-09-20T03:00:14.000Z",
+        "updatedAt": "2026-09-20T03:00:14.000Z",
+        "pricing": {
+          "mode": "different",
+          "nightlyRates": [
+            {
+              "date": "2026-11-10",
+              "rate": 600000
+            },
+            {
+              "date": "2026-11-11",
+              "rate": 700000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "percentage",
+          "dpPercentage": 25
+        },
+        "calc": {
+          "nights": 2,
+          "nightDates": [
+            "2026-11-10",
+            "2026-11-11"
+          ],
+          "roomTotal": 1300000,
+          "dpAmount": 325000,
+          "remainingBalance": 975000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-7>",
+            "reservationId": "res-<id-6>",
+            "roomId": "room-07",
+            "roomNumber": "07",
+            "roomTypeName": "Standard",
+            "rate": 650000,
+            "subtotal": 1300000,
+            "createdAt": "2026-09-20T03:00:14.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "staff cannot cancel (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): reservation.delete"
+    }
+  },
+  {
+    "step": "cancel",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-6>",
+        "reservationCode": "RSV-2026-017",
+        "guestName": "Second Guest",
+        "source": "phone",
+        "checkInDate": "2026-11-10",
+        "checkOutDate": "2026-11-12",
+        "status": "cancelled",
+        "notes": "golden",
+        "totalAmount": 0,
+        "createdAt": "2026-09-20T03:00:14.000Z",
+        "updatedAt": "2026-09-20T03:00:16.000Z",
+        "pricing": {
+          "mode": "different",
+          "nightlyRates": [
+            {
+              "date": "2026-11-10",
+              "rate": 600000
+            },
+            {
+              "date": "2026-11-11",
+              "rate": 700000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "percentage",
+          "dpPercentage": 25
+        },
+        "calc": {
+          "nights": 2,
+          "nightDates": [
+            "2026-11-10",
+            "2026-11-11"
+          ],
+          "roomTotal": 1300000,
+          "dpAmount": 325000,
+          "remainingBalance": 975000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-7>",
+            "reservationId": "res-<id-6>",
+            "roomId": "room-07",
+            "roomNumber": "07",
+            "roomTypeName": "Standard",
+            "rate": 650000,
+            "subtotal": 1300000,
+            "createdAt": "2026-09-20T03:00:14.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "cancel again (409)",
+    "status": 409,
+    "body": {
+      "message": "Cannot cancel from status 'cancelled'."
+    }
+  },
+  {
+    "step": "check-in unknown (404)",
+    "status": 404,
+    "body": {
+      "message": "Reservation not found"
+    }
+  }
+]

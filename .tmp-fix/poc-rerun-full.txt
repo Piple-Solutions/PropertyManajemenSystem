@@ -1,0 +1,26 @@
+
+ RUN  v5.0.2 E:/Project/Web/pms-internal/backend
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-002 manager demotes + deactivates Super Admin
+POC|BE-002|{"demoteStatus":403,"adminPermsAfterDemote":["user.view","user.create","user.update","user.delete","role.view","role.create","role.update","role.delete","permission.view","permission.assign","room.view","room.create","room.update","room.delete","reservation.view","reservation.create","reservation.update","reservation.delete","reservation.checkin","reservation.checkout","finance.sales.view","finance.invoice.view","finance.invoice.create","finance.invoice.update","finance.report.view","activity.view","finance.invoice.delete","finance.expense.view","finance.expense.create","finance.expense.update","finance.expense.delete"],"deactStatus":403,"adminMeAfterDeact":200}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-007 inactive role keeps granting permissions
+POC|BE-007|{"patch":200,"permsBefore":24,"permsAfter":0}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-023 role/user changes leave no audit rows
+POC|BE-023|{"before":11,"after":15,"rowsAdded":4}
+
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts (16 tests | 6 failed) 2038ms
+   ❯ verification PoCs (12)
+     × BE-001 anonymous register -> operational access 19ms
+     × BE-002 manager demotes + deactivates Super Admin 40ms
+     × BE-003 role.create + user.update => escalate without permission.assign 32ms
+     × BE-007 inactive role keeps granting permissions 32ms
+     × BE-020/BE-022 create Completed/Paid directly; drafts counted as sales 34ms
+     × BE-023 role/user changes leave no audit rows 33ms
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 10 passed (16)
+   Start at  15:15:27
+   Duration  3.35s (tests 64%, import 20%, transform 15%)
+

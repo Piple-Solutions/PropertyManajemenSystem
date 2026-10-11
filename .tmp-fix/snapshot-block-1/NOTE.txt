@@ -1,0 +1,1 @@
+# NOTE: created AFTER Block 1 edits began. src/scripts/README are the pre-Block-1 state (copied from snapshot-block-0; Block 0 did not touch them). Test files changed in Block 1: tests/auth.test.ts, tests/activities.test.ts, tests/seed.test.ts, tests/golden/known-unsafe.test.ts (edited), tests/hardening.test.ts (new).

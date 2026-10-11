@@ -1,0 +1,300 @@
+[
+  {
+    "step": "create reservation",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Audit Golden",
+        "source": "direct",
+        "checkInDate": "2026-12-01",
+        "checkOutDate": "2026-12-02",
+        "status": "reserved",
+        "notes": "",
+        "totalAmount": 300000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:02.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-12-01",
+              "rate": 300000
+            }
+          ]
+        },
+        "payment": {
+          "type": "no_dp",
+          "dpType": "percentage"
+        },
+        "calc": {
+          "nights": 1,
+          "nightDates": [
+            "2026-12-01"
+          ],
+          "roomTotal": 300000,
+          "dpAmount": 0,
+          "remainingBalance": 300000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-2>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-09",
+            "roomNumber": "09",
+            "roomTypeName": "Twin",
+            "rate": 300000,
+            "subtotal": 300000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "check-in",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-<id-1>",
+        "reservationCode": "RSV-2026-016",
+        "guestName": "Audit Golden",
+        "source": "direct",
+        "checkInDate": "2026-12-01",
+        "checkOutDate": "2026-12-02",
+        "status": "checked-in",
+        "notes": "",
+        "totalAmount": 300000,
+        "createdAt": "2026-09-20T03:00:02.000Z",
+        "updatedAt": "2026-09-20T03:00:03.000Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-12-01",
+              "rate": 300000
+            }
+          ]
+        },
+        "payment": {
+          "type": "no_dp",
+          "dpType": "percentage"
+        },
+        "calc": {
+          "nights": 1,
+          "nightDates": [
+            "2026-12-01"
+          ],
+          "roomTotal": 300000,
+          "dpAmount": 0,
+          "remainingBalance": 300000
+        },
+        "rooms": [
+          {
+            "id": "res-room-<id-2>",
+            "reservationId": "res-<id-1>",
+            "roomId": "room-09",
+            "roomNumber": "09",
+            "roomTypeName": "Twin",
+            "rate": 300000,
+            "subtotal": 300000,
+            "createdAt": "2026-09-20T03:00:02.000Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "create room",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "room-<id-3>",
+        "roomNumber": "A-1",
+        "roomTypeId": "room-type-001",
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:04.000Z",
+        "updatedAt": "2026-09-20T03:00:04.000Z"
+      }
+    }
+  },
+  {
+    "step": "create expense",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "exp-<id-4>",
+        "date": "2026-09-19",
+        "category": "Other",
+        "description": "audit golden",
+        "amount": 1000,
+        "createdAt": "2026-09-20T03:00:05.000Z",
+        "updatedAt": "2026-09-20T03:00:05.000Z",
+        "status": "Pending"
+      }
+    }
+  },
+  {
+    "step": "create invoice",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "inv-<id-5>",
+        "invoiceNumber": "INV-2026-010",
+        "guestName": "Audit Invoice",
+        "source": "direct",
+        "invoiceDate": "2026-09-19",
+        "items": [
+          {
+            "id": "inv-item-<id-6>",
+            "invoiceId": "inv-<id-5>",
+            "description": "x",
+            "quantity": 1,
+            "unitPrice": 1000,
+            "subtotal": 1000
+          }
+        ],
+        "subtotal": 1000,
+        "discount": 0,
+        "total": 1000,
+        "paymentStatus": "Pending",
+        "invoiceStatus": "Draft",
+        "createdAt": "2026-09-20T03:00:06.000Z",
+        "updatedAt": "2026-09-20T03:00:06.000Z"
+      }
+    }
+  },
+  {
+    "step": "activities newest first",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "act-010",
+          "category": "finance",
+          "action": "invoice_send",
+          "description": "Sent invoice INV-2026-002 to guest",
+          "userId": "user-001",
+          "userName": "Admin User",
+          "createdAt": "2026-09-22T10:15:00Z",
+          "entityType": "invoice",
+          "entityId": "inv-002",
+          "metadata": {
+            "invoiceNumber": "INV-2026-002",
+            "guestName": "Jane Smith"
+          }
+        },
+        {
+          "id": "act-009",
+          "category": "system",
+          "action": "login",
+          "description": "Staff user logged in from dashboard",
+          "userId": "user-002",
+          "userName": "Staff User",
+          "createdAt": "2026-09-21T07:30:00Z",
+          "entityType": "session",
+          "entityId": "session-002"
+        },
+        {
+          "id": "act-008",
+          "category": "reservation",
+          "action": "cancel",
+          "description": "Cancelled reservation RSV-2026-005 for Michael Brown",
+          "userId": "user-001",
+          "userName": "Admin User",
+          "createdAt": "2026-09-20T15:45:00Z",
+          "entityType": "reservation",
+          "entityId": "res-005",
+          "metadata": {
+            "reservationCode": "RSV-2026-005",
+            "guestName": "Michael Brown"
+          }
+        },
+        {
+          "id": "act-<id-7>",
+          "category": "finance",
+          "action": "invoice_create",
+          "description": "Created invoice INV-2026-010 for Audit Invoice",
+          "userId": "user-001",
+          "userName": "Admin User",
+          "createdAt": "2026-09-20T03:00:06.000Z",
+          "entityType": "invoice",
+          "entityId": "inv-<id-5>",
+          "metadata": {
+            "invoiceNumber": "INV-2026-010",
+            "guestName": "Audit Invoice",
+            "total": "1000"
+          }
+        },
+        {
+          "id": "act-<id-8>",
+          "category": "finance",
+          "action": "expense_create",
+          "description": "Recorded expense audit golden (Other)",
+          "userId": "user-001",
+          "userName": "Admin User",
+          "createdAt": "2026-09-20T03:00:05.000Z",
+          "entityType": "expense",
+          "entityId": "exp-<id-4>",
+          "metadata": {
+            "category": "Other",
+            "amount": "1000"
+          }
+        },
+        {
+          "id": "act-<id-9>",
+          "category": "system",
+          "action": "create",
+          "description": "Created room A-1",
+          "userId": "user-001",
+          "userName": "Admin User",
+          "createdAt": "2026-09-20T03:00:04.000Z",
+          "entityType": "room",
+          "entityId": "room-<id-3>",
+          "metadata": {
+            "roomNumber": "A-1",
+            "roomTypeId": "room-type-001",
+            "status": "active"
+          }
+        },
+        {
+          "id": "act-<id-10>",
+          "category": "reservation",
+          "action": "checkin",
+          "description": "Checked in guest Audit Golden for reservation RSV-2026-016",
+          "userId": "user-003",
+          "userName": "Staff User",
+          "createdAt": "2026-09-20T03:00:03.000Z",
+          "entityType": "reservation",
+          "entityId": "res-<id-1>",
+          "metadata": {
+            "reservationCode": "RSV-2026-016",
+            "guestName": "Audit Golden"
+          }
+        },
+        {
+          "id": "act-<id-11>",
+          "category": "reservation",
+          "action": "create",
+          "description": "Created new reservation RSV-2026-016 for Audit Golden",
+          "userId": "user-003",
+          "userName": "Staff User",
+          "createdAt": "2026-09-20T03:00:02.000Z",
+          "entityType": "reservation",
+          "entityId": "res-<id-1>",
+          "metadata": {
+            "reservationCode": "RSV-2026-016",
+            "guestName": "Audit Golden",
+            "totalAmount": "300000"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 8,
+        "total": 17
+      }
+    }
+  }
+]

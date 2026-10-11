@@ -1,0 +1,2933 @@
+[
+  {
+    "step": "list page 1 size 100",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-001",
+          "reservationCode": "RSV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "checkInDate": "2026-09-15",
+          "checkOutDate": "2026-09-17",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-15",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-16",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-15",
+              "2026-09-16"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 0,
+            "remainingBalance": 1500000
+          },
+          "rooms": [
+            {
+              "id": "res-room-001",
+              "reservationId": "res-001",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-002",
+          "reservationCode": "RSV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "phone",
+          "checkInDate": "2026-09-16",
+          "checkOutDate": "2026-09-19",
+          "status": "checked-in",
+          "notes": "VIP guest, early check-in requested",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-02T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-16",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-17",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-18",
+                "rate": 800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-16",
+              "2026-09-17",
+              "2026-09-18"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-002",
+              "reservationId": "res-002",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            },
+            {
+              "id": "res-room-003",
+              "reservationId": "res-002",
+              "roomId": "room-001",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-003",
+          "reservationCode": "RSV-2026-003",
+          "guestName": "Robert Johnson",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-10",
+          "checkOutDate": "2026-09-12",
+          "status": "checked-out",
+          "notes": "Stayed 2 nights",
+          "totalAmount": 1500000,
+          "createdAt": "2026-08-28T00:00:00Z",
+          "updatedAt": "2026-09-12T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-10",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-11",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-10",
+              "2026-09-11"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 0,
+            "remainingBalance": 1500000
+          },
+          "rooms": [
+            {
+              "id": "res-room-004",
+              "reservationId": "res-003",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-08-28T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-004",
+          "reservationCode": "RSV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-20",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Request for high floor",
+          "totalAmount": 3600000,
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-05T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-20",
+                "rate": 1100000
+              },
+              {
+                "date": "2026-09-21",
+                "rate": 1300000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-20",
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 3600000,
+            "dpAmount": 0,
+            "remainingBalance": 3600000
+          },
+          "rooms": [
+            {
+              "id": "res-room-005",
+              "reservationId": "res-004",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-05T00:00:00Z"
+            },
+            {
+              "id": "res-room-006",
+              "reservationId": "res-004",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-05T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-005",
+          "reservationCode": "RSV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "checkInDate": "2026-09-18",
+          "checkOutDate": "2026-09-20",
+          "status": "cancelled",
+          "notes": "Cancelled due to schedule change",
+          "totalAmount": 0,
+          "createdAt": "2026-09-03T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-18",
+                "rate": 0
+              },
+              {
+                "date": "2026-09-19",
+                "rate": 0
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-18",
+              "2026-09-19"
+            ],
+            "roomTotal": 0,
+            "dpAmount": 0,
+            "remainingBalance": 0
+          },
+          "rooms": []
+        },
+        {
+          "id": "res-006",
+          "reservationCode": "RSV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "checkInDate": "2026-09-21",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Anniversary stay, decorate room",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-06T00:00:00Z",
+          "updatedAt": "2026-09-06T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-21",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 500000,
+            "remainingBalance": 1000000
+          },
+          "rooms": [
+            {
+              "id": "res-room-007",
+              "reservationId": "res-006",
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-06T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-007",
+          "reservationCode": "RSV-2026-007",
+          "guestName": "Budi Santoso",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-22",
+          "checkOutDate": "2026-09-25",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-07T00:00:00Z",
+          "updatedAt": "2026-09-07T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-22",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-23",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-24",
+                "rate": 950000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-22",
+              "2026-09-23",
+              "2026-09-24"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 0,
+            "remainingBalance": 2850000
+          },
+          "rooms": [
+            {
+              "id": "res-room-008",
+              "reservationId": "res-007",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-07T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-008",
+          "reservationCode": "RSV-2026-008",
+          "guestName": "Alice Tan",
+          "source": "ota",
+          "checkInDate": "2026-09-12",
+          "checkOutDate": "2026-09-14",
+          "status": "checked-out",
+          "notes": "Late checkout at 1pm",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-12",
+                "rate": 1200000
+              },
+              {
+                "date": "2026-09-13",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-12",
+              "2026-09-13"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-009",
+              "reservationId": "res-008",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-009",
+          "reservationCode": "RSV-2026-009",
+          "guestName": "Dewi Lestari",
+          "source": "phone",
+          "checkInDate": "2026-09-24",
+          "checkOutDate": "2026-09-27",
+          "status": "reserved",
+          "notes": "Extra bed for child",
+          "totalAmount": 5400000,
+          "createdAt": "2026-09-08T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-24",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-25",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-26",
+                "rate": 1800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-24",
+              "2026-09-25",
+              "2026-09-26"
+            ],
+            "roomTotal": 5400000,
+            "dpAmount": 500000,
+            "remainingBalance": 4900000
+          },
+          "rooms": [
+            {
+              "id": "res-room-010",
+              "reservationId": "res-009",
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family",
+              "rate": 1800000,
+              "subtotal": 5400000,
+              "createdAt": "2026-09-08T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-010",
+          "reservationCode": "RSV-2026-010",
+          "guestName": "James Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-25",
+          "checkOutDate": "2026-09-26",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1100000,
+          "createdAt": "2026-09-09T00:00:00Z",
+          "updatedAt": "2026-09-09T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-25",
+                "rate": 1100000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 1,
+            "nightDates": [
+              "2026-09-25"
+            ],
+            "roomTotal": 1100000,
+            "dpAmount": 0,
+            "remainingBalance": 1100000
+          },
+          "rooms": [
+            {
+              "id": "res-room-011",
+              "reservationId": "res-010",
+              "roomId": "room-006",
+              "roomNumber": "301",
+              "roomTypeName": "Homy",
+              "rate": 1100000,
+              "subtotal": 1100000,
+              "createdAt": "2026-09-09T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-011",
+          "reservationCode": "RSV-2026-011",
+          "guestName": "Maria Garcia",
+          "source": "direct",
+          "checkInDate": "2026-09-05",
+          "checkOutDate": "2026-09-08",
+          "status": "checked-out",
+          "notes": "Vegetarian breakfast for 2",
+          "totalAmount": 4200000,
+          "createdAt": "2026-08-25T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-05",
+                "rate": 1400000
+              },
+              {
+                "date": "2026-09-06",
+                "rate": 1400000
+              },
+              {
+                "date": "2026-09-07",
+                "rate": 1400000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-05",
+              "2026-09-06",
+              "2026-09-07"
+            ],
+            "roomTotal": 4200000,
+            "dpAmount": 0,
+            "remainingBalance": 4200000
+          },
+          "rooms": [
+            {
+              "id": "res-room-012",
+              "reservationId": "res-011",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 700000,
+              "subtotal": 2100000,
+              "createdAt": "2026-08-25T00:00:00Z"
+            },
+            {
+              "id": "res-room-013",
+              "reservationId": "res-011",
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 700000,
+              "subtotal": 2100000,
+              "createdAt": "2026-08-25T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-012",
+          "reservationCode": "RSV-2026-012",
+          "guestName": "Ahmad Hidayat",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-28",
+          "checkOutDate": "2026-09-30",
+          "status": "checked-in",
+          "notes": "Guest arrived early, room ready",
+          "totalAmount": 2300000,
+          "createdAt": "2026-09-20T00:00:00Z",
+          "updatedAt": "2026-09-28T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-28",
+                "rate": 1150000
+              },
+              {
+                "date": "2026-09-29",
+                "rate": 1150000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-28",
+              "2026-09-29"
+            ],
+            "roomTotal": 2300000,
+            "dpAmount": 690000,
+            "remainingBalance": 1610000
+          },
+          "rooms": [
+            {
+              "id": "res-room-014",
+              "reservationId": "res-012",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1150000,
+              "subtotal": 2300000,
+              "createdAt": "2026-09-20T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-013",
+          "reservationCode": "RSV-2026-013",
+          "guestName": "Lisa Chen",
+          "source": "ota",
+          "checkInDate": "2026-09-29",
+          "checkOutDate": "2026-10-02",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-29",
+                "rate": 900000
+              },
+              {
+                "date": "2026-09-30",
+                "rate": 950000
+              },
+              {
+                "date": "2026-10-01",
+                "rate": 1000000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-29",
+              "2026-09-30",
+              "2026-10-01"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 855000,
+            "remainingBalance": 1995000
+          },
+          "rooms": [
+            {
+              "id": "res-room-015",
+              "reservationId": "res-013",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-014",
+          "reservationCode": "RSV-2026-014",
+          "guestName": "Tom Baker",
+          "source": "phone",
+          "checkInDate": "2026-09-26",
+          "checkOutDate": "2026-09-27",
+          "status": "cancelled",
+          "notes": "Cancelled, flight delayed",
+          "totalAmount": 0,
+          "createdAt": "2026-09-11T00:00:00Z",
+          "updatedAt": "2026-09-24T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-26",
+                "rate": 0
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 1,
+            "nightDates": [
+              "2026-09-26"
+            ],
+            "roomTotal": 0,
+            "dpAmount": 0,
+            "remainingBalance": 0
+          },
+          "rooms": []
+        },
+        {
+          "id": "res-015",
+          "reservationCode": "RSV-2026-015",
+          "guestName": "Nina Kurnia",
+          "source": "website",
+          "checkInDate": "2026-10-02",
+          "checkOutDate": "2026-10-05",
+          "status": "reserved",
+          "notes": "Honeymoon, quiet room please",
+          "totalAmount": 5250000,
+          "createdAt": "2026-09-22T00:00:00Z",
+          "updatedAt": "2026-09-22T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-10-02",
+                "rate": 1700000
+              },
+              {
+                "date": "2026-10-03",
+                "rate": 1750000
+              },
+              {
+                "date": "2026-10-04",
+                "rate": 1800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-10-02",
+              "2026-10-03",
+              "2026-10-04"
+            ],
+            "roomTotal": 5250000,
+            "dpAmount": 500000,
+            "remainingBalance": 4750000
+          },
+          "rooms": [
+            {
+              "id": "res-room-016",
+              "reservationId": "res-015",
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family",
+              "rate": 1750000,
+              "subtotal": 5250000,
+              "createdAt": "2026-09-22T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 15
+      }
+    }
+  },
+  {
+    "step": "list default paging",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-001",
+          "reservationCode": "RSV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "checkInDate": "2026-09-15",
+          "checkOutDate": "2026-09-17",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-15",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-16",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-15",
+              "2026-09-16"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 0,
+            "remainingBalance": 1500000
+          },
+          "rooms": [
+            {
+              "id": "res-room-001",
+              "reservationId": "res-001",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-002",
+          "reservationCode": "RSV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "phone",
+          "checkInDate": "2026-09-16",
+          "checkOutDate": "2026-09-19",
+          "status": "checked-in",
+          "notes": "VIP guest, early check-in requested",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-02T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-16",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-17",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-18",
+                "rate": 800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-16",
+              "2026-09-17",
+              "2026-09-18"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-002",
+              "reservationId": "res-002",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            },
+            {
+              "id": "res-room-003",
+              "reservationId": "res-002",
+              "roomId": "room-001",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-003",
+          "reservationCode": "RSV-2026-003",
+          "guestName": "Robert Johnson",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-10",
+          "checkOutDate": "2026-09-12",
+          "status": "checked-out",
+          "notes": "Stayed 2 nights",
+          "totalAmount": 1500000,
+          "createdAt": "2026-08-28T00:00:00Z",
+          "updatedAt": "2026-09-12T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-10",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-11",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-10",
+              "2026-09-11"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 0,
+            "remainingBalance": 1500000
+          },
+          "rooms": [
+            {
+              "id": "res-room-004",
+              "reservationId": "res-003",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-08-28T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-004",
+          "reservationCode": "RSV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-20",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Request for high floor",
+          "totalAmount": 3600000,
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-05T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-20",
+                "rate": 1100000
+              },
+              {
+                "date": "2026-09-21",
+                "rate": 1300000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-20",
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 3600000,
+            "dpAmount": 0,
+            "remainingBalance": 3600000
+          },
+          "rooms": [
+            {
+              "id": "res-room-005",
+              "reservationId": "res-004",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-05T00:00:00Z"
+            },
+            {
+              "id": "res-room-006",
+              "reservationId": "res-004",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-05T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-005",
+          "reservationCode": "RSV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "checkInDate": "2026-09-18",
+          "checkOutDate": "2026-09-20",
+          "status": "cancelled",
+          "notes": "Cancelled due to schedule change",
+          "totalAmount": 0,
+          "createdAt": "2026-09-03T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-18",
+                "rate": 0
+              },
+              {
+                "date": "2026-09-19",
+                "rate": 0
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-18",
+              "2026-09-19"
+            ],
+            "roomTotal": 0,
+            "dpAmount": 0,
+            "remainingBalance": 0
+          },
+          "rooms": []
+        },
+        {
+          "id": "res-006",
+          "reservationCode": "RSV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "checkInDate": "2026-09-21",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Anniversary stay, decorate room",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-06T00:00:00Z",
+          "updatedAt": "2026-09-06T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-21",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 500000,
+            "remainingBalance": 1000000
+          },
+          "rooms": [
+            {
+              "id": "res-room-007",
+              "reservationId": "res-006",
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-06T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-007",
+          "reservationCode": "RSV-2026-007",
+          "guestName": "Budi Santoso",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-22",
+          "checkOutDate": "2026-09-25",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-07T00:00:00Z",
+          "updatedAt": "2026-09-07T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-22",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-23",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-24",
+                "rate": 950000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-22",
+              "2026-09-23",
+              "2026-09-24"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 0,
+            "remainingBalance": 2850000
+          },
+          "rooms": [
+            {
+              "id": "res-room-008",
+              "reservationId": "res-007",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-07T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-008",
+          "reservationCode": "RSV-2026-008",
+          "guestName": "Alice Tan",
+          "source": "ota",
+          "checkInDate": "2026-09-12",
+          "checkOutDate": "2026-09-14",
+          "status": "checked-out",
+          "notes": "Late checkout at 1pm",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-12",
+                "rate": 1200000
+              },
+              {
+                "date": "2026-09-13",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-12",
+              "2026-09-13"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-009",
+              "reservationId": "res-008",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-009",
+          "reservationCode": "RSV-2026-009",
+          "guestName": "Dewi Lestari",
+          "source": "phone",
+          "checkInDate": "2026-09-24",
+          "checkOutDate": "2026-09-27",
+          "status": "reserved",
+          "notes": "Extra bed for child",
+          "totalAmount": 5400000,
+          "createdAt": "2026-09-08T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-24",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-25",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-26",
+                "rate": 1800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-24",
+              "2026-09-25",
+              "2026-09-26"
+            ],
+            "roomTotal": 5400000,
+            "dpAmount": 500000,
+            "remainingBalance": 4900000
+          },
+          "rooms": [
+            {
+              "id": "res-room-010",
+              "reservationId": "res-009",
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family",
+              "rate": 1800000,
+              "subtotal": 5400000,
+              "createdAt": "2026-09-08T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-010",
+          "reservationCode": "RSV-2026-010",
+          "guestName": "James Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-25",
+          "checkOutDate": "2026-09-26",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1100000,
+          "createdAt": "2026-09-09T00:00:00Z",
+          "updatedAt": "2026-09-09T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-25",
+                "rate": 1100000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 1,
+            "nightDates": [
+              "2026-09-25"
+            ],
+            "roomTotal": 1100000,
+            "dpAmount": 0,
+            "remainingBalance": 1100000
+          },
+          "rooms": [
+            {
+              "id": "res-room-011",
+              "reservationId": "res-010",
+              "roomId": "room-006",
+              "roomNumber": "301",
+              "roomTypeName": "Homy",
+              "rate": 1100000,
+              "subtotal": 1100000,
+              "createdAt": "2026-09-09T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 15
+      }
+    }
+  },
+  {
+    "step": "list page 2 size 5",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-006",
+          "reservationCode": "RSV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "checkInDate": "2026-09-21",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Anniversary stay, decorate room",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-06T00:00:00Z",
+          "updatedAt": "2026-09-06T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-21",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 500000,
+            "remainingBalance": 1000000
+          },
+          "rooms": [
+            {
+              "id": "res-room-007",
+              "reservationId": "res-006",
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-06T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-007",
+          "reservationCode": "RSV-2026-007",
+          "guestName": "Budi Santoso",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-22",
+          "checkOutDate": "2026-09-25",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-07T00:00:00Z",
+          "updatedAt": "2026-09-07T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-22",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-23",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-24",
+                "rate": 950000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-22",
+              "2026-09-23",
+              "2026-09-24"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 0,
+            "remainingBalance": 2850000
+          },
+          "rooms": [
+            {
+              "id": "res-room-008",
+              "reservationId": "res-007",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-07T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-008",
+          "reservationCode": "RSV-2026-008",
+          "guestName": "Alice Tan",
+          "source": "ota",
+          "checkInDate": "2026-09-12",
+          "checkOutDate": "2026-09-14",
+          "status": "checked-out",
+          "notes": "Late checkout at 1pm",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-12",
+                "rate": 1200000
+              },
+              {
+                "date": "2026-09-13",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-12",
+              "2026-09-13"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-009",
+              "reservationId": "res-008",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-009",
+          "reservationCode": "RSV-2026-009",
+          "guestName": "Dewi Lestari",
+          "source": "phone",
+          "checkInDate": "2026-09-24",
+          "checkOutDate": "2026-09-27",
+          "status": "reserved",
+          "notes": "Extra bed for child",
+          "totalAmount": 5400000,
+          "createdAt": "2026-09-08T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-24",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-25",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-26",
+                "rate": 1800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-24",
+              "2026-09-25",
+              "2026-09-26"
+            ],
+            "roomTotal": 5400000,
+            "dpAmount": 500000,
+            "remainingBalance": 4900000
+          },
+          "rooms": [
+            {
+              "id": "res-room-010",
+              "reservationId": "res-009",
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family",
+              "rate": 1800000,
+              "subtotal": 5400000,
+              "createdAt": "2026-09-08T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-010",
+          "reservationCode": "RSV-2026-010",
+          "guestName": "James Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-25",
+          "checkOutDate": "2026-09-26",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1100000,
+          "createdAt": "2026-09-09T00:00:00Z",
+          "updatedAt": "2026-09-09T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-25",
+                "rate": 1100000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 1,
+            "nightDates": [
+              "2026-09-25"
+            ],
+            "roomTotal": 1100000,
+            "dpAmount": 0,
+            "remainingBalance": 1100000
+          },
+          "rooms": [
+            {
+              "id": "res-room-011",
+              "reservationId": "res-010",
+              "roomId": "room-006",
+              "roomNumber": "301",
+              "roomTypeName": "Homy",
+              "rate": 1100000,
+              "subtotal": 1100000,
+              "createdAt": "2026-09-09T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 2,
+        "pageSize": 5,
+        "total": 15
+      }
+    }
+  },
+  {
+    "step": "filter status",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-001",
+          "reservationCode": "RSV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "checkInDate": "2026-09-15",
+          "checkOutDate": "2026-09-17",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-15",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-16",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-15",
+              "2026-09-16"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 0,
+            "remainingBalance": 1500000
+          },
+          "rooms": [
+            {
+              "id": "res-room-001",
+              "reservationId": "res-001",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-004",
+          "reservationCode": "RSV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-20",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Request for high floor",
+          "totalAmount": 3600000,
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-05T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-20",
+                "rate": 1100000
+              },
+              {
+                "date": "2026-09-21",
+                "rate": 1300000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-20",
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 3600000,
+            "dpAmount": 0,
+            "remainingBalance": 3600000
+          },
+          "rooms": [
+            {
+              "id": "res-room-005",
+              "reservationId": "res-004",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-05T00:00:00Z"
+            },
+            {
+              "id": "res-room-006",
+              "reservationId": "res-004",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-05T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-006",
+          "reservationCode": "RSV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "checkInDate": "2026-09-21",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "notes": "Anniversary stay, decorate room",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-06T00:00:00Z",
+          "updatedAt": "2026-09-06T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-21",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-22",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-21",
+              "2026-09-22"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 500000,
+            "remainingBalance": 1000000
+          },
+          "rooms": [
+            {
+              "id": "res-room-007",
+              "reservationId": "res-006",
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-06T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-007",
+          "reservationCode": "RSV-2026-007",
+          "guestName": "Budi Santoso",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-22",
+          "checkOutDate": "2026-09-25",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-07T00:00:00Z",
+          "updatedAt": "2026-09-07T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-22",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-23",
+                "rate": 950000
+              },
+              {
+                "date": "2026-09-24",
+                "rate": 950000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-22",
+              "2026-09-23",
+              "2026-09-24"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 0,
+            "remainingBalance": 2850000
+          },
+          "rooms": [
+            {
+              "id": "res-room-008",
+              "reservationId": "res-007",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-07T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-009",
+          "reservationCode": "RSV-2026-009",
+          "guestName": "Dewi Lestari",
+          "source": "phone",
+          "checkInDate": "2026-09-24",
+          "checkOutDate": "2026-09-27",
+          "status": "reserved",
+          "notes": "Extra bed for child",
+          "totalAmount": 5400000,
+          "createdAt": "2026-09-08T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-24",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-25",
+                "rate": 1800000
+              },
+              {
+                "date": "2026-09-26",
+                "rate": 1800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-24",
+              "2026-09-25",
+              "2026-09-26"
+            ],
+            "roomTotal": 5400000,
+            "dpAmount": 500000,
+            "remainingBalance": 4900000
+          },
+          "rooms": [
+            {
+              "id": "res-room-010",
+              "reservationId": "res-009",
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family",
+              "rate": 1800000,
+              "subtotal": 5400000,
+              "createdAt": "2026-09-08T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-010",
+          "reservationCode": "RSV-2026-010",
+          "guestName": "James Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-25",
+          "checkOutDate": "2026-09-26",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1100000,
+          "createdAt": "2026-09-09T00:00:00Z",
+          "updatedAt": "2026-09-09T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-25",
+                "rate": 1100000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 1,
+            "nightDates": [
+              "2026-09-25"
+            ],
+            "roomTotal": 1100000,
+            "dpAmount": 0,
+            "remainingBalance": 1100000
+          },
+          "rooms": [
+            {
+              "id": "res-room-011",
+              "reservationId": "res-010",
+              "roomId": "room-006",
+              "roomNumber": "301",
+              "roomTypeName": "Homy",
+              "rate": 1100000,
+              "subtotal": 1100000,
+              "createdAt": "2026-09-09T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-013",
+          "reservationCode": "RSV-2026-013",
+          "guestName": "Lisa Chen",
+          "source": "ota",
+          "checkInDate": "2026-09-29",
+          "checkOutDate": "2026-10-02",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-29",
+                "rate": 900000
+              },
+              {
+                "date": "2026-09-30",
+                "rate": 950000
+              },
+              {
+                "date": "2026-10-01",
+                "rate": 1000000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-29",
+              "2026-09-30",
+              "2026-10-01"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 855000,
+            "remainingBalance": 1995000
+          },
+          "rooms": [
+            {
+              "id": "res-room-015",
+              "reservationId": "res-013",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-015",
+          "reservationCode": "RSV-2026-015",
+          "guestName": "Nina Kurnia",
+          "source": "website",
+          "checkInDate": "2026-10-02",
+          "checkOutDate": "2026-10-05",
+          "status": "reserved",
+          "notes": "Honeymoon, quiet room please",
+          "totalAmount": 5250000,
+          "createdAt": "2026-09-22T00:00:00Z",
+          "updatedAt": "2026-09-22T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-10-02",
+                "rate": 1700000
+              },
+              {
+                "date": "2026-10-03",
+                "rate": 1750000
+              },
+              {
+                "date": "2026-10-04",
+                "rate": 1800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "fixed",
+            "dpFixedAmount": 500000
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-10-02",
+              "2026-10-03",
+              "2026-10-04"
+            ],
+            "roomTotal": 5250000,
+            "dpAmount": 500000,
+            "remainingBalance": 4750000
+          },
+          "rooms": [
+            {
+              "id": "res-room-016",
+              "reservationId": "res-015",
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family",
+              "rate": 1750000,
+              "subtotal": 5250000,
+              "createdAt": "2026-09-22T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 8
+      }
+    }
+  },
+  {
+    "step": "filter source",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-005",
+          "reservationCode": "RSV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "checkInDate": "2026-09-18",
+          "checkOutDate": "2026-09-20",
+          "status": "cancelled",
+          "notes": "Cancelled due to schedule change",
+          "totalAmount": 0,
+          "createdAt": "2026-09-03T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-18",
+                "rate": 0
+              },
+              {
+                "date": "2026-09-19",
+                "rate": 0
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-18",
+              "2026-09-19"
+            ],
+            "roomTotal": 0,
+            "dpAmount": 0,
+            "remainingBalance": 0
+          },
+          "rooms": []
+        },
+        {
+          "id": "res-008",
+          "reservationCode": "RSV-2026-008",
+          "guestName": "Alice Tan",
+          "source": "ota",
+          "checkInDate": "2026-09-12",
+          "checkOutDate": "2026-09-14",
+          "status": "checked-out",
+          "notes": "Late checkout at 1pm",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-12",
+                "rate": 1200000
+              },
+              {
+                "date": "2026-09-13",
+                "rate": 1200000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-12",
+              "2026-09-13"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-009",
+              "reservationId": "res-008",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-013",
+          "reservationCode": "RSV-2026-013",
+          "guestName": "Lisa Chen",
+          "source": "ota",
+          "checkInDate": "2026-09-29",
+          "checkOutDate": "2026-10-02",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 2850000,
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "pricing": {
+            "mode": "different",
+            "nightlyRates": [
+              {
+                "date": "2026-09-29",
+                "rate": 900000
+              },
+              {
+                "date": "2026-09-30",
+                "rate": 950000
+              },
+              {
+                "date": "2026-10-01",
+                "rate": 1000000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-29",
+              "2026-09-30",
+              "2026-10-01"
+            ],
+            "roomTotal": 2850000,
+            "dpAmount": 855000,
+            "remainingBalance": 1995000
+          },
+          "rooms": [
+            {
+              "id": "res-room-015",
+              "reservationId": "res-013",
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin",
+              "rate": 950000,
+              "subtotal": 2850000,
+              "createdAt": "2026-09-21T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 3
+      }
+    }
+  },
+  {
+    "step": "filter date",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-001",
+          "reservationCode": "RSV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "checkInDate": "2026-09-15",
+          "checkOutDate": "2026-09-17",
+          "status": "reserved",
+          "notes": "",
+          "totalAmount": 1500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-15",
+                "rate": 750000
+              },
+              {
+                "date": "2026-09-16",
+                "rate": 750000
+              }
+            ]
+          },
+          "payment": {
+            "type": "no_dp",
+            "dpType": "percentage"
+          },
+          "calc": {
+            "nights": 2,
+            "nightDates": [
+              "2026-09-15",
+              "2026-09-16"
+            ],
+            "roomTotal": 1500000,
+            "dpAmount": 0,
+            "remainingBalance": 1500000
+          },
+          "rooms": [
+            {
+              "id": "res-room-001",
+              "reservationId": "res-001",
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard",
+              "rate": 750000,
+              "subtotal": 1500000,
+              "createdAt": "2026-09-01T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "res-002",
+          "reservationCode": "RSV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "phone",
+          "checkInDate": "2026-09-16",
+          "checkOutDate": "2026-09-19",
+          "status": "checked-in",
+          "notes": "VIP guest, early check-in requested",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-02T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-16",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-17",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-18",
+                "rate": 800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-16",
+              "2026-09-17",
+              "2026-09-18"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-002",
+              "reservationId": "res-002",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            },
+            {
+              "id": "res-room-003",
+              "reservationId": "res-002",
+              "roomId": "room-001",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 2
+      }
+    }
+  },
+  {
+    "step": "search code",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-002",
+          "reservationCode": "RSV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "phone",
+          "checkInDate": "2026-09-16",
+          "checkOutDate": "2026-09-19",
+          "status": "checked-in",
+          "notes": "VIP guest, early check-in requested",
+          "totalAmount": 2400000,
+          "createdAt": "2026-09-02T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "pricing": {
+            "mode": "same",
+            "nightlyRates": [
+              {
+                "date": "2026-09-16",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-17",
+                "rate": 800000
+              },
+              {
+                "date": "2026-09-18",
+                "rate": 800000
+              }
+            ]
+          },
+          "payment": {
+            "type": "dp",
+            "dpType": "percentage",
+            "dpPercentage": 30
+          },
+          "calc": {
+            "nights": 3,
+            "nightDates": [
+              "2026-09-16",
+              "2026-09-17",
+              "2026-09-18"
+            ],
+            "roomTotal": 2400000,
+            "dpAmount": 720000,
+            "remainingBalance": 1680000
+          },
+          "rooms": [
+            {
+              "id": "res-room-002",
+              "reservationId": "res-002",
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy",
+              "rate": 1200000,
+              "subtotal": 2400000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            },
+            {
+              "id": "res-room-003",
+              "reservationId": "res-002",
+              "roomId": "room-001",
+              "roomNumber": "102",
+              "roomTypeName": "Standard",
+              "rate": 1200000,
+              "subtotal": 1200000,
+              "createdAt": "2026-09-02T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 1
+      }
+    }
+  },
+  {
+    "step": "get",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "res-002",
+        "reservationCode": "RSV-2026-002",
+        "guestName": "Jane Smith",
+        "source": "phone",
+        "checkInDate": "2026-09-16",
+        "checkOutDate": "2026-09-19",
+        "status": "checked-in",
+        "notes": "VIP guest, early check-in requested",
+        "totalAmount": 2400000,
+        "createdAt": "2026-09-02T00:00:00Z",
+        "updatedAt": "2026-09-14T00:00:00Z",
+        "pricing": {
+          "mode": "same",
+          "nightlyRates": [
+            {
+              "date": "2026-09-16",
+              "rate": 800000
+            },
+            {
+              "date": "2026-09-17",
+              "rate": 800000
+            },
+            {
+              "date": "2026-09-18",
+              "rate": 800000
+            }
+          ]
+        },
+        "payment": {
+          "type": "dp",
+          "dpType": "percentage",
+          "dpPercentage": 30
+        },
+        "calc": {
+          "nights": 3,
+          "nightDates": [
+            "2026-09-16",
+            "2026-09-17",
+            "2026-09-18"
+          ],
+          "roomTotal": 2400000,
+          "dpAmount": 720000,
+          "remainingBalance": 1680000
+        },
+        "rooms": [
+          {
+            "id": "res-room-002",
+            "reservationId": "res-002",
+            "roomId": "room-003",
+            "roomNumber": "103",
+            "roomTypeName": "Homy",
+            "rate": 1200000,
+            "subtotal": 2400000,
+            "createdAt": "2026-09-02T00:00:00Z"
+          },
+          {
+            "id": "res-room-003",
+            "reservationId": "res-002",
+            "roomId": "room-001",
+            "roomNumber": "102",
+            "roomTypeName": "Standard",
+            "rate": 1200000,
+            "subtotal": 1200000,
+            "createdAt": "2026-09-02T00:00:00Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "get 404",
+    "status": 404,
+    "body": {
+      "message": "Reservation not found"
+    }
+  },
+  {
+    "step": "calendar",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-011",
+          "reservationCode": "RSV-2026-011",
+          "guestName": "Maria Garcia",
+          "source": "direct",
+          "checkInDate": "2026-09-05",
+          "checkOutDate": "2026-09-08",
+          "status": "checked-out",
+          "totalAmount": 4200000,
+          "rooms": [
+            {
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard"
+            },
+            {
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard"
+            }
+          ]
+        },
+        {
+          "id": "res-003",
+          "reservationCode": "RSV-2026-003",
+          "guestName": "Robert Johnson",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-10",
+          "checkOutDate": "2026-09-12",
+          "status": "checked-out",
+          "totalAmount": 1500000,
+          "rooms": [
+            {
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard"
+            }
+          ]
+        },
+        {
+          "id": "res-008",
+          "reservationCode": "RSV-2026-008",
+          "guestName": "Alice Tan",
+          "source": "ota",
+          "checkInDate": "2026-09-12",
+          "checkOutDate": "2026-09-14",
+          "status": "checked-out",
+          "totalAmount": 2400000,
+          "rooms": [
+            {
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy"
+            }
+          ]
+        },
+        {
+          "id": "res-001",
+          "reservationCode": "RSV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "checkInDate": "2026-09-15",
+          "checkOutDate": "2026-09-17",
+          "status": "reserved",
+          "totalAmount": 1500000,
+          "rooms": [
+            {
+              "roomId": "room-001",
+              "roomNumber": "101",
+              "roomTypeName": "Standard"
+            }
+          ]
+        },
+        {
+          "id": "res-002",
+          "reservationCode": "RSV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "phone",
+          "checkInDate": "2026-09-16",
+          "checkOutDate": "2026-09-19",
+          "status": "checked-in",
+          "totalAmount": 2400000,
+          "rooms": [
+            {
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy"
+            },
+            {
+              "roomId": "room-001",
+              "roomNumber": "102",
+              "roomTypeName": "Standard"
+            }
+          ]
+        },
+        {
+          "id": "res-005",
+          "reservationCode": "RSV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "checkInDate": "2026-09-18",
+          "checkOutDate": "2026-09-20",
+          "status": "cancelled",
+          "totalAmount": 0,
+          "rooms": []
+        },
+        {
+          "id": "res-004",
+          "reservationCode": "RSV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-20",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "totalAmount": 3600000,
+          "rooms": [
+            {
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy"
+            },
+            {
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin"
+            }
+          ]
+        },
+        {
+          "id": "res-006",
+          "reservationCode": "RSV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "checkInDate": "2026-09-21",
+          "checkOutDate": "2026-09-23",
+          "status": "reserved",
+          "totalAmount": 1500000,
+          "rooms": [
+            {
+              "roomId": "room-002",
+              "roomNumber": "102",
+              "roomTypeName": "Standard"
+            }
+          ]
+        },
+        {
+          "id": "res-007",
+          "reservationCode": "RSV-2026-007",
+          "guestName": "Budi Santoso",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-22",
+          "checkOutDate": "2026-09-25",
+          "status": "reserved",
+          "totalAmount": 2850000,
+          "rooms": [
+            {
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin"
+            }
+          ]
+        },
+        {
+          "id": "res-009",
+          "reservationCode": "RSV-2026-009",
+          "guestName": "Dewi Lestari",
+          "source": "phone",
+          "checkInDate": "2026-09-24",
+          "checkOutDate": "2026-09-27",
+          "status": "reserved",
+          "totalAmount": 5400000,
+          "rooms": [
+            {
+              "roomId": "room-008",
+              "roomNumber": "401",
+              "roomTypeName": "Family"
+            }
+          ]
+        },
+        {
+          "id": "res-010",
+          "reservationCode": "RSV-2026-010",
+          "guestName": "James Wilson",
+          "source": "website",
+          "checkInDate": "2026-09-25",
+          "checkOutDate": "2026-09-26",
+          "status": "reserved",
+          "totalAmount": 1100000,
+          "rooms": [
+            {
+              "roomId": "room-006",
+              "roomNumber": "301",
+              "roomTypeName": "Homy"
+            }
+          ]
+        },
+        {
+          "id": "res-014",
+          "reservationCode": "RSV-2026-014",
+          "guestName": "Tom Baker",
+          "source": "phone",
+          "checkInDate": "2026-09-26",
+          "checkOutDate": "2026-09-27",
+          "status": "cancelled",
+          "totalAmount": 0,
+          "rooms": []
+        },
+        {
+          "id": "res-012",
+          "reservationCode": "RSV-2026-012",
+          "guestName": "Ahmad Hidayat",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-28",
+          "checkOutDate": "2026-09-30",
+          "status": "checked-in",
+          "totalAmount": 2300000,
+          "rooms": [
+            {
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy"
+            }
+          ]
+        },
+        {
+          "id": "res-013",
+          "reservationCode": "RSV-2026-013",
+          "guestName": "Lisa Chen",
+          "source": "ota",
+          "checkInDate": "2026-09-29",
+          "checkOutDate": "2026-10-02",
+          "status": "reserved",
+          "totalAmount": 2850000,
+          "rooms": [
+            {
+              "roomId": "room-004",
+              "roomNumber": "201",
+              "roomTypeName": "Twin"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "step": "calendar filtered",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "res-002",
+          "reservationCode": "RSV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "phone",
+          "checkInDate": "2026-09-16",
+          "checkOutDate": "2026-09-19",
+          "status": "checked-in",
+          "totalAmount": 2400000,
+          "rooms": [
+            {
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy"
+            },
+            {
+              "roomId": "room-001",
+              "roomNumber": "102",
+              "roomTypeName": "Standard"
+            }
+          ]
+        },
+        {
+          "id": "res-012",
+          "reservationCode": "RSV-2026-012",
+          "guestName": "Ahmad Hidayat",
+          "source": "whatsapp",
+          "checkInDate": "2026-09-28",
+          "checkOutDate": "2026-09-30",
+          "status": "checked-in",
+          "totalAmount": 2300000,
+          "rooms": [
+            {
+              "roomId": "room-003",
+              "roomNumber": "103",
+              "roomTypeName": "Homy"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "step": "calendar bad range",
+    "status": 400,
+    "body": {
+      "message": "`to` must be after `from`."
+    }
+  },
+  {
+    "step": "availability",
+    "status": 200,
+    "body": {
+      "data": {
+        "bookedRoomIds": [
+          "room-001",
+          "room-003"
+        ]
+      }
+    }
+  },
+  {
+    "step": "availability exclude",
+    "status": 200,
+    "body": {
+      "data": {
+        "bookedRoomIds": [
+          "room-001"
+        ]
+      }
+    }
+  },
+  {
+    "step": "availability bad range",
+    "status": 400,
+    "body": {
+      "message": "`checkOut` must be after `checkIn`."
+    }
+  }
+]

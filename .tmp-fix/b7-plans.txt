@@ -1,0 +1,359 @@
+### /api/users?page=1&pageSize=100 -> 200
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where "users"."id" = ? limit ?
+     PLAN: SEARCH users USING INDEX sqlite_autoindex_users_1 (id=?)
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" limit ?
+     PLAN: SCAN users
+  SQL: select "role_id" from "user_roles" where "user_roles"."user_id" = ?
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+### /api/users?status=active -> 200
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where "users"."id" = ? limit ?
+     PLAN: SEARCH users USING INDEX sqlite_autoindex_users_1 (id=?)
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where "users"."status" = ? limit ?
+     PLAN: SEARCH users USING INDEX idx_users_status (status=?)
+  SQL: select "role_id" from "user_roles" where "user_roles"."user_id" = ?
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+### /api/users?search=a -> 200
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where "users"."id" = ? limit ?
+     PLAN: SEARCH users USING INDEX sqlite_autoindex_users_1 (id=?)
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where ("users"."name" like ? or "users"."email" like ?) limit ?
+     PLAN: SCAN users
+  SQL: select "role_id" from "user_roles" where "user_roles"."user_id" = ?
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+### /api/roles?page=1&pageSize=100 -> 200
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where "users"."id" = ? limit ?
+     PLAN: SEARCH users USING INDEX sqlite_autoindex_users_1 (id=?)
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "description", "status", "created_at", "updated_at" from "roles" limit ?
+     PLAN: SCAN roles
+### /api/roles?status=active -> 200
+  SQL: select "id", "name", "email", "password_hash", "status", "token_version", "last_login_at", "created_at", "updated_at" from "users" where "users"."id" = ? limit ?
+     PLAN: SEARCH users USING INDEX sqlite_autoindex_users_1 (id=?)
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "description", "status", "created_at", "updated_at" from "roles" where "roles"."status" = ? limit ?
+     PLAN: SEARCH roles USING INDEX idx_roles_status (status=?)
+### /api/rooms?page=1&pageSize=100 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "room_number", "room_type_id", "status", "created_at", "updated_at" from "rooms" limit ?
+     PLAN: SCAN rooms
+### /api/rooms?status=active -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "room_number", "room_type_id", "status", "created_at", "updated_at" from "rooms" where "rooms"."status" = ? limit ?
+     PLAN: SEARCH rooms USING INDEX idx_rooms_status (status=?)
+### /api/rooms?roomTypeId=room-type-001 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "room_number", "room_type_id", "status", "created_at", "updated_at" from "rooms" where "rooms"."room_type_id" = ? limit ?
+     PLAN: SEARCH rooms USING INDEX idx_rooms_type (room_type_id=?)
+### /api/rooms?search=1 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "room_number", "room_type_id", "status", "created_at", "updated_at" from "rooms" where "rooms"."room_number" like ? limit ?
+     PLAN: SCAN rooms
+### /api/room-types?page=1&pageSize=100 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "description", "capacity", "facilities", "default_rate", "images", "status", "created_at", "updated_at" from "room_types" limit ?
+     PLAN: SCAN room_types
+### /api/room-types?status=active -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "description", "capacity", "facilities", "default_rate", "images", "status", "created_at", "updated_at" from "room_types" where "room_types"."status" = ? limit ?
+     PLAN: SEARCH room_types USING INDEX idx_room_types_status (status=?)
+### /api/reservations?page=1&pageSize=100 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SCAN reservations
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX sqlite_autoindex_reservations_1 (id=?)
+  SQL: select "reservation_id", "date", "rate" from "reservation_nightly_rates" where "reservation_nightly_rates"."reservation_id" = ?
+     PLAN: SEARCH reservation_nightly_rates USING INDEX idx_nightly_rates_reservation (reservation_id=?)
+  SQL: select "id", "reservation_id", "room_id", "room_number", "room_type_name", "rate", "subtotal", "created_at" from "reservation_rooms" where "reservation_rooms"."reservation_id" = ?
+     PLAN: SEARCH reservation_rooms USING INDEX idx_reservation_rooms_reservation (reservation_id=?)
+### /api/reservations?status=reserved -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX idx_reservations_status (status=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX sqlite_autoindex_reservations_1 (id=?)
+  SQL: select "reservation_id", "date", "rate" from "reservation_nightly_rates" where "reservation_nightly_rates"."reservation_id" = ?
+     PLAN: SEARCH reservation_nightly_rates USING INDEX idx_nightly_rates_reservation (reservation_id=?)
+  SQL: select "id", "reservation_id", "room_id", "room_number", "room_type_name", "rate", "subtotal", "created_at" from "reservation_rooms" where "reservation_rooms"."reservation_id" = ?
+     PLAN: SEARCH reservation_rooms USING INDEX idx_reservation_rooms_reservation (reservation_id=?)
+### /api/reservations?source=ota -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX idx_reservations_source (source=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX sqlite_autoindex_reservations_1 (id=?)
+  SQL: select "reservation_id", "date", "rate" from "reservation_nightly_rates" where "reservation_nightly_rates"."reservation_id" = ?
+     PLAN: SEARCH reservation_nightly_rates USING INDEX idx_nightly_rates_reservation (reservation_id=?)
+  SQL: select "id", "reservation_id", "room_id", "room_number", "room_type_name", "rate", "subtotal", "created_at" from "reservation_rooms" where "reservation_rooms"."reservation_id" = ?
+     PLAN: SEARCH reservation_rooms USING INDEX idx_reservation_rooms_reservation (reservation_id=?)
+### /api/reservations?date=2026-09-16 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX idx_reservations_dates (check_in_date<?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX sqlite_autoindex_reservations_1 (id=?)
+  SQL: select "reservation_id", "date", "rate" from "reservation_nightly_rates" where "reservation_nightly_rates"."reservation_id" = ?
+     PLAN: SEARCH reservation_nightly_rates USING INDEX idx_nightly_rates_reservation (reservation_id=?)
+  SQL: select "id", "reservation_id", "room_id", "room_number", "room_type_name", "rate", "subtotal", "created_at" from "reservation_rooms" where "reservation_rooms"."reservation_id" = ?
+     PLAN: SEARCH reservation_rooms USING INDEX idx_reservation_rooms_reservation (reservation_id=?)
+### /api/reservations?search=RSV -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SCAN reservations
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX sqlite_autoindex_reservations_1 (id=?)
+  SQL: select "reservation_id", "date", "rate" from "reservation_nightly_rates" where "reservation_nightly_rates"."reservation_id" = ?
+     PLAN: SEARCH reservation_nightly_rates USING INDEX idx_nightly_rates_reservation (reservation_id=?)
+  SQL: select "id", "reservation_id", "room_id", "room_number", "room_type_name", "rate", "subtotal", "created_at" from "reservation_rooms" where "reservation_rooms"."reservation_id" = ?
+     PLAN: SEARCH reservation_rooms USING INDEX idx_reservation_rooms_reservation (reservation_id=?)
+### /api/reservations/calendar?from=2026-09-01&to=2026-10-01 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_a
+     PLAN: SEARCH reservations USING INDEX idx_reservations_dates (check_in_date<?)
+  SQL: select "id", "reservation_id", "room_id", "room_number", "room_type_name", "rate", "subtotal", "created_at" from "reservation_rooms" where "reservation_rooms"."reservation_id" = ?
+     PLAN: SEARCH reservation_rooms USING INDEX idx_reservation_rooms_reservation (reservation_id=?)
+### /api/invoices?page=1&pageSize=100 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" limit ?
+     PLAN: SCAN invoices
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/invoices?status=Draft -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where "invoices"."invoice_sta
+     PLAN: SEARCH invoices USING INDEX idx_invoices_status (invoice_status=?)
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/invoices?payment=Paid -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where "invoices"."payment_sta
+     PLAN: SEARCH invoices USING INDEX idx_invoices_payment (payment_status=?)
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/invoices?source=direct -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where "invoices"."source" = ?
+     PLAN: SCAN invoices
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/invoices?start=2026-09-01&end=2026-09-30 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where ("invoices"."invoice_da
+     PLAN: SEARCH invoices USING INDEX idx_invoices_date (invoice_date>? AND invoice_date<?)
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/invoices?search=INV -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where ("invoices"."invoice_nu
+     PLAN: SCAN invoices
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/invoices?status=Draft&start=2026-09-01&end=2026-09-30 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where ("invoices"."invoice_st
+     PLAN: SEARCH invoices USING INDEX idx_invoices_status (invoice_status=?)
+  SQL: select "id", "invoice_id", "description", "quantity", "unit_price", "subtotal", "created_at" from "invoice_items" where "invoice_items"."invoice_id" = ?
+     PLAN: SEARCH invoice_items USING INDEX idx_invoice_items_invoice (invoice_id=?)
+### /api/expenses?page=1&pageSize=100 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "date", "category", "description", "amount", "status", "created_at", "updated_at" from "expenses" limit ?
+     PLAN: SCAN expenses
+### /api/expenses?category=Utilities -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "date", "category", "description", "amount", "status", "created_at", "updated_at" from "expenses" where "expenses"."category" = ? limit ?
+     PLAN: SEARCH expenses USING INDEX idx_expenses_category (category=?)
+### /api/expenses?status=Paid -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "date", "category", "description", "amount", "status", "created_at", "updated_at" from "expenses" where "expenses"."status" = ? limit ?
+     PLAN: SEARCH expenses USING INDEX idx_expenses_status (status=?)
+### /api/expenses?start=2026-09-01&end=2026-09-30 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "date", "category", "description", "amount", "status", "created_at", "updated_at" from "expenses" where ("expenses"."date" >= ? and "expenses"."date" <= ?) limit ?
+     PLAN: SEARCH expenses USING INDEX idx_expenses_date (date>? AND date<?)
+### /api/expenses?search=x -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "date", "category", "description", "amount", "status", "created_at", "updated_at" from "expenses" where ("expenses"."description" like ? or "expenses"."category" like ?) limit ?
+     PLAN: SCAN expenses
+### /api/sales?page=1&pageSize=100 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where "invoices"."invoice_sta
+     PLAN: SCAN invoices
+### /api/sales?start=2026-09-01&end=2026-09-30 -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where ("invoices"."invoice_st
+     PLAN: SEARCH invoices USING INDEX idx_invoices_date (invoice_date>? AND invoice_date<?)
+### /api/sales?source=direct -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "invoice_number", "reservation_id", "guest_name", "source", "invoice_date", "subtotal", "discount", "total", "payment_status", "invoice_status", "created_at", "updated_at" from "invoices" where ("invoices"."invoice_st
+     PLAN: SCAN invoices
+### /api/permissions -> 200
+  SQL: select "roles"."id", "roles"."name", "roles"."description", "roles"."status", "roles"."created_at", "roles"."updated_at" from "user_roles" inner join "roles" on "user_roles"."role_id" = "roles"."id" where "user_roles"."user_id" = 
+     PLAN: SEARCH user_roles USING COVERING INDEX sqlite_autoindex_user_roles_1 (user_id=?)
+     PLAN: SEARCH roles USING INDEX sqlite_autoindex_roles_1 (id=?)
+  SQL: select "permissions"."name" from "role_permissions" inner join "permissions" on "role_permissions"."permission_id" = "permissions"."id" where "role_permissions"."role_id" = ?
+     PLAN: SEARCH role_permissions USING COVERING INDEX sqlite_autoindex_role_permissions_1 (role_id=?)
+     PLAN: SEARCH permissions USING INDEX sqlite_autoindex_permissions_1 (id=?)
+  SQL: select "id", "name", "description", "resource", "action", "group" from "permissions"
+     PLAN: SCAN permissions

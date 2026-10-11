@@ -33,7 +33,10 @@ test.describe('SCN-05 Rooms & Room Types', () => {
     await dialog.getByRole('button', { name: /^create$/i }).click();
     // FIXED (forwardRef): modal closes and the new room appears — no validation error.
     await expect(dialog).toBeHidden({ timeout: 10000 });
-    await expect(page.locator('body')).toContainText(new RegExp(roomNo), { timeout: 10000 });
+    // Table is paginated: search for the new room so it lands on page 1.
+    const search = page.getByPlaceholder(/search room number/i);
+    await search.fill(roomNo);
+    await expect(page.locator('table')).toContainText(new RegExp(roomNo), { timeout: 10000 });
     expect(refWarnings).toEqual([]);
   });
 

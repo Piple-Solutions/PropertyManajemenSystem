@@ -1,0 +1,77 @@
+{
+  "initial": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": false,
+    "drawerVisibility": "hidden",
+    "mainInert": false,
+    "url": "/dashboard/rooms"
+  },
+  "closedDrawerTabReachable": false,
+  "open": {
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "mainInert": true,
+    "url": "/dashboard/rooms"
+  },
+  "openTabEscapesToMain": false,
+  "afterEscape": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "mainInert": false,
+    "url": "/dashboard/rooms"
+  },
+  "afterBackdrop": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "mainInert": false,
+    "url": "/dashboard/rooms"
+  },
+  "afterGroupExpand": {
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "mainInert": true,
+    "url": "/dashboard/rooms"
+  },
+  "subLinksVisible": true,
+  "afterChildRoute": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "mainInert": false,
+    "url": "/dashboard/reservations/calendar"
+  },
+  "afterSameRouteTap": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "mainInert": false,
+    "url": "/dashboard/reservations/calendar"
+  },
+  "outletSurvivesLandscape": true,
+  "outletSurvivesBack": true,
+  "lockedWhileOpen": "hidden",
+  "afterResizeDesktop": {
+    "bodyOverflow": "unset",
+    "topbarPresent": false,
+    "mainInert": false,
+    "sidebarWidth": 60
+  }
+}

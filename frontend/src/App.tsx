@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { PublicLayout } from './layouts/PublicLayout';
+import { PublicLayout, PublicPageFallback } from './layouts/PublicLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicOnlyRoute } from './components/PublicOnlyRoute';
 import { RequirePermission } from './components/RequirePermission';
@@ -55,11 +55,11 @@ function App() {
       path: '/',
       element: <PublicLayout />,
       children: [
-        { index: true, element: <Suspense fallback={<LoadingFallback />}><HomePage /></Suspense> },
-        { path: 'about', element: <Suspense fallback={<LoadingFallback />}><AboutPage /></Suspense> },
-        { path: 'rooms', element: <Suspense fallback={<LoadingFallback />}><RoomTypesPage /></Suspense> },
-        { path: 'gallery', element: <Suspense fallback={<LoadingFallback />}><GalleryPage /></Suspense> },
-        { path: 'contact', element: <Suspense fallback={<LoadingFallback />}><ContactPage /></Suspense> },
+        { index: true, element: <Suspense fallback={<PublicPageFallback />}><HomePage /></Suspense> },
+        { path: 'about', element: <Suspense fallback={<PublicPageFallback />}><AboutPage /></Suspense> },
+        { path: 'rooms', element: <Suspense fallback={<PublicPageFallback />}><RoomTypesPage /></Suspense> },
+        { path: 'gallery', element: <Suspense fallback={<PublicPageFallback />}><GalleryPage /></Suspense> },
+        { path: 'contact', element: <Suspense fallback={<PublicPageFallback />}><ContactPage /></Suspense> },
       ],
     },
     {

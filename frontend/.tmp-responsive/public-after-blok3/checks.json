@@ -1,0 +1,78 @@
+{
+  "menuInitial": {
+    "expanded": "false",
+    "focusInMenu": false,
+    "focusOnToggle": false,
+    "bodyOverflow": "unset",
+    "mainInert": false,
+    "menuVisible": "hidden",
+    "menuH": 812
+  },
+  "menuOpen": {
+    "expanded": "true",
+    "focusInMenu": true,
+    "focusOnToggle": false,
+    "bodyOverflow": "hidden",
+    "mainInert": true,
+    "menuVisible": "visible",
+    "menuH": 812
+  },
+  "tabEscapedHeader": false,
+  "menuAfterEscape": {
+    "expanded": "false",
+    "focusInMenu": false,
+    "focusOnToggle": true,
+    "bodyOverflow": "unset",
+    "mainInert": false,
+    "menuVisible": "hidden",
+    "menuH": 812
+  },
+  "menuAfterNav": {
+    "url": "http://localhost:5173/rooms",
+    "expanded": "false",
+    "focusInMenu": false,
+    "focusOnToggle": true,
+    "bodyOverflow": "unset",
+    "mainInert": false,
+    "menuVisible": "hidden",
+    "menuH": 812
+  },
+  "skipLink": {
+    "text": "Lewati ke konten utama",
+    "top": 12,
+    "visible": true
+  },
+  "navCurrent": "Beranda",
+  "titleHome": "Beranda | Homestay Joglo Seruni Syariah",
+  "reducedMotion": {
+    "hasJsClass": false,
+    "hiddenCount": 0,
+    "total": 31
+  },
+  "noIO": {
+    "hasJsClass": false,
+    "hiddenReveal": 0
+  },
+  "scroll375": {
+    "hiddenAfterScroll": 0,
+    "reveals": 28,
+    "cls": 0,
+    "backToTopVisible": "true"
+  },
+  "scroll1440": {
+    "hiddenAfterScroll": 0,
+    "reveals": 28,
+    "cls": 0,
+    "backToTopVisible": "true"
+  },
+  "overflow": {
+    "320x568": 0,
+    "375x812": 0,
+    "430x932": 0,
+    "768x1024": 0,
+    "1024x768": 0,
+    "1280x800": 0,
+    "1440x900": 0,
+    "812x375": 0
+  }
+}

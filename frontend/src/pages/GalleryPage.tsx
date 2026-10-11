@@ -1,75 +1,78 @@
-import { MessageCircle } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
+import { galleryPage } from '@/content/publicContent';
+import { Lightbox } from '@/components/public/Lightbox';
+import { PageCta, PageHero, PlaceholderMedia, usePageTitle, usePublicTone } from '@/components/public/kit';
+import '../styles/public.css';
 
-const WHATSAPP_URL = 'https://wa.me/6200000000000?text=Halo%2C%20saya%20ingin%20informasi%20galeri%20properti.';
-
-const ctaStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-  backgroundColor: '#97764D',
-  border: '1px solid #97764D',
-  borderRadius: '8px',
-  color: '#FFFFFF',
-  fontSize: '18px',
-  fontWeight: 700,
-  lineHeight: 1.4,
-  padding: '12px 20px',
-  minHeight: '44px',
-  textDecoration: 'none',
-  cursor: 'pointer',
-  transition: 'background-color 150ms ease, opacity 150ms ease',
-};
-
-function handleCtaEnter(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.currentTarget.style.backgroundColor = '#7D6240';
-  e.currentTarget.style.borderColor = '#7D6240';
-}
-
-function handleCtaLeave(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.currentTarget.style.backgroundColor = '#97764D';
-  e.currentTarget.style.borderColor = '#97764D';
-  e.currentTarget.style.opacity = '1';
-}
+const ALL = '';
 
 export default function GalleryPage() {
-  return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <section
-        aria-labelledby="gallery-title"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #C7BBAB', borderRadius: '8px', padding: '32px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }}
-      >
-        <h1
-          id="gallery-title"
-          style={{ fontSize: '24px', fontWeight: 700, color: '#232D36', fontFamily: 'var(--font-family-sans)', margin: 0 }}
-        >
-          Galeri
-        </h1>
-        <p style={{ fontSize: '14px', color: '#6B7881', margin: 0 }}>Foto properti akan ditampilkan di sini.</p>
-      </section>
+  usePublicTone('dark');
+  usePageTitle(galleryPage.title);
 
-      <section
-        aria-label="Kontak lanjutan"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #C7BBAB', borderRadius: '8px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}
-      >
-        <p style={{ fontSize: '14px', color: '#6B7881', margin: 0 }}>Suka dengan yang Anda lihat? Hubungi kami.</p>
-        <div style={{ alignSelf: 'flex-start' }}>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Hubungi kami via WhatsApp"
-            style={ctaStyle}
-            onMouseEnter={handleCtaEnter}
-            onMouseLeave={handleCtaLeave}
-            onMouseDown={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-            onMouseUp={(e) => { e.currentTarget.style.opacity = '1'; }}
+  const [category, setCategory] = useState<string>(ALL);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const total = galleryPage.tiles.length;
+  const visible = useMemo(
+    () => (category === ALL ? galleryPage.tiles : galleryPage.tiles.filter((t) => t.category === category)),
+    [category],
+  );
+  const close = useCallback(() => setOpenIndex(null), []);
+  const countText = galleryPage.count.replace('{shown}', String(visible.length)).replace('{total}', String(total));
+  const filters = [{ value: ALL, label: galleryPage.all }, ...galleryPage.categories.map((c) => ({ value: c, label: c }))];
+
+  return (
+    <>
+      <PageHero id="gallery-title" content={galleryPage.hero} />
+
+      <section className="pub-section" aria-label={galleryPage.title}>
+        <div className="pub-container">
+          <div className="pub-gfilter" role="group" aria-label={galleryPage.filterLabel}>
+            {filters.map((f) => (
+              <button
+                key={f.value || 'all'}
+                type="button"
+                className="pub-chipbtn"
+                aria-pressed={category === f.value}
+                onClick={() => setCategory(f.value)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <p className="pub-gcount" aria-live="polite">
+            {countText}
+          </p>
+
+          {/* Keyed by filter: a short fade replays when the set changes. Spans only in the full view. */}
+          <ul
+            key={category || 'all'}
+            className={`pub-gt-grid pub-enter${category === ALL ? '' : ' pub-gt-grid--uniform'}`}
           >
-            <MessageCircle size={20} aria-hidden="true" color="#FFFFFF" />
-            Hubungi via WhatsApp
-          </a>
+            {visible.map((tile, index) => (
+              <li key={tile.id} className={`pub-gt pub-gt--${tile.aspect}`}>
+                <button
+                  type="button"
+                  className="pub-gt__btn"
+                  aria-label={`${galleryPage.openPhoto}: ${tile.label}`}
+                  aria-haspopup="dialog"
+                  onClick={() => setOpenIndex(index)}
+                >
+                  <PlaceholderMedia variant="fill" src={tile.src} alt={tile.alt ?? ''} />
+                  <span className="pub-gt__cap">{tile.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
-    </div>
+
+      <PageCta id="gallery-cta-title" content={galleryPage.cta} />
+
+      {openIndex !== null && (
+        <Lightbox tiles={visible} index={openIndex} onClose={close} onChange={setOpenIndex} />
+      )}
+    </>
   );
 }

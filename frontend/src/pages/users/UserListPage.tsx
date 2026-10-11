@@ -9,11 +9,13 @@ import { Modal } from '@/components/shared/Modal';
 import { Pagination } from '@/components/shared/Pagination';
 import { UserForm } from '@/components/shared/UserForm';
 import { UserRoleForm } from '@/components/shared/UserRoleForm';
+import { UserPermissionForm } from '@/components/shared/UserPermissionForm';
 import userService from '@/services/userService';
+import { usePermissions } from '@/hooks/usePermissions';
 import '../../styles/admin-responsive.css';
 import '../../styles/reservation-list.css';
 
-type UserModal = { mode: 'create' } | { mode: 'assign'; id: string } | null;
+type UserModal = { mode: 'create' } | { mode: 'assign'; id: string } | { mode: 'assignPerms'; id: string } | null;
 
 const FILTER_CATEGORIES = [
   {
@@ -28,6 +30,9 @@ const FILTER_CATEGORIES = [
 ];
 
 export default function UserListPage() {
+  const { hasPermission } = usePermissions();
+  const canView = hasPermission('user.view');
+  const canAssign = hasPermission('user.update');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [modal, setModal] = useState<UserModal>(null);
@@ -120,19 +125,32 @@ export default function UserListPage() {
     )},
     { key: 'actions', header: 'Actions', render: (item: any) => (
       <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
-        <Link to={`/dashboard/users/${item.id}`} style={{ textDecoration: 'none', display: 'inline-flex' }}><button
-          type="button"
-          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '36px', padding: '0 12px', borderRadius: '8px', border: '1px solid #DC2626', backgroundColor: '#DC2626', color: '#FFFFFF', fontSize: '12px', fontWeight: 600, fontFamily: 'var(--font-family-sans)', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#DC2626'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#DC2626'; }}
-        >View</button></Link>
-        <button
-          type="button"
-          onClick={() => setModal({ mode: 'assign', id: item.id })}
-          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '36px', padding: '0 12px', borderRadius: '8px', border: '1px solid #2563EB', backgroundColor: '#2563EB', color: '#FFFFFF', fontSize: '12px', fontWeight: 600, fontFamily: 'var(--font-family-sans)', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#2563EB'; }}
-        >Assign Role</button>
+        {canView && (
+          <Link to={`/dashboard/users/${item.id}`} style={{ textDecoration: 'none', display: 'inline-flex' }}><button
+            type="button"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '36px', padding: '0 12px', borderRadius: '8px', border: '1px solid #97764D', backgroundColor: 'transparent', color: '#232D36', fontSize: '12px', fontWeight: 600, fontFamily: 'var(--font-family-sans)', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#232D36'; e.currentTarget.style.borderColor = '#97764D'; }}
+          >View</button></Link>
+        )}
+        {canAssign && (
+          <button
+            type="button"
+            onClick={() => setModal({ mode: 'assign', id: item.id })}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '36px', padding: '0 12px', borderRadius: '8px', border: '1px solid #232D36', backgroundColor: '#232D36', color: '#FFFFFF', fontSize: '12px', fontWeight: 600, fontFamily: 'var(--font-family-sans)', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#97764D'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#97764D'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
+          >Assign Role</button>
+        )}
+        {canAssign && (
+          <button
+            type="button"
+            onClick={() => setModal({ mode: 'assignPerms', id: item.id })}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '36px', padding: '0 12px', borderRadius: '8px', border: '1px solid #232D36', backgroundColor: '#232D36', color: '#FFFFFF', fontSize: '12px', fontWeight: 600, fontFamily: 'var(--font-family-sans)', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#97764D'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#97764D'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
+          >Assign Permission</button>
+        )}
       </div>
     )},
   ];
@@ -298,7 +316,7 @@ export default function UserListPage() {
       <Modal
         open={modal !== null}
         onClose={closeModal}
-        title={modal?.mode === 'assign' ? 'Assign Role' : 'Add User'}
+        title={modal?.mode === 'assign' ? 'Assign Role' : modal?.mode === 'assignPerms' ? 'Assign Permission' : 'Add User'}
         size="md"
       >
         {modal?.mode === 'create' && (
@@ -306,6 +324,9 @@ export default function UserListPage() {
         )}
         {modal?.mode === 'assign' && (
           <UserRoleForm key={modal.id} userId={modal.id} onSuccess={handleModalSuccess} onCancel={closeModal} />
+        )}
+        {modal?.mode === 'assignPerms' && (
+          <UserPermissionForm key={`perms-${modal.id}`} userId={modal.id} onSuccess={handleModalSuccess} onCancel={closeModal} />
         )}
       </Modal>
     </div>

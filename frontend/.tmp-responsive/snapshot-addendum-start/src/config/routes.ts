@@ -1,0 +1,25 @@
+export const routes = {
+  public: {
+    home: '/',
+    about: '/about',
+    rooms: '/rooms',
+    gallery: '/gallery',
+    contact: '/contact',
+  },
+  pms: {
+    login: '/login',
+    dashboard: '/dashboard',
+    reservations: '/reservations',
+    calendar: '/reservations/calendar',
+    rooms: '/rooms',
+    roomTypes: '/room-types',
+    users: '/users',
+    roles: '/roles',
+    permissions: '/permissions',
+    finance: '/finance',
+    sales: '/finance/sales',
+    invoices: '/finance/invoices',
+    reports: '/finance/reports',
+    expenses: '/finance/expenses',
+  },
+} as const;

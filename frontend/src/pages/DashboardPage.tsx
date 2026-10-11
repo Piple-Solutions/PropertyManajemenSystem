@@ -15,12 +15,16 @@ import {
   X,
 } from 'lucide-react';
 import { reservationSourceLabels, reservationStatusLabels } from '@/constants/reservationStatuses';
+import { usePermissions } from '@/hooks/usePermissions';
 import { salesService } from '@/services/salesService';
 import { invoiceService } from '@/services/invoiceService';
 import { expenseService } from '@/services/expenseService';
 import { dashboardService, type DashboardOverview, type DashboardRecentReservation } from '@/services/dashboardService';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import type { Expense, Invoice, Sale } from '@/types/auth.types';
 import { Badge } from '@/components/shared/Badge';
 import { Table } from '@/components/shared/Table';
+import { shiftISODate, todayLocalISO } from '@/utils/localDate';
 import '../styles/dashboard-modern.css';
 import '../styles/reservation-list.css';
 
@@ -62,6 +66,10 @@ function useCountUp(target: number, format: (n: number) => string, duration = 80
 }
 
 export default function DashboardPage() {
+  // Visibility of Quick Actions and stat cards follows the logged-in user's
+  // effective permissions — never the role. Each item maps to the existing
+  // page it opens and the permission that page already requires.
+  const { hasPermission } = usePermissions();
   // Server-computed reservation + room aggregates (single overview call).
   // Revenue/sales/invoice/expense sections intentionally stay on their
   // existing mock services (Finance backend deferred).
@@ -78,9 +86,12 @@ export default function DashboardPage() {
       cancelled = true;
     };
   }, []);
-  const sales = salesService.getAll();
-  const invoices = invoiceService.getAll();
-  const expenses = expenseService.getAll();
+  // FE-001: real finance figures (async). Every signed-in user opens the
+  // dashboard; a user without the finance permission gets empty lists (the
+  // tiles then read 0) instead of the mock numbers shown before.
+  const { data: sales } = useAsyncData<Sale[]>(() => salesService.getAllIfPermitted(), []);
+  const { data: invoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
+  const { data: expenses } = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
 
   const [mounted, setMounted] = useState(false);
   const [revenueMode, setRevenueMode] = useState<'weekly' | 'monthly' | 'yearly' | 'custom'>('weekly');
@@ -113,9 +124,9 @@ export default function DashboardPage() {
     };
   }, [revenueFilterOpen]);
 
-  // Real "today" (server UTC day); replaces the hardcoded '2026-09-15'.
-  // Falls back to the identical client-side UTC computation while loading.
-  const today = overview?.today ?? new Date().toISOString().slice(0, 10);
+  // Real "today": the server's business day (Asia/Jakarta); falls back to the
+  // local calendar day while the overview loads (FE-005: no UTC day shift).
+  const today = overview?.today ?? todayLocalISO();
   const monthPrefix = today.slice(0, 7);
 
   const todayCheckins = overview?.reservations.todayCheckins ?? 0;
@@ -138,7 +149,6 @@ export default function DashboardPage() {
   const occupancyRate = overview?.occupancy.rate ?? 0;
 
   const revenueBuckets = useMemo(() => {
-    const todayDate = new Date(today);
     const sumByDate = (items: Array<{ date: string; amount: number }>, date: string) =>
       items.filter((i) => i.date === date).reduce((sum, i) => sum + i.amount, 0);
 
@@ -147,9 +157,8 @@ export default function DashboardPage() {
       const earn: number[] = [];
       const exp: number[] = [];
       for (let i = 6; i >= 0; i--) {
-        const d = new Date(todayDate);
-        d.setDate(d.getDate() - i);
-        const key = d.toISOString().slice(0, 10);
+        const key = shiftISODate(today, -i);
+        const d = new Date(`${key}T00:00:00`);
         labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
         earn.push(sumByDate(sales, key));
         exp.push(sumByDate(expenses, key));
@@ -230,14 +239,16 @@ export default function DashboardPage() {
   const animPaid = useCountUp(paidInvoices, String);
   const animOverdue = useCountUp(overdueInvoices, String);
 
+  // Rolling stat cards — each opens an existing page, so each requires that
+  // page's permission. Filtered before the marquee duplication below.
   const stats = [
-    { key: 'checkin', label: 'Check-in Hari Ini', value: String(todayCheckins), sub: `${upcomingCount} upcoming`, icon: CalendarCheck, to: '/dashboard/reservations' },
-    { key: 'active', label: 'Reservasi Aktif', value: String(checkedInCount), sub: `${totalReservations} total`, icon: BedDouble, to: '/dashboard/reservations' },
-    { key: 'revenue', label: 'Omzet Hari Ini', value: animTodaySales, sub: `Bulan ini: ${animMonthSales}`, icon: Wallet, to: '/dashboard/finance/sales' },
-    { key: 'invoice', label: 'Invoice Tertunda', value: animPending, sub: `${overdueInvoices} overdue`, icon: FileWarning, to: '/dashboard/finance/invoices' },
-    { key: 'occupancy', label: 'Okupansi', value: animOccupancy, sub: `${checkedInCount} dari ${totalRooms} kamar`, icon: LayoutDashboard, to: '/dashboard/rooms' },
-    { key: 'total', label: 'Total Reservasi', value: String(totalReservations), sub: `${paidInvoices} invoice lunas`, icon: Receipt, to: '/dashboard/reservations' },
-  ];
+    { key: 'checkin', label: 'Check-in Hari Ini', value: String(todayCheckins), sub: `${upcomingCount} upcoming`, icon: CalendarCheck, to: '/dashboard/reservations', permission: 'reservation.view' },
+    { key: 'active', label: 'Reservasi Aktif', value: String(checkedInCount), sub: `${totalReservations} total`, icon: BedDouble, to: '/dashboard/reservations', permission: 'reservation.view' },
+    { key: 'revenue', label: 'Omzet Hari Ini', value: animTodaySales, sub: `Bulan ini: ${animMonthSales}`, icon: Wallet, to: '/dashboard/finance/sales', permission: 'finance.sales.view' },
+    { key: 'invoice', label: 'Invoice Tertunda', value: animPending, sub: `${overdueInvoices} overdue`, icon: FileWarning, to: '/dashboard/finance/invoices', permission: 'finance.invoice.view' },
+    { key: 'occupancy', label: 'Okupansi', value: animOccupancy, sub: `${checkedInCount} dari ${totalRooms} kamar`, icon: LayoutDashboard, to: '/dashboard/rooms', permission: 'room.view' },
+    { key: 'total', label: 'Total Reservasi', value: String(totalReservations), sub: `${paidInvoices} invoice lunas`, icon: Receipt, to: '/dashboard/reservations', permission: 'reservation.view' },
+  ].filter((s) => hasPermission(s.permission));
 
   const columns = [
     { key: 'reservationCode', header: 'Kode', render: (item: DashboardRecentReservation) => <Link to={`/dashboard/reservations/${item.id}`} style={{ color: '#97764D', fontWeight: 600, textDecoration: 'none' }}>{item.reservationCode}</Link> },
@@ -261,22 +272,35 @@ export default function DashboardPage() {
   return (
     <div className="dm">
       <div className="dm-reveal">
-        <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#232D36', fontFamily: 'var(--font-family-sans)', margin: 0 }}>Dashboard</h1>
+        <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#232D36', fontFamily: 'var(--font-family-sans)', margin: 0 }}>Homestay Joglo Seruni Syariah</h1>
         <p style={{ color: '#6B7881', fontSize: '14px', margin: '4px 0 0' }}>Ringkasan operasional properti</p>
       </div>
 
-      {/* Quick actions — top */}
-      <nav className="dm-card dm-reveal" style={{ animationDelay: '40ms', padding: '12px 16px' }} aria-label="Aksi cepat">
-        <div className="dm-actions dm-actions--row">
-          <Link className="dm-btn dm-btn--primary" to="/dashboard/reservations/new"><Plus size={16} aria-hidden="true" /> Reservasi Baru</Link>
-          <Link className="dm-btn dm-btn--secondary" to="/dashboard/finance/invoices/new"><Plus size={16} aria-hidden="true" /> Invoice</Link>
-          <Link className="dm-btn dm-btn--secondary" to="/dashboard/rooms/new"><Plus size={16} aria-hidden="true" /> Tambah Kamar</Link>
-          <Link className="dm-btn dm-btn--secondary" to="/dashboard/finance/reports">Laporan Keuangan</Link>
-          <Link className="dm-btn dm-btn--secondary" to="/dashboard/activity">Log Aktivitas</Link>
-        </div>
-      </nav>
+      {/* Quick actions — top (permission-filtered, never role-based) */}
+      {(() => {
+        const quickActions = [
+          { to: '/dashboard/reservations/new', label: 'Reservasi Baru', icon: true, primary: true, permission: 'reservation.view' },
+          { to: '/dashboard/finance/invoices/new', label: 'Invoice', icon: true, primary: false, permission: 'finance.invoice.view' },
+          { to: '/dashboard/rooms/new', label: 'Tambah Kamar', icon: true, primary: false, permission: 'room.view' },
+          { to: '/dashboard/finance/reports', label: 'Laporan Keuangan', icon: false, primary: false, permission: 'finance.report.view' },
+          { to: '/dashboard/activity', label: 'Log Aktivitas', icon: false, primary: false, permission: 'activity.view' },
+        ].filter((a) => hasPermission(a.permission));
+        if (quickActions.length === 0) return null;
+        return (
+          <nav className="dm-card dm-reveal" style={{ animationDelay: '40ms', padding: '12px 16px' }} aria-label="Aksi cepat">
+            <div className="dm-actions dm-actions--row">
+              {quickActions.map((a) => (
+                <Link key={a.to} className={`dm-btn${a.primary ? ' dm-btn--primary' : ' dm-btn--secondary'}`} to={a.to}>
+                  {a.icon && <Plus size={16} aria-hidden="true" />} {a.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        );
+      })()}
 
-      {/* TopCards marquee */}
+      {/* TopCards marquee (hidden when no stat card is permitted) */}
+      {stats.length > 0 && (
       <section
         className="dm-marquee dm-reveal"
         style={{ animationDelay: '80ms' }}
@@ -317,6 +341,7 @@ export default function DashboardPage() {
           })}
         </div>
       </section>
+      )}
 
       <div className="dm-grid">
         {/* RevenueUpdate */}

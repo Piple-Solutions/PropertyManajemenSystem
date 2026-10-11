@@ -1,0 +1,196 @@
+{
+  "/ @375": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 16.11px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  "/about @375": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 16.11px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Tentang | Homestay Joglo Seruni Syariah"
+  },
+  "/rooms @375": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 16.11px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Kamar | Homestay Joglo Seruni Syariah"
+  },
+  "/gallery @375": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 16.11px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Galeri | Homestay Joglo Seruni Syariah"
+  },
+  "/contact @375": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 16.11px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Kontak | Homestay Joglo Seruni Syariah"
+  },
+  "/halaman-tidak-ada @375": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p.pub-notfound__code \"404\" 1.89:3 82.5px",
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 16.11px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:4 main:1 footer:1",
+    "title": "Halaman tidak ditemukan | Homestay Joglo Seruni Syariah"
+  },
+  "/ @1440": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 17px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  "/about @1440": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 17px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Tentang | Homestay Joglo Seruni Syariah"
+  },
+  "/rooms @1440": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 17px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Kamar | Homestay Joglo Seruni Syariah"
+  },
+  "/gallery @1440": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 17px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Galeri | Homestay Joglo Seruni Syariah"
+  },
+  "/contact @1440": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 17px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:3 main:1 footer:1",
+    "title": "Kontak | Homestay Joglo Seruni Syariah"
+  },
+  "/halaman-tidak-ada @1440": {
+    "h1": 1,
+    "headingSkips": 0,
+    "unnamed": [],
+    "imgNoAlt": 0,
+    "dupIds": [],
+    "brokenRefs": [],
+    "lows": [
+      "p.pub-notfound__code \"404\" 1.89:3 176px",
+      "p. \"Tempat berteduh yang hangat \" 1.00:4.5 17px",
+      "h2.pub-footer__title \"Jelajahi\" 1.00:4.5 18px",
+      "p.pub-footer__legal \"© 2026 Homestay Joglo Seruni\" 1.00:4.5 14px"
+    ],
+    "lang": "id",
+    "landmarks": "header:1 nav:4 main:1 footer:1",
+    "title": "Halaman tidak ditemukan | Homestay Joglo Seruni Syariah"
+  }
+}

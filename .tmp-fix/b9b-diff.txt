@@ -1,0 +1,882 @@
+CHANGED 13
+   src/components/shared/DayReservationsPopup.tsx
+   src/pages/DashboardPage.tsx
+   src/pages/finance/ExpensesPage.tsx
+   src/pages/finance/InvoiceDetailPage.tsx
+   src/pages/finance/InvoiceFormPage.tsx
+   src/pages/finance/InvoiceListPage.tsx
+   src/pages/finance/ReportPage.tsx
+   src/pages/finance/SalesPage.tsx
+   src/pages/reservations/ReservationListPage.tsx
+   src/services/expenseService.ts
+   src/services/invoiceService.ts
+   src/services/reportService.ts
+   src/services/salesService.ts
+ADDED ['src/hooks/useAsyncData.ts']
+REMOVED []
+
+===== src/components/shared/DayReservationsPopup.tsx (+4/-1)
++import { useAsyncData } from '@/hooks/useAsyncData';
++import type { Invoice } from '@/types/auth.types';
+-  const invoices = invoiceService.getAll();
++  // FE-001: real invoices (async); none for users without the invoice permission.
++  const { data: invoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
+
+===== src/pages/DashboardPage.tsx (+8/-3)
++import { useAsyncData } from '@/hooks/useAsyncData';
++import type { Expense, Invoice, Sale } from '@/types/auth.types';
+-  const sales = salesService.getAll();
+-  const invoices = invoiceService.getAll();
+-  const expenses = expenseService.getAll();
++  // FE-001: real finance figures (async). Every signed-in user opens the
++  // dashboard; a user without the finance permission gets empty lists (the
++  // tiles then read 0) instead of the mock numbers shown before.
++  const { data: sales } = useAsyncData<Sale[]>(() => salesService.getAllIfPermitted(), []);
++  const { data: invoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
++  const { data: expenses } = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
+
+===== src/pages/finance/ExpensesPage.tsx (+27/-12)
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { apiErrorMessage } from '@/services/api';
++import type { Expense } from '@/types/auth.types';
+-  const expenses = service.getAll();
++  // FE-001: real data (async) + reload after a successful create.
++  const { data: expenses, isLoading, error: loadError, reload } = useAsyncData<Expense[]>(() => service.getAll(), []);
++  const [saveError, setSaveError] = useState<string | null>(null);
+-        <Button onClick={() => setShowForm(true)}>+ New Expense</Button>
++        <Button onClick={() => { setSaveError(null); setShowForm(true); }}>+ New Expense</Button>
++          {saveError !== null && <ErrorState description={saveError || undefined} />}
+-            onSubmit={(data) => {
+-              service.create({
+-                category: data.category,
+-                description: data.description,
+-                amount: data.amount,
+-                date: data.date,
+-                status: data.status,
+-              });
+-              setShowForm(false);
++            onSubmit={async (data) => {
++              setSaveError(null);
++              try {
++                await service.create({
++                  category: data.category,
++                  description: data.description,
++                  amount: data.amount,
++                  date: data.date,
++                  status: data.status,
++                });
++                setShowForm(false);
++                reload();
++              } catch (err) {
++                setSaveError(apiErrorMessage(err, ''));
++              }
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reload} />}
+-        <Table columns={columns} data={filteredExpenses} emptyMessage="Tidak ada pengeluaran ditemukan" />
++        {isLoading ? <Loading /> : <Table columns={columns} data={filteredExpenses} emptyMessage="Tidak ada pengeluaran ditemukan" />}
+
+===== src/pages/finance/InvoiceDetailPage.tsx (+47/-4)
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { apiErrorMessage } from '@/services/api';
++import type { Invoice } from '@/types/auth.types';
+-  const invoice = id ? invoiceService.getById(id) : undefined;
++  // FE-001: the invoice comes from the API (async).
++  const { data: invoice, isLoading, error: loadError, reload } = useAsyncData<Invoice | undefined>(
++    () => (id ? invoiceService.getById(id) : Promise.resolve(undefined)),
++    undefined,
++  );
++  const [actionError, setActionError] = useState<string | null>(null);
++
++  // A status action that the server refuses (e.g. already paid elsewhere) is
++  // shown instead of reloading silently; success keeps the old reload.
++  const runAction = async (action: (invoiceId: string) => Promise<boolean>, invoiceId: string) => {
++    setActionError(null);
++    try {
++      await action(invoiceId);
++      navigate(0);
++    } catch (err) {
++      setActionError(apiErrorMessage(err, ''));
++    }
++  };
++
++  if (isLoading) {
++    return (
++      <div style={{ padding: 'var(--space-xl, 20px)', textAlign: 'center' }}>
++        <Loading />
++      </div>
++    );
++  }
++
++  if (loadError !== null) {
++    return (
++      <div className="fin-page" style={{ maxWidth: '900px' }}>
++        <ErrorState description={loadError || undefined} onRetry={reload} />
++      </div>
++    );
++  }
++      {actionError !== null && (
++        <div style={{ marginTop: '16px' }}>
++          <ErrorState description={actionError || undefined} />
++        </div>
++      )}
+-            <Button onClick={() => { invoiceService.send(invoice.id); navigate(0); }}>
++            <Button onClick={() => runAction((invoiceId) => invoiceService.send(invoiceId), invoice.id)}>
+-            <Button onClick={() => { invoiceService.markPaid(invoice.id); navigate(0); }}>
++            <Button onClick={() => runAction((invoiceId) => invoiceService.markPaid(invoiceId), invoice.id)}>
+-        onConfirm={() => { invoiceService.cancel(invoice.id); setConfirmCancel(false); navigate(0); }}
++        onConfirm={() => { setConfirmCancel(false); void runAction((invoiceId) => invoiceService.cancel(invoiceId), invoice.id); }}
+
+===== src/pages/finance/InvoiceFormPage.tsx (+88/-60)
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { apiErrorMessage } from '@/services/api';
++import type { Invoice } from '@/types/auth.types';
++  // FE-001: the invoice (edit) and the next free number (create) now come from
++  // the API. The form reads its default values once, so it is rendered only
++  // after they have arrived.
++  const [editInvoice, setEditInvoice] = useState<Invoice | undefined>(undefined);
++  const [nextNumber, setNextNumber] = useState('');
++  const [ready, setReady] = useState(false);
++  const [loadError, setLoadError] = useState<string | null>(null);
++  const [saveError, setSaveError] = useState<string | null>(null);
++  const [reloadKey, setReloadKey] = useState(0);
+-      const invoice = invoiceService.getById(id);
+-      if (invoice) {
+-        setReservationId(invoice.reservationId || '');
+-        setInitialSource(invoice.source);
+-        setInitialGuest(invoice.guestName);
+-        setInitialItems(invoice.items.map((item: any) => ({ description: item.description, quantity: item.quantity, unitPrice: item.unitPrice, subtotal: item.subtotal })));
+-        setInitialTotal(invoice.total);
+-      }
++      let cancelled = false;
++      setReady(false);
++      setLoadError(null);
++      invoiceService.getById(id).then((invoice) => {
++        if (cancelled) return;
++        setEditInvoice(invoice);
++        if (invoice) {
++          setReservationId(invoice.reservationId || '');
++          setInitialSource(invoice.source);
++          setInitialGuest(invoice.guestName);
++          setInitialItems(invoice.items.map((item: any) => ({ description: item.description, quantity: item.quantity, unitPrice: item.unitPrice, subtotal: item.subtotal })));
++          setInitialTotal(invoice.total);
++        }
++        setReady(true);
++      }).catch((err: unknown) => {
++        if (cancelled) return;
++        setLoadError(apiErrorMessage(err, ''));
++      });
++      return () => {
++        cancelled = true;
++      };
++    } else if (!isEdit && !id) {
++      let cancelled = false;
++      setReady(false);
++      // The server allocates the number; a failed preview (e.g. no permission)
++      // falls back to a placeholder the server replaces if it is taken.
++      invoiceService.getNextNumber(todayLocalISO()).then((n) => {
++        if (!cancelled) setNextNumber(n);
++      }).catch(() => {
++        if (!cancelled) setNextNumber(`INV-${new Date().getFullYear()}-001`);
++      }).finally(() => {
++        if (!cancelled) setReady(true);
++      });
++      return () => {
++        cancelled = true;
++      };
+-  }, [isEdit, id]);
++  }, [isEdit, id, reloadKey]);
+-    invoiceNumber: invoiceService.getById(id)?.invoiceNumber || '',
++    invoiceNumber: editInvoice?.invoiceNumber || '',
+-    invoiceDate: invoiceService.getById(id)?.invoiceDate || todayLocalISO(),
++    invoiceDate: editInvoice?.invoiceDate || todayLocalISO(),
+-    discount: invoiceService.getById(id)?.discount || 0,
+-    invoiceStatus: (invoiceService.getById(id)?.invoiceStatus || 'Draft') as 'Draft' | 'Completed',
+-    paymentStatus: (invoiceService.getById(id)?.paymentStatus || 'Pending') as 'Pending' | 'Paid' | 'Overdue' | 'Partial',
++    discount: editInvoice?.discount || 0,
++    invoiceStatus: (editInvoice?.invoiceStatus || 'Draft') as 'Draft' | 'Completed',
++    paymentStatus: (editInvoice?.paymentStatus || 'Pending') as 'Pending' | 'Paid' | 'Overdue' | 'Partial',
+-    invoiceNumber: `INV-${new Date().getFullYear()}-${String(invoiceService.getAll().length + 1).padStart(3, '0')}`,
++    invoiceNumber: nextNumber,
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={() => setReloadKey((k) => k + 1)} />}
++      {saveError !== null && <ErrorState description={saveError || undefined} />}
++      {loadError === null && !ready && <Loading />}
++      {loadError === null && ready && (
+-        onSubmit={(data) => {
+-          const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+-          if (isEdit && id) {
+-            const existing = invoiceService.getById(id);
+-            invoiceService.update(id, {
+-              invoiceNumber: data.invoiceNumber,
+-              reservationId: data.reservationId || undefined,
+-              guestName: data.guestName,
+-              source: data.source,
+-              invoiceDate: data.invoiceDate,
+-              items: data.items.map((item, index) => ({
+-                id: existing?.items[index]?.id || `inv-item-${Date.now()}-${index}`,
+-                invoiceId: id,
+-                description: item.description,
+-                quantity: item.quantity,
+-                unitPrice: item.unitPrice,
+-                subtotal: item.quantity * item.unitPrice,
+-              })),
+-              subtotal,
+-              discount: data.discount,
+-              total: subtotal - (subtotal * data.discount / 100),
+-              paymentStatus: data.paymentStatus,
+-              invoiceStatus: data.invoiceStatus,
+-            });
+-          } else {
+-            invoiceService.create({
+-              invoiceNumber: data.invoiceNumber,
+-              reservationId: data.reservationId || reservationId || undefined,
+-              guestName: data.guestName,
+-              source: data.source,
+-              invoiceDate: data.invoiceDate,
+-              items: data.items.map((item, index) => ({
+-                id: `inv-item-${Date.now()}-${index}`,
+-                invoiceId: '',
+-                description: item.description,
+-                quantity: item.quantity,
+-                unitPrice: item.unitPrice,
+-                subtotal: item.quantity * item.unitPrice,
+-              })),
+-              subtotal,
+-              discount: data.discount,
+-              total: subtotal - (subtotal * data.discount / 100),
+-              paymentStatus: data.paymentStatus,
+-              invoiceStatus: data.invoiceStatus,
+-            });
++        onSubmit={async (data) => {
++          // Totals are computed by the server; only the editable fields are sent.
++          const payload = {
++            invoiceNumber: data.invoiceNumber,
++            reservationId: data.reservationId || (isEdit ? undefined : reservationId || undefined),
++            guestName: data.guestName,
++            source: data.source,
++            invoiceDate: data.invoiceDate,
++            items: data.items.map((item) => ({
++              description: item.description,
++              quantity: item.quantity,
++              unitPrice: item.unitPrice,
++            })),
++            discount: data.discount,
++            paymentStatus: data.paymentStatus,
++            invoiceStatus: data.invoiceStatus,
++          };
++          setSaveError(null);
++          try {
++            if (isEdit && id) {
++              await invoiceService.update(id, payload);
++            } else {
++              await invoiceService.create(payload);
++            }
++          } catch (err) {
++            setSaveError(apiErrorMessage(err, ''));
++            return;
++      )}
+
+===== src/pages/finance/InvoiceListPage.tsx (+76/-54)
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { apiErrorMessage } from '@/services/api';
+-  const invoices = useMemo(() => service.getAll(), [service, refreshKey]);
++  // FE-001: real data (async). `refreshKey` still drives a refetch after every write.
++  const { data: invoices, isLoading, error: loadError, reload } = useAsyncData<Invoice[]>(() => service.getAll(), []);
++  const [saveError, setSaveError] = useState<string | null>(null);
++  const [deleteError, setDeleteError] = useState<string | null>(null);
++
++  useEffect(() => {
++    if (refreshKey > 0) reload();
++  }, [refreshKey, reload]);
+-  const detailInvoice = detailInvoiceId ? service.getById(detailInvoiceId) || null : null;
++  const detailInvoice = detailInvoiceId ? invoices.find((inv) => inv.id === detailInvoiceId) || null : null;
+-  const handleCreate = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
+-    const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+-    service.create({
+-      invoiceNumber: data.invoiceNumber,
+-      reservationId: data.reservationId || undefined,
+-      guestName: data.guestName,
+-      source: data.source,
+-      invoiceDate: data.invoiceDate,
+-      items: data.items.map((item, index) => ({
+-        id: `inv-item-${Date.now()}-${index}`,
+-        invoiceId: '',
+-        description: item.description,
+-        quantity: item.quantity,
+-        unitPrice: item.unitPrice,
+-        subtotal: item.quantity * item.unitPrice,
+-      })),
+-      subtotal,
+-      discount: data.discount,
+-      total: subtotal - data.discount,
+-      paymentStatus: data.paymentStatus,
+-      invoiceStatus: data.invoiceStatus,
+-    });
++  // Totals are computed by the server (discount is a percent); only the
++  // editable fields are sent. A refused write keeps the dialog open and shows
++  // the API's message.
++  const toPayload = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => ({
++    invoiceNumber: data.invoiceNumber,
++    reservationId: data.reservationId || undefined,
++    guestName: data.guestName,
++    source: data.source,
++    invoiceDate: data.invoiceDate,
++    items: data.items.map((item) => ({
++      description: item.description,
++      quantity: item.quantity,
++      unitPrice: item.unitPrice,
++    })),
++    discount: data.discount,
++    paymentStatus: data.paymentStatus,
++    invoiceStatus: data.invoiceStatus,
++  });
++
++  const handleCreate = async (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
++    setSaveError(null);
++    try {
++      await service.create(toPayload(data));
++    } catch (err) {
++      setSaveError(apiErrorMessage(err, ''));
++      return;
++    }
+-  const handleUpdate = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
++  const handleUpdate = async (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
+-    const existing = service.getById(formMode.invoice.id);
+-    if (!existing) return;
+-    const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+-    service.update(existing.id, {
+-      invoiceNumber: data.invoiceNumber,
+-      reservationId: data.reservationId || undefined,
+-      guestName: data.guestName,
+-      source: data.source,
+-      invoiceDate: data.invoiceDate,
+-      items: data.items.map((item, index) => ({
+-        id: existing.items[index]?.id || `inv-item-${Date.now()}-${index}`,
+-        invoiceId: existing.id,
+-        description: item.description,
+-        quantity: item.quantity,
+-        unitPrice: item.unitPrice,
+-        subtotal: item.quantity * item.unitPrice,
+-      })),
+-      subtotal,
+-      discount: data.discount,
+-      total: subtotal - data.discount,
+-      paymentStatus: data.paymentStatus,
+-      invoiceStatus: data.invoiceStatus,
+-    });
+-    const updatedId = existing.id;
++    const updatedId = formMode.invoice.id;
++    setSaveError(null);
++    try {
++      const saved = await service.update(updatedId, toPayload(data));
++      if (!saved) return;
++    } catch (err) {
++      setSaveError(apiErrorMessage(err, ''));
++      return;
++    }
+-  const handleDelete = () => {
++  const handleDelete = async () => {
+-    service.delete(deleteTarget.id);
+-    if (detailInvoiceId === deleteTarget.id) setDetailInvoiceId(null);
++    const target = deleteTarget;
++    setDeleteError(null);
++    try {
++      await service.delete(target.id);
++    } catch (err) {
++      // e.g. only Draft invoices can be deleted: show the API's explanation.
++      setDeleteError(apiErrorMessage(err, ''));
++      return;
++    }
++    if (detailInvoiceId === target.id) setDetailInvoiceId(null);
+-        <Button onClick={() => setFormMode({ kind: 'create' })}>+ New Invoice</Button>
++        <Button onClick={() => { setSaveError(null); setFormMode({ kind: 'create' }); }}>+ New Invoice</Button>
++        </div>
++      )}
++      {deleteError !== null && (
++        <div style={{ marginBottom: '16px' }}>
++          <ErrorState description={deleteError || undefined} />
++        </div>
++      )}
++      {loadError !== null && (
++        <div style={{ marginBottom: '16px' }}>
++          <ErrorState description={loadError || undefined} onRetry={reload} />
++        {isLoading ? <Loading /> : (
++        )}
+-        onEdit={(inv) => { setDetailInvoiceId(null); setFormMode({ kind: 'edit', invoice: inv }); }}
++        onEdit={(inv) => { setDetailInvoiceId(null); setSaveError(null); setFormMode({ kind: 'edit', invoice: inv }); }}
++          {saveError !== null && <ErrorState description={saveError || undefined} />}
+
+===== src/pages/finance/ReportPage.tsx (+22/-5)
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import type { Expense, Invoice, Sale } from '@/types/auth.types';
+-  const allSales = salesService.getAll();
+-  const allExpenses = expenseService.getAll();
+-  const allInvoices = invoiceService.getAll();
++  // FE-001: real data (async). Each list has its own permission; a list the user may not read is empty.
++  const salesData = useAsyncData<Sale[]>(() => salesService.getAllIfPermitted(), []);
++  const expensesData = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
++  const invoicesData = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
++  const allSales = salesData.data;
++  const allExpenses = expensesData.data;
++  const allInvoices = invoicesData.data;
++  const isLoading = salesData.isLoading || expensesData.isLoading || invoicesData.isLoading;
++  const loadError = salesData.error ?? expensesData.error ?? invoicesData.error;
++  const reloadAll = () => {
++    salesData.reload();
++    expensesData.reload();
++    invoicesData.reload();
++  };
+-          <Button variant="outline" onClick={() => exportReportExcel(dataset)} aria-label="Export report as Excel">
++          <Button variant="outline" onClick={() => exportReportExcel(dataset)} aria-label="Export report as Excel" disabled={isLoading}>
+-          <Button variant="outline" onClick={() => exportReportPDF(dataset)} aria-label="Export report as PDF">
++          <Button variant="outline" onClick={() => exportReportPDF(dataset)} aria-label="Export report as PDF" disabled={isLoading}>
++      {isLoading && <Loading />}
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reloadAll} />}
+
+===== src/pages/finance/SalesPage.tsx (+17/-2)
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import type { Expense, Sale } from '@/types/auth.types';
+-  const allSales = salesService.getAll();
+-  const allExpenses = expenseService.getAll();
++  // FE-001: real data (async). Expenses need their own permission; without it the page still shows sales.
++  const salesData = useAsyncData<Sale[]>(() => salesService.getAll(), []);
++  const expensesData = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
++  const allSales = salesData.data;
++  const allExpenses = expensesData.data;
++  const isLoading = salesData.isLoading || expensesData.isLoading;
++  const loadError = salesData.error ?? expensesData.error;
++  const reloadAll = () => {
++    salesData.reload();
++    expensesData.reload();
++  };
++      {isLoading && <Loading />}
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reloadAll} />}
+
+===== src/pages/reservations/ReservationListPage.tsx (+6/-2)
++import { useAsyncData } from '@/hooks/useAsyncData';
++import type { Invoice } from '@/types/auth.types';
++  // FE-001: real invoices (async); none for users without the invoice permission.
++  const { data: allInvoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
+-    return new Map(invoiceService.getAll().map((inv) => [inv.reservationId, inv]));
+-  }, []);
++    return new Map(allInvoices.map((inv) => [inv.reservationId, inv]));
++  }, [allInvoices]);
+
+===== src/services/expenseService.ts (+62/-35)
+-import expensesData from '../data/mock/expenses.json';
++import { ApiError, apiFetch, fetchAllPages } from './api';
++
++/**
++ * Expense client backed by the real API (`/api/expenses`) — FE-001.
++ * Method names match the previous in-memory mock service; every method is now
++ * async. The mock JSON is kept only as seed input for the backend.
++ */
++type ExpenseWrite = Pick<Expense, 'date' | 'category' | 'description' | 'amount'> & { status?: string };
++
++function toBody(data: Partial<ExpenseWrite>): Record<string, unknown> {
++  const body: Record<string, unknown> = {};
++  if (data.date !== undefined) body.date = data.date;
++  if (data.category !== undefined) body.category = data.category;
++  if (data.description !== undefined) body.description = data.description;
++  if (data.amount !== undefined) body.amount = data.amount;
++  if (data.status !== undefined) body.status = data.status;
++  return body;
++}
+-  private data: Expense[] = [...expensesData as Expense[]];
+-
+-  getAll(): Expense[] {
+-    return this.data.map((item) => ({ ...item }));
++  async getAll(): Promise<Expense[]> {
++    return fetchAllPages<Expense>('/api/expenses');
+-  getById(id: string): Expense | undefined {
+-    return this.data.find((item) => item.id === id);
++  /** A user without `finance.expense.view` has no expenses to show (dashboard, sales, report). */
++  async getAllIfPermitted(): Promise<Expense[]> {
++    try {
++      return await this.getAll();
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 403) return [];
++      throw err;
++    }
+-  getByCategory(category: string): Expense[] {
+-    return this.data.filter((item) => item.category === category);
++  async getById(id: string): Promise<Expense | undefined> {
++    try {
++      const json = await apiFetch<{ data: Expense }>(`/api/expenses/${encodeURIComponent(id)}`);
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return undefined;
++      throw err;
++    }
+-  getByStatus(status: string): Expense[] {
+-    return this.data.filter((item) => item.status === status);
++  async getByCategory(category: string): Promise<Expense[]> {
++    return (await this.getAll()).filter((item) => item.category === category);
+-  getTotalByPeriod(startDate: string, endDate: string): number {
+-    return this.data.filter((item) => {
+-      const date = new Date(item.date);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    }).reduce((sum, item) => sum + item.amount, 0);
++  async getByStatus(status: string): Promise<Expense[]> {
++    return (await this.getAll()).filter((item) => item.status === status);
+-  create(data: Omit<Expense, 'id' | 'createdAt' | 'updatedAt'>): Expense {
+-    const now = new Date().toISOString();
+-    const newItem: Expense = {
+-      ...data,
+-      id: `exp-${String(this.data.length + 1).padStart(3, '0')}`,
+-      createdAt: now,
+-      updatedAt: now,
+-    };
+-    this.data.push(newItem);
+-    return { ...newItem };
++  async getTotalByPeriod(startDate: string, endDate: string): Promise<number> {
++    return (await this.getAll())
++      .filter((item) => item.date >= startDate && item.date <= endDate)
++      .reduce((sum, item) => sum + item.amount, 0);
+-  update(id: string, updates: Partial<Expense>): Expense | null {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return null;
+-    this.data[index] = { ...this.data[index], ...updates, updatedAt: new Date().toISOString() };
+-    return { ...this.data[index] };
++  async create(data: ExpenseWrite): Promise<Expense> {
++    const json = await apiFetch<{ data: Expense }>('/api/expenses', { method: 'POST', body: toBody(data) });
++    return json.data;
+-  delete(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data.splice(index, 1);
++  async update(id: string, updates: Partial<ExpenseWrite>): Promise<Expense | null> {
++    try {
++      const json = await apiFetch<{ data: Expense }>(`/api/expenses/${encodeURIComponent(id)}`, {
++        method: 'PATCH',
++        body: toBody(updates),
++      });
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return null;
++      throw err;
++    }
++  }
++
++  async delete(id: string): Promise<boolean> {
++    await apiFetch(`/api/expenses/${encodeURIComponent(id)}`, { method: 'DELETE' });
+
+===== src/services/invoiceService.ts (+146/-52)
+-import invoicesData from '../data/mock/invoices.json';
++import { ApiError, apiFetch, fetchAllPages } from './api';
++
++/**
++ * Invoice client backed by the real API (`/api/invoices`) — FE-001.
++ *
++ * Method names match the previous in-memory mock service; every method is now
++ * async. The mock JSON (`data/mock/invoices.json`) is kept only as seed input
++ * for the backend and is no longer imported here.
++ *
++ * Money is authoritative on the server: `subtotal`/`total` sent by a form are
++ * ignored and recomputed (discount is a PERCENT 0-100).
++ *
++ * Status (Block 6 contract): the API does not accept a status on create or
++ * update; a status only moves through `send` / `pay` / `cancel`. The invoice
++ * form still offers both status selects, so `create`/`update` translate the
++ * chosen values into the matching action after saving. A combination that has
++ * no action (e.g. `Overdue`, `Partial`, or moving a Sent invoice back to
++ * Draft) is sent as-is so the user gets the backend's own message.
++ */
++type InvoiceStatus = Invoice['invoiceStatus'];
++type PaymentStatus = Invoice['paymentStatus'];
++
++interface InvoiceWrite {
++  invoiceNumber?: string;
++  reservationId?: string;
++  guestName?: string;
++  source?: string;
++  invoiceDate?: string;
++  items?: Array<{ description: string; quantity: number; unitPrice: number }>;
++  discount?: number;
++  invoiceStatus?: InvoiceStatus;
++  paymentStatus?: PaymentStatus;
++}
++
++type StatusAction = 'send' | 'pay' | 'cancel';
++
++/** The action that moves an invoice from its current status to the requested one, if any. */
++export function statusActionFor(
++  current: { invoiceStatus: InvoiceStatus; paymentStatus: PaymentStatus },
++  wanted: { invoiceStatus?: InvoiceStatus; paymentStatus?: PaymentStatus },
++): StatusAction | 'none' | 'unsupported' {
++  const status = wanted.invoiceStatus ?? current.invoiceStatus;
++  const payment = wanted.paymentStatus ?? current.paymentStatus;
++  if (status === current.invoiceStatus && payment === current.paymentStatus) return 'none';
++  const open = current.invoiceStatus === 'Draft' || current.invoiceStatus === 'Sent';
++  if (status === 'Completed' && payment === 'Paid' && open) return 'pay';
++  if (status === 'Sent' && payment === current.paymentStatus && current.invoiceStatus === 'Draft') return 'send';
++  if (status === 'Cancelled' && payment === current.paymentStatus && open) return 'cancel';
++  return 'unsupported';
++}
++
++/** Only the fields the API accepts (never ids, subtotals or totals computed in the browser). */
++function toBody(data: InvoiceWrite, withStatus: boolean): Record<string, unknown> {
++  const body: Record<string, unknown> = {};
++  if (data.invoiceNumber !== undefined && data.invoiceNumber !== '') body.invoiceNumber = data.invoiceNumber;
++  if (data.reservationId !== undefined && data.reservationId !== '') body.reservationId = data.reservationId;
++  if (data.guestName !== undefined) body.guestName = data.guestName;
++  if (data.source !== undefined) body.source = data.source;
++  if (data.invoiceDate !== undefined) body.invoiceDate = data.invoiceDate;
++  if (data.items !== undefined) {
++    body.items = data.items.map((it) => ({ description: it.description, quantity: it.quantity, unitPrice: it.unitPrice }));
++  }
++  if (data.discount !== undefined) body.discount = data.discount;
++  if (withStatus) {
++    if (data.invoiceStatus !== undefined) body.invoiceStatus = data.invoiceStatus;
++    if (data.paymentStatus !== undefined) body.paymentStatus = data.paymentStatus;
++  }
++  return body;
++}
+-  private data: Invoice[] = [...invoicesData as Invoice[]];
+-
+-  getAll(): Invoice[] {
+-    return this.data.map((item) => ({ ...item }));
++  async getAll(): Promise<Invoice[]> {
++    return fetchAllPages<Invoice>('/api/invoices');
+-  getById(id: string): Invoice | undefined {
+-    return this.data.find((item) => item.id === id);
++  /**
++   * For screens every signed-in user sees (dashboard, reservation list): a
++   * user without `finance.invoice.view` simply has no invoices to show.
++   */
++  async getAllIfPermitted(): Promise<Invoice[]> {
++    try {
++      return await this.getAll();
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 403) return [];
++      throw err;
++    }
+-  getByStatus(status: Invoice['invoiceStatus']): Invoice[] {
+-    return this.data.filter((item) => item.invoiceStatus === status);
++  async getById(id: string): Promise<Invoice | undefined> {
++    try {
++      const json = await apiFetch<{ data: Invoice }>(`/api/invoices/${encodeURIComponent(id)}`);
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return undefined;
++      throw err;
++    }
+-  getByPaymentStatus(status: Invoice['paymentStatus']): Invoice[] {
+-    return this.data.filter((item) => item.paymentStatus === status);
++  async getByStatus(status: InvoiceStatus): Promise<Invoice[]> {
++    return (await this.getAll()).filter((item) => item.invoiceStatus === status);
+-  getBySource(source: string): Invoice[] {
+-    return this.data.filter((item) => item.source === source);
++  async getByPaymentStatus(status: PaymentStatus): Promise<Invoice[]> {
++    return (await this.getAll()).filter((item) => item.paymentStatus === status);
+-  getSourceBreakdown() {
+-    const total = this.data.reduce((sum, item) => sum + item.total, 0);
++  async getBySource(source: string): Promise<Invoice[]> {
++    return (await this.getAll()).filter((item) => item.source === source);
++  }
++
++  async getSourceBreakdown() {
++    const data = await this.getAll();
++    const total = data.reduce((sum, item) => sum + item.total, 0);
+-    this.data.forEach((item) => {
++    data.forEach((item) => {
+-      count: this.data.filter((i) => i.source === source).length,
++      count: data.filter((i) => i.source === source).length,
+-  create(data: Omit<Invoice, 'id' | 'createdAt' | 'updatedAt'>): Invoice {
+-    const now = new Date().toISOString();
+-    const newItem: Invoice = {
+-      ...data,
+-      id: `inv-${String(this.data.length + 1).padStart(3, '0')}`,
+-      createdAt: now,
+-      updatedAt: now,
+-    };
+-    this.data.push(newItem);
+-    return { ...newItem };
++  /** Next free `INV-YYYY-NNN` for a date (server allocation; needs `finance.invoice.create`). */
++  async getNextNumber(date?: string): Promise<string> {
++    const query = date ? `?date=${encodeURIComponent(date)}` : '';
++    const json = await apiFetch<{ data: { invoiceNumber: string } }>(`/api/invoices/next-number${query}`);
++    return json.data.invoiceNumber;
+-  update(id: string, updates: Partial<Invoice>): Invoice | null {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return null;
+-    this.data[index] = { ...this.data[index], ...updates, updatedAt: new Date().toISOString() };
+-    return { ...this.data[index] };
++  private async runAction(id: string, action: StatusAction): Promise<Invoice> {
++    const json = await apiFetch<{ data: Invoice }>(`/api/invoices/${encodeURIComponent(id)}/${action}`, { method: 'POST' });
++    return json.data;
+-  delete(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data.splice(index, 1);
++  async create(data: InvoiceWrite): Promise<Invoice> {
++    const action = statusActionFor({ invoiceStatus: 'Draft', paymentStatus: 'Pending' }, data);
++    const json = await apiFetch<{ data: Invoice }>('/api/invoices', {
++      method: 'POST',
++      // An unsupported combination is sent WITH its status so the API answers
++      // with its own explanation and nothing is created.
++      body: toBody(data, action === 'unsupported'),
++    });
++    if (action === 'send' || action === 'pay' || action === 'cancel') return this.runAction(json.data.id, action);
++    return json.data;
++  }
++
++  async update(id: string, updates: InvoiceWrite): Promise<Invoice | null> {
++    const current = await this.getById(id);
++    if (!current) return null;
++    const action = statusActionFor(current, updates);
++    const body = toBody(updates, action === 'unsupported');
++    let saved = current;
++    if (Object.keys(body).length > 0) {
++      const json = await apiFetch<{ data: Invoice }>(`/api/invoices/${encodeURIComponent(id)}`, { method: 'PATCH', body });
++      saved = json.data;
++    }
++    if (action === 'send' || action === 'pay' || action === 'cancel') return this.runAction(id, action);
++    return saved;
++  }
++
++  /** Only Draft invoices can be deleted (the API answers 409 otherwise). */
++  async delete(id: string): Promise<boolean> {
++    await apiFetch(`/api/invoices/${encodeURIComponent(id)}`, { method: 'DELETE' });
+-  cancel(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data[index].invoiceStatus = 'Cancelled';
+-    this.data[index].updatedAt = new Date().toISOString();
++  async cancel(id: string): Promise<boolean> {
++    await this.runAction(id, 'cancel');
+-  send(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data[index].invoiceStatus = 'Sent';
+-    this.data[index].updatedAt = new Date().toISOString();
++  async send(id: string): Promise<boolean> {
++    await this.runAction(id, 'send');
+-  markPaid(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data[index].invoiceStatus = 'Completed';
+-    this.data[index].paymentStatus = 'Paid';
+-    this.data[index].updatedAt = new Date().toISOString();
++  async markPaid(id: string): Promise<boolean> {
++    await this.runAction(id, 'pay');
+
+===== src/services/reportService.ts (+20/-19)
++/**
++ * Report helpers over the (now API-backed, async) finance services — FE-001.
++ * Formulas are unchanged; every method is async because its inputs are.
++ */
+-  getSalesSummary(startDate: string, endDate: string): SalesSummary {
+-    const sales = salesService.getByDateRange(startDate, endDate);
+-    const expenses = expenseService.getAll().filter((exp) => {
+-      const date = new Date(exp.date);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    });
+-    const invoices = invoiceService.getAll().filter((inv) => {
+-      const date = new Date(inv.invoiceDate);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    });
++  async getSalesSummary(startDate: string, endDate: string): Promise<SalesSummary> {
++    const [sales, allExpenses, allInvoices] = await Promise.all([
++      salesService.getByDateRange(startDate, endDate),
++      expenseService.getAll(),
++      invoiceService.getAll(),
++    ]);
++    const expenses = allExpenses.filter((exp) => exp.date >= startDate && exp.date <= endDate);
++    const invoices = allInvoices.filter((inv) => inv.invoiceDate >= startDate && inv.invoiceDate <= endDate);
+-  getRevenueByPeriod(months: string[]): RevenueByPeriod[] {
++  async getRevenueByPeriod(months: string[]): Promise<RevenueByPeriod[]> {
++    const [allSales, allExpenses] = await Promise.all([salesService.getAll(), expenseService.getAll()]);
+-      const sales = salesService.getAll().filter((s) => s.date.startsWith(month));
+-      const expenses = expenseService.getAll().filter((e) => e.date.startsWith(month));
+-      const revenue = sales.reduce((sum, s) => sum + s.amount, 0);
+-      const expense = expenses.reduce((sum, e) => sum + e.amount, 0);
++      const revenue = allSales.filter((s) => s.date.startsWith(month)).reduce((sum, s) => sum + s.amount, 0);
++      const expense = allExpenses.filter((e) => e.date.startsWith(month)).reduce((sum, e) => sum + e.amount, 0);
+-  getExpensesByCategory(): ExpenseByCategory[] {
+-    const expenses = expenseService.getAll();
++  async getExpensesByCategory(): Promise<ExpenseByCategory[]> {
++    const expenses = await expenseService.getAll();
+-  getTopInvoices(limit = 5): Invoice[] {
+-    return invoiceService.getAll().sort((a, b) => b.total - a.total).slice(0, limit);
++  async getTopInvoices(limit = 5): Promise<Invoice[]> {
++    return (await invoiceService.getAll()).sort((a, b) => b.total - a.total).slice(0, limit);
+
+===== src/services/salesService.ts (+37/-31)
+-import salesData from '../data/mock/sales.json';
++import type { Sale } from '@/types/auth.types';
++import { ApiError, fetchAllPages } from './api';
++/**
++ * Sales client backed by the real API (`/api/sales`) — FE-001.
++ *
++ * There is no sales table: the server DERIVES one sale per non-cancelled
++ * invoice (`date = invoiceDate`, `amount = total`), so a sale appears as soon
++ * as its invoice exists (Draft and Sent included: "billed", not "received").
++ * Read-only; method names match the previous mock service and are now async.
++ */
+-  private data: any[] = [...salesData];
+-
+-  getAll(): any[] {
+-    return this.data.map((item) => ({ ...item }));
++  async getAll(): Promise<Sale[]> {
++    return fetchAllPages<Sale>('/api/sales');
+-  getById(id: string): any | undefined {
+-    return this.data.find((item) => item.id === id);
++  /** A user without `finance.sales.view` has no sales to show (dashboard). */
++  async getAllIfPermitted(): Promise<Sale[]> {
++    try {
++      return await this.getAll();
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 403) return [];
++      throw err;
++    }
+-  getByDateRange(startDate: string, endDate: string): any[] {
+-    return this.data.filter((item) => {
+-      const date = new Date(item.date);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    });
++  async getById(id: string): Promise<Sale | undefined> {
++    return (await this.getAll()).find((item) => item.id === id);
+-  getTotalByPeriod(startDate: string, endDate: string): number {
+-    return this.getByDateRange(startDate, endDate).reduce((sum, item) => sum + item.amount, 0);
++  async getByDateRange(startDate: string, endDate: string): Promise<Sale[]> {
++    return (await this.getAll()).filter((item) => item.date >= startDate && item.date <= endDate);
+-  getBySource(source: string): any[] {
+-    return this.data.filter((item) => item.source === source);
++  async getTotalByPeriod(startDate: string, endDate: string): Promise<number> {
++    return (await this.getByDateRange(startDate, endDate)).reduce((sum, item) => sum + item.amount, 0);
+-  getSourceBreakdown(): SourceBreakdown[] {
+-    const total = this.data.reduce((sum, item) => sum + item.amount, 0);
++  async getBySource(source: string): Promise<Sale[]> {
++    return (await this.getAll()).filter((item) => item.source === source);
++  }
++
++  async getSourceBreakdown(): Promise<SourceBreakdown[]> {
++    const data = await this.getAll();
++    const total = data.reduce((sum, item) => sum + item.amount, 0);
+-    this.data.forEach((item) => {
++    data.forEach((item) => {
+-  getSummary(startDate: string, endDate: string): SalesSummary {
+-    const filtered = this.getByDateRange(startDate, endDate);
+-    const totalSales = filtered.reduce((sum: number, s: any) => sum + s.amount, 0);
++  async getSummary(startDate: string, endDate: string): Promise<SalesSummary> {
++    const filtered = await this.getByDateRange(startDate, endDate);
++    const totalSales = filtered.reduce((sum, s) => sum + s.amount, 0);
+-
+-  create(data: any): any {
+-    const newItem = {
+-      ...data,
+-      id: `sale-${String(this.data.length + 1).padStart(3, '0')}`,
+-    };
+-    this.data.push(newItem);
+-    return { ...newItem };
+-  }

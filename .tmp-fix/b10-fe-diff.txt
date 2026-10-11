@@ -1,0 +1,2251 @@
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/components/ProtectedRoute.tsx frontend/src/components/ProtectedRoute.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/components/ProtectedRoute.tsx	2026-10-11 14:40:17.276078500 +0700
++++ frontend/src/components/ProtectedRoute.tsx	2026-10-11 14:44:07.587578600 +0700
+@@ -1,8 +1,9 @@
+ import { useEffect, useState } from 'react';
+-import { useNavigate } from 'react-router-dom';
++import { useLocation, useNavigate } from 'react-router-dom';
+ import { useAuth } from '../hooks/useAuth';
+ import { Loading } from './shared/Loading';
+ import { PMSLayout } from '../layouts/PMSLayout';
++import { loginPathFor } from '../utils/returnTo';
+ 
+ interface ProtectedRouteProps {
+   fallbackPath?: string;
+@@ -11,13 +12,15 @@
+ export function ProtectedRoute({ fallbackPath = '/login' }: ProtectedRouteProps) {
+   const { isAuthenticated, isLoading } = useAuth();
+   const navigate = useNavigate();
++  const location = useLocation();
+   const [redirecting, setRedirecting] = useState(false);
+ 
+   useEffect(() => {
+     if (!isLoading && !isAuthenticated) {
+       setRedirecting(true);
+-      navigate(fallbackPath, { replace: true });
++      navigate(loginPathFor(location, fallbackPath), { replace: true });
+     }
++    // `location` is read once at the moment the session ends (returnTo).
+   }, [isAuthenticated, isLoading, navigate, fallbackPath]);
+ 
+   if (isLoading) {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/components/PublicOnlyRoute.tsx frontend/src/components/PublicOnlyRoute.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/components/PublicOnlyRoute.tsx	2026-10-11 14:40:17.229775800 +0700
++++ frontend/src/components/PublicOnlyRoute.tsx	2026-10-11 14:42:37.594361400 +0700
+@@ -1,8 +1,10 @@
+-import { Navigate, Outlet } from 'react-router-dom';
++import { Navigate, Outlet, useLocation } from 'react-router-dom';
+ import { useAuth } from '../hooks/useAuth';
++import { safeReturnTo } from '../utils/returnTo';
+ 
+ export function PublicOnlyRoute() {
+   const { isAuthenticated, isLoading } = useAuth();
++  const location = useLocation();
+ 
+   if (isLoading) {
+     return (
+@@ -13,7 +15,7 @@
+   }
+ 
+   if (isAuthenticated) {
+-    return <Navigate to="/dashboard" replace />;
++    return <Navigate to={safeReturnTo(location.search) ?? '/dashboard'} replace />;
+   }
+ 
+   return <Outlet />;
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/components/pms/CheckInButton.tsx frontend/src/components/pms/CheckInButton.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/components/pms/CheckInButton.tsx	2026-10-11 14:40:17.138378800 +0700
++++ frontend/src/components/pms/CheckInButton.tsx	2026-10-11 14:52:46.554696000 +0700
+@@ -2,6 +2,8 @@
+ import { Button } from '@/components/shared/Button';
+ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+ import { reservationService } from '@/services/reservationService';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { apiErrorMessage } from '@/services/api';
+ import { useNavigate } from 'react-router-dom';
+ 
+ interface CheckInButtonProps {
+@@ -12,18 +14,27 @@
+ 
+ export function CheckInButton({ reservationId, currentStatus, guestName }: CheckInButtonProps) {
+   const [confirmOpen, setConfirmOpen] = useState(false);
++  const [actionError, setActionError] = useState<string | null>(null);
+   const navigate = useNavigate();
+ 
+   if (currentStatus !== 'reserved') return null;
+ 
+   const handleCheckIn = async () => {
+-    await reservationService.checkIn(reservationId);
+-    setConfirmOpen(false);
+-    navigate(0);
++    setActionError(null);
++    try {
++      await reservationService.checkIn(reservationId);
++      setConfirmOpen(false);
++      navigate(0);
++    } catch (err) {
++      // FE-004: show the backend message (existing ErrorState) instead of failing silently.
++      setConfirmOpen(false);
++      setActionError(apiErrorMessage(err, ''));
++    }
+   };
+ 
+   return (
+     <>
++      {actionError !== null && <ErrorState description={actionError || undefined} />}
+       <Button onClick={() => setConfirmOpen(true)}>Check In</Button>
+       <ConfirmDialog
+         open={confirmOpen}
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/components/pms/CheckOutButton.tsx frontend/src/components/pms/CheckOutButton.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/components/pms/CheckOutButton.tsx	2026-10-11 14:40:17.160614200 +0700
++++ frontend/src/components/pms/CheckOutButton.tsx	2026-10-11 14:52:51.027459500 +0700
+@@ -2,6 +2,8 @@
+ import { Button } from '@/components/shared/Button';
+ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+ import { reservationService } from '@/services/reservationService';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { apiErrorMessage } from '@/services/api';
+ import { useNavigate } from 'react-router-dom';
+ 
+ interface CheckOutButtonProps {
+@@ -12,18 +14,27 @@
+ 
+ export function CheckOutButton({ reservationId, currentStatus, guestName }: CheckOutButtonProps) {
+   const [confirmOpen, setConfirmOpen] = useState(false);
++  const [actionError, setActionError] = useState<string | null>(null);
+   const navigate = useNavigate();
+ 
+   if (currentStatus !== 'checked-in') return null;
+ 
+   const handleCheckOut = async () => {
+-    await reservationService.checkOut(reservationId);
+-    setConfirmOpen(false);
+-    navigate(0);
++    setActionError(null);
++    try {
++      await reservationService.checkOut(reservationId);
++      setConfirmOpen(false);
++      navigate(0);
++    } catch (err) {
++      // FE-004: show the backend message (existing ErrorState) instead of failing silently.
++      setConfirmOpen(false);
++      setActionError(apiErrorMessage(err, ''));
++    }
+   };
+ 
+   return (
+     <>
++      {actionError !== null && <ErrorState description={actionError || undefined} />}
+       <Button variant="secondary" onClick={() => setConfirmOpen(true)}>Check Out</Button>
+       <ConfirmDialog
+         open={confirmOpen}
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/components/shared/DayReservationsPopup.tsx frontend/src/components/shared/DayReservationsPopup.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/components/shared/DayReservationsPopup.tsx	2026-10-11 14:40:18.206103700 +0700
++++ frontend/src/components/shared/DayReservationsPopup.tsx	2026-10-11 15:06:26.620673900 +0700
+@@ -5,6 +5,8 @@
+ import { reservationService, type ApiCalendarEntry } from '@/services/reservationService';
+ import { holidayService, type HolidayDay } from '@/services/holidayService';
+ import { invoiceService } from '@/services/invoiceService';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import type { Invoice } from '@/types/auth.types';
+ import { reservationStatusLabels } from '@/constants/reservationStatuses';
+ import { Modal } from './Modal';
+ import { Badge } from './Badge';
+@@ -70,7 +72,8 @@
+     return entries.filter((r) => r.checkInDate <= key && key < r.checkOutDate);
+   }, [entries, date]);
+ 
+-  const invoices = invoiceService.getAll();
++  // FE-001: real invoices (async); none for users without the invoice permission.
++  const { data: invoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
+   const invoiceByReservationId = new Map(invoices.map((inv) => [inv.reservationId, inv]));
+ 
+   return (
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/hooks/useAsyncData.ts frontend/src/hooks/useAsyncData.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/hooks/useAsyncData.ts	1970-01-01 07:00:00.000000000 +0700
++++ frontend/src/hooks/useAsyncData.ts	2026-10-11 15:05:15.290201000 +0700
+@@ -0,0 +1,51 @@
++import { useCallback, useEffect, useRef, useState } from 'react';
++import { apiErrorMessage } from '@/services/api';
++
++export interface AsyncData<T> {
++  data: T;
++  /** True until the first load (and every reload) settles. */
++  isLoading: boolean;
++  /** Message of the last failed load (the API's own message), else null. */
++  error: string | null;
++  /** Fetch again (after a write, or from a retry button). */
++  reload: () => void;
++}
++
++/**
++ * FE-001: the finance services became async. This is the one place that turns
++ * a loader into render state (data + loading + error + reload) so pages do not
++ * each re-implement the effect/cancel dance. A response that arrives after the
++ * component unmounted, or after a newer reload started, is ignored.
++ */
++export function useAsyncData<T>(loader: () => Promise<T>, initial: T): AsyncData<T> {
++  const [data, setData] = useState<T>(initial);
++  const [isLoading, setIsLoading] = useState(true);
++  const [error, setError] = useState<string | null>(null);
++  const [tick, setTick] = useState(0);
++  const loaderRef = useRef(loader);
++  loaderRef.current = loader;
++
++  useEffect(() => {
++    let cancelled = false;
++    setIsLoading(true);
++    setError(null);
++    loaderRef
++      .current()
++      .then((value) => {
++        if (cancelled) return;
++        setData(value);
++        setIsLoading(false);
++      })
++      .catch((err: unknown) => {
++        if (cancelled) return;
++        setError(apiErrorMessage(err, ''));
++        setIsLoading(false);
++      });
++    return () => {
++      cancelled = true;
++    };
++  }, [tick]);
++
++  const reload = useCallback(() => setTick((n) => n + 1), []);
++  return { data, isLoading, error, reload };
++}
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/DashboardPage.tsx frontend/src/pages/DashboardPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/DashboardPage.tsx	2026-10-11 14:40:15.784357900 +0700
++++ frontend/src/pages/DashboardPage.tsx	2026-10-11 15:06:26.600015300 +0700
+@@ -20,8 +20,11 @@
+ import { invoiceService } from '@/services/invoiceService';
+ import { expenseService } from '@/services/expenseService';
+ import { dashboardService, type DashboardOverview, type DashboardRecentReservation } from '@/services/dashboardService';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import type { Expense, Invoice, Sale } from '@/types/auth.types';
+ import { Badge } from '@/components/shared/Badge';
+ import { Table } from '@/components/shared/Table';
++import { shiftISODate, todayLocalISO } from '@/utils/localDate';
+ import '../styles/dashboard-modern.css';
+ import '../styles/reservation-list.css';
+ 
+@@ -83,9 +86,12 @@
+       cancelled = true;
+     };
+   }, []);
+-  const sales = salesService.getAll();
+-  const invoices = invoiceService.getAll();
+-  const expenses = expenseService.getAll();
++  // FE-001: real finance figures (async). Every signed-in user opens the
++  // dashboard; a user without the finance permission gets empty lists (the
++  // tiles then read 0) instead of the mock numbers shown before.
++  const { data: sales } = useAsyncData<Sale[]>(() => salesService.getAllIfPermitted(), []);
++  const { data: invoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
++  const { data: expenses } = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
+ 
+   const [mounted, setMounted] = useState(false);
+   const [revenueMode, setRevenueMode] = useState<'weekly' | 'monthly' | 'yearly' | 'custom'>('weekly');
+@@ -118,9 +124,9 @@
+     };
+   }, [revenueFilterOpen]);
+ 
+-  // Real "today" (server UTC day); replaces the hardcoded '2026-09-15'.
+-  // Falls back to the identical client-side UTC computation while loading.
+-  const today = overview?.today ?? new Date().toISOString().slice(0, 10);
++  // Real "today": the server's business day (Asia/Jakarta); falls back to the
++  // local calendar day while the overview loads (FE-005: no UTC day shift).
++  const today = overview?.today ?? todayLocalISO();
+   const monthPrefix = today.slice(0, 7);
+ 
+   const todayCheckins = overview?.reservations.todayCheckins ?? 0;
+@@ -143,7 +149,6 @@
+   const occupancyRate = overview?.occupancy.rate ?? 0;
+ 
+   const revenueBuckets = useMemo(() => {
+-    const todayDate = new Date(today);
+     const sumByDate = (items: Array<{ date: string; amount: number }>, date: string) =>
+       items.filter((i) => i.date === date).reduce((sum, i) => sum + i.amount, 0);
+ 
+@@ -152,9 +157,8 @@
+       const earn: number[] = [];
+       const exp: number[] = [];
+       for (let i = 6; i >= 0; i--) {
+-        const d = new Date(todayDate);
+-        d.setDate(d.getDate() - i);
+-        const key = d.toISOString().slice(0, 10);
++        const key = shiftISODate(today, -i);
++        const d = new Date(`${key}T00:00:00`);
+         labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+         earn.push(sumByDate(sales, key));
+         exp.push(sumByDate(expenses, key));
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/LoginPage.tsx frontend/src/pages/LoginPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/LoginPage.tsx	2026-10-11 14:40:15.716595800 +0700
++++ frontend/src/pages/LoginPage.tsx	2026-10-11 14:42:37.637832100 +0700
+@@ -1,15 +1,19 @@
+ import { useState, type FormEvent } from 'react';
+-import { useNavigate, Link } from 'react-router-dom';
++import { useNavigate, useLocation, Link } from 'react-router-dom';
+ import { useAuth } from '@/hooks/useAuth';
+ import { Button } from '@/components/shared/Button';
+ import { Input } from '@/components/shared/Input';
+ import { AuthSplitLayout } from '@/components/AuthSplitLayout';
++import { safeReturnTo } from '@/utils/returnTo';
+ 
+ const REMEMBER_KEY = 'pms.rememberedEmail';
+ 
+ export default function LoginPage() {
+   const navigate = useNavigate();
+-  const { login, isLoading, error } = useAuth();
++  const location = useLocation();
++  const { login, error } = useAuth();
++  // FE-006: local flag, so the form is not unmounted while the request runs.
++  const [submitting, setSubmitting] = useState(false);
+   const [email, setEmail] = useState(() => localStorage.getItem(REMEMBER_KEY) || '');
+   const [password, setPassword] = useState('');
+   const [remember, setRemember] = useState(() => localStorage.getItem(REMEMBER_KEY) !== null);
+@@ -18,8 +22,13 @@
+     e.preventDefault();
+     if (remember) localStorage.setItem(REMEMBER_KEY, email);
+     else localStorage.removeItem(REMEMBER_KEY);
+-    const success = await login(email, password);
+-    if (success) navigate('/dashboard');
++    setSubmitting(true);
++    try {
++      const success = await login(email, password);
++      if (success) navigate(safeReturnTo(location.search) ?? '/dashboard');
++    } finally {
++      setSubmitting(false);
++    }
+   };
+ 
+   return (
+@@ -59,7 +68,7 @@
+           <Link to="/forgot-password" className="auth-link auth-link-muted">Forgot password?</Link>
+         </div>
+         <div className="auth-actions">
+-          <Button type="submit" variant="primary" disabled={isLoading} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#7A5E3E', color: '#FFFFFF', borderColor: '#7A5E3E' }}>{isLoading ? 'Loading...' : 'Login'}</Button>
++          <Button type="submit" variant="primary" disabled={submitting} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#7A5E3E', color: '#FFFFFF', borderColor: '#7A5E3E' }}>{submitting ? 'Loading...' : 'Login'}</Button>
+           <Button type="button" variant="outline" onClick={() => navigate('/register')}>Sign Up</Button>
+         </div>
+       </form>
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/RegisterPage.tsx frontend/src/pages/RegisterPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/RegisterPage.tsx	2026-10-11 14:40:16.318002500 +0700
++++ frontend/src/pages/RegisterPage.tsx	2026-10-11 14:42:37.660269200 +0700
+@@ -7,7 +7,9 @@
+ 
+ export default function RegisterPage() {
+   const navigate = useNavigate();
+-  const { register, isLoading, error } = useAuth();
++  const { register, error } = useAuth();
++  // FE-006: local flag (the global loading flag would unmount this form).
++  const [submitting, setSubmitting] = useState(false);
+   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+   const [formErrors, setFormErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string }>({});
+ 
+@@ -24,7 +26,12 @@
+   const handleSubmit = async (e: FormEvent) => {
+     e.preventDefault();
+     if (!validateForm()) return;
+-    await register(formData.name, formData.email, formData.password);
++    setSubmitting(true);
++    try {
++      await register(formData.name, formData.email, formData.password);
++    } finally {
++      setSubmitting(false);
++    }
+     navigate('/login');
+   };
+ 
+@@ -75,7 +82,7 @@
+         />
+         {error && <div role="alert" className="auth-error">{error}</div>}
+         <div className="auth-actions">
+-          <Button type="submit" variant="primary" disabled={isLoading}>{isLoading ? 'Creating Account...' : 'Sign Up'}</Button>
++          <Button type="submit" variant="primary" disabled={submitting}>{submitting ? 'Creating Account...' : 'Sign Up'}</Button>
+         </div>
+         <div className="auth-foot">
+           Already have an account? <Link to="/login" className="auth-link">Sign in</Link>
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/finance/ExpensesPage.tsx frontend/src/pages/finance/ExpensesPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/finance/ExpensesPage.tsx	2026-10-11 14:40:16.276670800 +0700
++++ frontend/src/pages/finance/ExpensesPage.tsx	2026-10-11 15:06:26.689353800 +0700
+@@ -8,6 +8,11 @@
+ import { expenseService } from '@/services/expenseService';
+ import { expenseCategories, expenseCategoryLabels, expenseStatusLabels } from '@/constants/expenseCategories';
+ import { ExpenseForm } from '@/components/shared/ExpenseForm';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { apiErrorMessage } from '@/services/api';
++import type { Expense } from '@/types/auth.types';
+ import '../../styles/finance-responsive.css';
+ import '../../styles/reservation-list.css';
+ 
+@@ -40,7 +45,9 @@
+   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+   const [draft, setDraft] = useState<Record<string, string>>({ category: 'all', status: 'all' });
+   const filterWrapRef = useRef<HTMLDivElement>(null);
+-  const expenses = service.getAll();
++  // FE-001: real data (async) + reload after a successful create.
++  const { data: expenses, isLoading, error: loadError, reload } = useAsyncData<Expense[]>(() => service.getAll(), []);
++  const [saveError, setSaveError] = useState<string | null>(null);
+ 
+   const filteredExpenses = useMemo(() => {
+     let result = expenses;
+@@ -98,20 +105,27 @@
+     <div className="fin-page">
+       <div className="fin-head" style={{ marginBottom: '20px' }}>
+         <h1 className="fin-h1" style={{ marginBottom: 0 }}>Expenses</h1>
+-        <Button onClick={() => setShowForm(true)}>+ New Expense</Button>
++        <Button onClick={() => { setSaveError(null); setShowForm(true); }}>+ New Expense</Button>
+       </div>
+       {showForm && (
+         <Modal open={showForm} onClose={() => setShowForm(false)} title="New Expense" size="md">
++          {saveError !== null && <ErrorState description={saveError || undefined} />}
+           <ExpenseForm
+-            onSubmit={(data) => {
+-              service.create({
+-                category: data.category,
+-                description: data.description,
+-                amount: data.amount,
+-                date: data.date,
+-                status: data.status,
+-              });
+-              setShowForm(false);
++            onSubmit={async (data) => {
++              setSaveError(null);
++              try {
++                await service.create({
++                  category: data.category,
++                  description: data.description,
++                  amount: data.amount,
++                  date: data.date,
++                  status: data.status,
++                });
++                setShowForm(false);
++                reload();
++              } catch (err) {
++                setSaveError(apiErrorMessage(err, ''));
++              }
+             }}
+             onCancel={() => setShowForm(false)}
+           />
+@@ -247,8 +261,9 @@
+           </span>
+         </div>
+       </div>
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reload} />}
+       <Card>
+-        <Table columns={columns} data={filteredExpenses} emptyMessage="Tidak ada pengeluaran ditemukan" />
++        {isLoading ? <Loading /> : <Table columns={columns} data={filteredExpenses} emptyMessage="Tidak ada pengeluaran ditemukan" />}
+       </Card>
+     </div>
+   );
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/finance/InvoiceDetailPage.tsx frontend/src/pages/finance/InvoiceDetailPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/finance/InvoiceDetailPage.tsx	2026-10-11 14:40:16.163925000 +0700
++++ frontend/src/pages/finance/InvoiceDetailPage.tsx	2026-10-11 15:23:14.498003000 +0700
+@@ -9,6 +9,11 @@
+ import { InvoiceStatusBadge } from '@/components/shared/InvoiceStatusBadge';
+ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+ import { InvoicePrintDocument } from '@/components/shared/InvoicePrintDocument';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { apiErrorMessage } from '@/services/api';
++import type { Invoice } from '@/types/auth.types';
+ import '../../styles/finance-responsive.css';
+ import '../../styles/invoice-print.css';
+ 
+@@ -16,7 +21,32 @@
+   const { id } = useParams<{ id: string }>();
+   const navigate = useNavigate();
+   const [confirmCancel, setConfirmCancel] = useState(false);
+-  const invoice = id ? invoiceService.getById(id) : undefined;
++  // FE-001: the invoice comes from the API (async).
++  const { data: invoice, isLoading, error: loadError, reload } = useAsyncData<Invoice | undefined>(
++    () => (id ? invoiceService.getById(id) : Promise.resolve(undefined)),
++    undefined,
++  );
++  const [actionError, setActionError] = useState<string | null>(null);
++
++  // A status action that the server refuses (e.g. already paid elsewhere) is
++  // shown instead of reloading silently; success keeps the old reload.
++  const runAction = async (action: (invoiceId: string) => Promise<boolean>, invoiceId: string) => {
++    setActionError(null);
++    try {
++      await action(invoiceId);
++      navigate(0);
++    } catch (err) {
++      setActionError(apiErrorMessage(err, ''));
++    }
++  };
++
++  if (isLoading) {
++    return <Loading />;
++  }
++
++  if (loadError !== null) {
++    return <ErrorState description={loadError || undefined} onRetry={reload} />;
++  }
+ 
+   if (!invoice) {
+     return (
+@@ -81,15 +111,16 @@
+           <p style={{ margin: '4px 0', fontSize: '18px', fontWeight: 700, color: '#232D36' }}>Total: Rp {invoice.total.toLocaleString('id-ID')}</p>
+         </div>
+       </Card>
++      {actionError !== null && <ErrorState description={actionError || undefined} />}
+       {(canSend || canMarkPaid || canCancel) && (
+         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px', flexWrap: 'wrap' }}>
+           {canSend && (
+-            <Button onClick={() => { invoiceService.send(invoice.id); navigate(0); }}>
++            <Button onClick={() => runAction((invoiceId) => invoiceService.send(invoiceId), invoice.id)}>
+               Mark as Sent
+             </Button>
+           )}
+           {canMarkPaid && (
+-            <Button onClick={() => { invoiceService.markPaid(invoice.id); navigate(0); }}>
++            <Button onClick={() => runAction((invoiceId) => invoiceService.markPaid(invoiceId), invoice.id)}>
+               Mark as Paid
+             </Button>
+           )}
+@@ -103,7 +134,7 @@
+       <ConfirmDialog
+         open={confirmCancel}
+         onClose={() => setConfirmCancel(false)}
+-        onConfirm={() => { invoiceService.cancel(invoice.id); setConfirmCancel(false); navigate(0); }}
++        onConfirm={() => { setConfirmCancel(false); void runAction((invoiceId) => invoiceService.cancel(invoiceId), invoice.id); }}
+         title="Cancel Invoice"
+         message={`Are you sure you want to cancel ${invoice.invoiceNumber}? This action cannot be undone.`}
+         confirmText="Yes, Cancel"
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/finance/InvoiceFormPage.tsx frontend/src/pages/finance/InvoiceFormPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/finance/InvoiceFormPage.tsx	2026-10-11 14:40:16.237008200 +0700
++++ frontend/src/pages/finance/InvoiceFormPage.tsx	2026-10-11 15:07:28.311488100 +0700
+@@ -5,6 +5,11 @@
+ import { reservationSourceLabels } from '@/constants/reservationStatuses';
+ import { Card } from '@/components/shared/Card';
+ import { InvoiceForm } from '@/components/shared/InvoiceForm';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { apiErrorMessage } from '@/services/api';
++import type { Invoice } from '@/types/auth.types';
++import { todayLocalISO } from '@/utils/localDate';
+ import '../../styles/finance-responsive.css';
+ 
+ export default function InvoiceFormPage() {
+@@ -17,17 +22,54 @@
+   const [initialGuest, setInitialGuest] = useState('');
+   const [initialItems, setInitialItems] = useState<any[]>([]);
+   const [initialTotal, setInitialTotal] = useState(0);
++  // FE-001: the invoice (edit) and the next free number (create) now come from
++  // the API. The form reads its default values once, so it is rendered only
++  // after they have arrived.
++  const [editInvoice, setEditInvoice] = useState<Invoice | undefined>(undefined);
++  const [nextNumber, setNextNumber] = useState('');
++  const [ready, setReady] = useState(false);
++  const [loadError, setLoadError] = useState<string | null>(null);
++  const [saveError, setSaveError] = useState<string | null>(null);
++  const [reloadKey, setReloadKey] = useState(0);
+ 
+   useEffect(() => {
+     if (isEdit && id) {
+-      const invoice = invoiceService.getById(id);
+-      if (invoice) {
+-        setReservationId(invoice.reservationId || '');
+-        setInitialSource(invoice.source);
+-        setInitialGuest(invoice.guestName);
+-        setInitialItems(invoice.items.map((item: any) => ({ description: item.description, quantity: item.quantity, unitPrice: item.unitPrice, subtotal: item.subtotal })));
+-        setInitialTotal(invoice.total);
+-      }
++      let cancelled = false;
++      setReady(false);
++      setLoadError(null);
++      invoiceService.getById(id).then((invoice) => {
++        if (cancelled) return;
++        setEditInvoice(invoice);
++        if (invoice) {
++          setReservationId(invoice.reservationId || '');
++          setInitialSource(invoice.source);
++          setInitialGuest(invoice.guestName);
++          setInitialItems(invoice.items.map((item: any) => ({ description: item.description, quantity: item.quantity, unitPrice: item.unitPrice, subtotal: item.subtotal })));
++          setInitialTotal(invoice.total);
++        }
++        setReady(true);
++      }).catch((err: unknown) => {
++        if (cancelled) return;
++        setLoadError(apiErrorMessage(err, ''));
++      });
++      return () => {
++        cancelled = true;
++      };
++    } else if (!isEdit && !id) {
++      let cancelled = false;
++      setReady(false);
++      // The server allocates the number; a failed preview (e.g. no permission)
++      // falls back to a placeholder the server replaces if it is taken.
++      invoiceService.getNextNumber(todayLocalISO()).then((n) => {
++        if (!cancelled) setNextNumber(n);
++      }).catch(() => {
++        if (!cancelled) setNextNumber(`INV-${new Date().getFullYear()}-001`);
++      }).finally(() => {
++        if (!cancelled) setReady(true);
++      });
++      return () => {
++        cancelled = true;
++      };
+     } else if (!isEdit && id) {
+       let cancelled = false;
+       reservationService.getFullById(id).then((reservation) => {
+@@ -50,24 +92,24 @@
+         cancelled = true;
+       };
+     }
+-  }, [isEdit, id]);
++  }, [isEdit, id, reloadKey]);
+ 
+   const defaultValues = (isEdit && id) ? {
+-    invoiceNumber: invoiceService.getById(id)?.invoiceNumber || '',
++    invoiceNumber: editInvoice?.invoiceNumber || '',
+     reservationId,
+     guestName: initialGuest,
+     source: initialSource,
+-    invoiceDate: invoiceService.getById(id)?.invoiceDate || new Date().toISOString().split('T')[0],
++    invoiceDate: editInvoice?.invoiceDate || todayLocalISO(),
+     items: initialItems.length > 0 ? initialItems : [{ description: '', quantity: 1, unitPrice: 0 }],
+-    discount: invoiceService.getById(id)?.discount || 0,
+-    invoiceStatus: (invoiceService.getById(id)?.invoiceStatus || 'Draft') as 'Draft' | 'Completed',
+-    paymentStatus: (invoiceService.getById(id)?.paymentStatus || 'Pending') as 'Pending' | 'Paid' | 'Overdue' | 'Partial',
++    discount: editInvoice?.discount || 0,
++    invoiceStatus: (editInvoice?.invoiceStatus || 'Draft') as 'Draft' | 'Completed',
++    paymentStatus: (editInvoice?.paymentStatus || 'Pending') as 'Pending' | 'Paid' | 'Overdue' | 'Partial',
+   } : {
+-    invoiceNumber: `INV-2026-${String(invoiceService.getAll().length + 1).padStart(3, '0')}`,
++    invoiceNumber: nextNumber,
+     reservationId,
+     guestName: initialGuest,
+     source: initialSource,
+-    invoiceDate: new Date().toISOString().split('T')[0],
++    invoiceDate: todayLocalISO(),
+     items: initialItems.length > 0 ? initialItems : [{ description: '', quantity: 1, unitPrice: 0 }],
+     discount: 0,
+     invoiceStatus: 'Draft' as const,
+@@ -99,58 +141,45 @@
+           </div>
+         </Card>
+       )}
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={() => setReloadKey((k) => k + 1)} />}
++      {saveError !== null && <ErrorState description={saveError || undefined} />}
++      {loadError === null && !ready && <Loading />}
++      {loadError === null && ready && (
+       <InvoiceForm
+-        onSubmit={(data) => {
+-          const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+-          if (isEdit && id) {
+-            const existing = invoiceService.getById(id);
+-            invoiceService.update(id, {
+-              invoiceNumber: data.invoiceNumber,
+-              reservationId: data.reservationId || undefined,
+-              guestName: data.guestName,
+-              source: data.source,
+-              invoiceDate: data.invoiceDate,
+-              items: data.items.map((item, index) => ({
+-                id: existing?.items[index]?.id || `inv-item-${Date.now()}-${index}`,
+-                invoiceId: id,
+-                description: item.description,
+-                quantity: item.quantity,
+-                unitPrice: item.unitPrice,
+-                subtotal: item.quantity * item.unitPrice,
+-              })),
+-              subtotal,
+-              discount: data.discount,
+-              total: subtotal - (subtotal * data.discount / 100),
+-              paymentStatus: data.paymentStatus,
+-              invoiceStatus: data.invoiceStatus,
+-            });
+-          } else {
+-            invoiceService.create({
+-              invoiceNumber: data.invoiceNumber,
+-              reservationId: data.reservationId || reservationId || undefined,
+-              guestName: data.guestName,
+-              source: data.source,
+-              invoiceDate: data.invoiceDate,
+-              items: data.items.map((item, index) => ({
+-                id: `inv-item-${Date.now()}-${index}`,
+-                invoiceId: '',
+-                description: item.description,
+-                quantity: item.quantity,
+-                unitPrice: item.unitPrice,
+-                subtotal: item.quantity * item.unitPrice,
+-              })),
+-              subtotal,
+-              discount: data.discount,
+-              total: subtotal - (subtotal * data.discount / 100),
+-              paymentStatus: data.paymentStatus,
+-              invoiceStatus: data.invoiceStatus,
+-            });
++        onSubmit={async (data) => {
++          // Totals are computed by the server; only the editable fields are sent.
++          const payload = {
++            invoiceNumber: data.invoiceNumber,
++            reservationId: data.reservationId || (isEdit ? undefined : reservationId || undefined),
++            guestName: data.guestName,
++            source: data.source,
++            invoiceDate: data.invoiceDate,
++            items: data.items.map((item) => ({
++              description: item.description,
++              quantity: item.quantity,
++              unitPrice: item.unitPrice,
++            })),
++            discount: data.discount,
++            paymentStatus: data.paymentStatus,
++            invoiceStatus: data.invoiceStatus,
++          };
++          setSaveError(null);
++          try {
++            if (isEdit && id) {
++              await invoiceService.update(id, payload);
++            } else {
++              await invoiceService.create(payload);
++            }
++          } catch (err) {
++            setSaveError(apiErrorMessage(err, ''));
++            return;
+           }
+           navigate('/dashboard/finance/invoices');
+         }}
+         onCancel={() => navigate('/dashboard/finance/invoices')}
+         initialData={defaultValues}
+       />
++      )}
+     </div>
+   );
+ }
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/finance/InvoiceListPage.tsx frontend/src/pages/finance/InvoiceListPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/finance/InvoiceListPage.tsx	2026-10-11 14:40:16.250028900 +0700
++++ frontend/src/pages/finance/InvoiceListPage.tsx	2026-10-11 15:23:14.496990200 +0700
+@@ -12,6 +12,10 @@
+ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+ import { Modal } from '@/components/shared/Modal';
+ import { Pagination } from '@/components/shared/Pagination';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { apiErrorMessage } from '@/services/api';
+ import type { Invoice } from '@/types/auth.types';
+ import '../../styles/finance-responsive.css';
+ import '../../styles/reservation-list.css';
+@@ -58,7 +62,14 @@
+   const [draft, setDraft] = useState<{ status: string; payment: string }>({ status: 'all', payment: 'all' });
+   const filterWrapRef = useRef<HTMLDivElement>(null);
+ 
+-  const invoices = useMemo(() => service.getAll(), [service, refreshKey]);
++  // FE-001: real data (async). `refreshKey` still drives a refetch after every write.
++  const { data: invoices, isLoading, error: loadError, reload } = useAsyncData<Invoice[]>(() => service.getAll(), []);
++  const [saveError, setSaveError] = useState<string | null>(null);
++  const [deleteError, setDeleteError] = useState<string | null>(null);
++
++  useEffect(() => {
++    if (refreshKey > 0) reload();
++  }, [refreshKey, reload]);
+ 
+   useEffect(() => {
+     if (!feedback) return;
+@@ -118,7 +129,7 @@
+   const safePage = Math.min(currentPage, totalPages);
+   const visibleInvoices = filteredInvoices.slice((safePage - 1) * pageSize, safePage * pageSize);
+ 
+-  const detailInvoice = detailInvoiceId ? service.getById(detailInvoiceId) || null : null;
++  const detailInvoice = detailInvoiceId ? invoices.find((inv) => inv.id === detailInvoiceId) || null : null;
+ 
+   const [reservationCodes, setReservationCodes] = useState<Map<string, string>>(new Map());
+ 
+@@ -139,60 +150,50 @@
+     return reservationCodes.get(inv.reservationId) || inv.reservationId;
+   };
+ 
+-  const handleCreate = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
+-    const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+-    service.create({
+-      invoiceNumber: data.invoiceNumber,
+-      reservationId: data.reservationId || undefined,
+-      guestName: data.guestName,
+-      source: data.source,
+-      invoiceDate: data.invoiceDate,
+-      items: data.items.map((item, index) => ({
+-        id: `inv-item-${Date.now()}-${index}`,
+-        invoiceId: '',
+-        description: item.description,
+-        quantity: item.quantity,
+-        unitPrice: item.unitPrice,
+-        subtotal: item.quantity * item.unitPrice,
+-      })),
+-      subtotal,
+-      discount: data.discount,
+-      total: subtotal - data.discount,
+-      paymentStatus: data.paymentStatus,
+-      invoiceStatus: data.invoiceStatus,
+-    });
++  // Totals are computed by the server (discount is a percent); only the
++  // editable fields are sent. A refused write keeps the dialog open and shows
++  // the API's message.
++  const toPayload = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => ({
++    invoiceNumber: data.invoiceNumber,
++    reservationId: data.reservationId || undefined,
++    guestName: data.guestName,
++    source: data.source,
++    invoiceDate: data.invoiceDate,
++    items: data.items.map((item) => ({
++      description: item.description,
++      quantity: item.quantity,
++      unitPrice: item.unitPrice,
++    })),
++    discount: data.discount,
++    paymentStatus: data.paymentStatus,
++    invoiceStatus: data.invoiceStatus,
++  });
++
++  const handleCreate = async (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
++    setSaveError(null);
++    try {
++      await service.create(toPayload(data));
++    } catch (err) {
++      setSaveError(apiErrorMessage(err, ''));
++      return;
++    }
+     setFormMode(null);
+     setRefreshKey((k) => k + 1);
+     setCurrentPage(1);
+     setFeedback('Invoice created successfully.');
+   };
+ 
+-  const handleUpdate = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
++  const handleUpdate = async (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
+     if (formMode?.kind !== 'edit') return;
+-    const existing = service.getById(formMode.invoice.id);
+-    if (!existing) return;
+-    const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+-    service.update(existing.id, {
+-      invoiceNumber: data.invoiceNumber,
+-      reservationId: data.reservationId || undefined,
+-      guestName: data.guestName,
+-      source: data.source,
+-      invoiceDate: data.invoiceDate,
+-      items: data.items.map((item, index) => ({
+-        id: existing.items[index]?.id || `inv-item-${Date.now()}-${index}`,
+-        invoiceId: existing.id,
+-        description: item.description,
+-        quantity: item.quantity,
+-        unitPrice: item.unitPrice,
+-        subtotal: item.quantity * item.unitPrice,
+-      })),
+-      subtotal,
+-      discount: data.discount,
+-      total: subtotal - data.discount,
+-      paymentStatus: data.paymentStatus,
+-      invoiceStatus: data.invoiceStatus,
+-    });
+-    const updatedId = existing.id;
++    const updatedId = formMode.invoice.id;
++    setSaveError(null);
++    try {
++      const saved = await service.update(updatedId, toPayload(data));
++      if (!saved) return;
++    } catch (err) {
++      setSaveError(apiErrorMessage(err, ''));
++      return;
++    }
+     setFormMode(null);
+     setDetailInvoiceId(updatedId);
+     setRefreshKey((k) => k + 1);
+@@ -200,11 +201,19 @@
+     setFeedback('Invoice updated successfully.');
+   };
+ 
+-  const handleDelete = () => {
++  const handleDelete = async () => {
+     if (!deleteTarget) return;
+-    service.delete(deleteTarget.id);
+-    if (detailInvoiceId === deleteTarget.id) setDetailInvoiceId(null);
++    const target = deleteTarget;
++    setDeleteError(null);
+     setDeleteTarget(null);
++    try {
++      await service.delete(target.id);
++    } catch (err) {
++      // e.g. only Draft invoices can be deleted: show the API's explanation.
++      setDeleteError(apiErrorMessage(err, ''));
++      return;
++    }
++    if (detailInvoiceId === target.id) setDetailInvoiceId(null);
+     setRefreshKey((k) => k + 1);
+     setCurrentPage(1);
+     setFeedback('Invoice deleted successfully.');
+@@ -254,7 +263,7 @@
+     <div className="fin-page">
+       <div className="fin-head" style={{ marginBottom: '20px' }}>
+         <h1 className="fin-h1" style={{ marginBottom: 0 }}>Invoices</h1>
+-        <Button onClick={() => setFormMode({ kind: 'create' })}>+ New Invoice</Button>
++        <Button onClick={() => { setSaveError(null); setFormMode({ kind: 'create' }); }}>+ New Invoice</Button>
+       </div>
+ 
+       {feedback && (
+@@ -262,6 +271,8 @@
+           {feedback}
+         </div>
+       )}
++      {deleteError !== null && <ErrorState description={deleteError || undefined} />}
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reload} />}
+ 
+       <div className="res-toolbar" role="search" style={{ marginBottom: '20px' }}>
+         <div className="res-toolbar__filterwrap" ref={filterWrapRef}>
+@@ -397,12 +408,14 @@
+       </div>
+ 
+        <Card raised>
++        {isLoading ? <Loading /> : (
+         <Table
+           columns={columns}
+           data={visibleInvoices}
+           onRowClick={(item) => setDetailInvoiceId(item.id)}
+           emptyMessage="Tidak ada invoice ditemukan"
+         />
++        )}
+       </Card>
+ 
+       {filteredInvoices.length > 0 && (
+@@ -420,7 +433,7 @@
+       <InvoiceDetailPopup
+         invoice={detailInvoice}
+         onClose={() => setDetailInvoiceId(null)}
+-        onEdit={(inv) => { setDetailInvoiceId(null); setFormMode({ kind: 'edit', invoice: inv }); }}
++        onEdit={(inv) => { setDetailInvoiceId(null); setSaveError(null); setFormMode({ kind: 'edit', invoice: inv }); }}
+         onDelete={(inv) => setDeleteTarget(inv)}
+       />
+ 
+@@ -431,6 +444,7 @@
+           title={formMode.kind === 'edit' ? `Edit Invoice ${formMode.invoice.invoiceNumber}` : 'New Invoice'}
+           size="xl"
+         >
++          {saveError !== null && <ErrorState description={saveError || undefined} />}
+           <InvoiceForm
+             key={formMode.kind === 'edit' ? formMode.invoice.id : 'new'}
+             onSubmit={formMode.kind === 'edit' ? handleUpdate : handleCreate}
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/finance/ReportPage.tsx frontend/src/pages/finance/ReportPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/finance/ReportPage.tsx	2026-10-11 14:40:16.180194000 +0700
++++ frontend/src/pages/finance/ReportPage.tsx	2026-10-11 15:06:45.164051400 +0700
+@@ -12,9 +12,14 @@
+ import { invoiceService } from '@/services/invoiceService';
+ import { salesService } from '@/services/salesService';
+ import { expenseService } from '@/services/expenseService';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import type { Expense, Invoice, Sale } from '@/types/auth.types';
+ import { expenseCategoryLabels, expenseCategories } from '@/constants/expenseCategories';
+ import { reservationSourceLabels } from '@/constants/reservationStatuses';
+ import { exportReportExcel, exportReportPDF, type ReportDataset } from '@/utils/reportExport';
++import { toLocalISODate } from '@/utils/localDate';
+ import '../../styles/finance-responsive.css';
+ import '../../styles/report-print.css';
+ 
+@@ -33,15 +38,17 @@
+ const FLAT_SERIES = ['#97764D', '#232D36', '#6B7881', '#7D6240', '#161D24', '#C7BBAB'];
+ 
+ function getDateRange(period: string): { start: string; end: string } {
+-  const today = new Date('2026-09-15');
+-  const formatDate = (d: Date) => d.toISOString().split('T')[0];
++  // FE-005: the real local day (was hardcoded to 2026-09-15) and a local-time formatter (no UTC day shift).
++  const now = new Date();
++  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
++  const formatDate = toLocalISODate;
+   switch (period) {
+     case 'today': { const s = formatDate(today); return { start: s, end: s }; }
+     case 'week': { const start = new Date(today); start.setDate(start.getDate() - 7); return { start: formatDate(start), end: formatDate(today) }; }
+     case 'month': { const start = new Date(today.getFullYear(), today.getMonth(), 1); const end = new Date(today.getFullYear(), today.getMonth(), today.getDate()); return { start: formatDate(start), end: formatDate(end) }; }
+     case '6months': { const start = new Date(today); start.setMonth(start.getMonth() - 6); return { start: formatDate(start), end: formatDate(today) }; }
+     case '1year': { const start = new Date(today); start.setFullYear(start.getFullYear() - 1); return { start: formatDate(start), end: formatDate(today) }; }
+-    default: return { start: '2026-01-01', end: '2026-09-15' };
++    default: return { start: `${today.getFullYear()}-01-01`, end: formatDate(today) };
+   }
+ }
+ 
+@@ -82,9 +89,20 @@
+   const end = endDate;
+   const rangeError = start && end && start > end ? 'Start date must be on or before the end date.' : null;
+ 
+-  const allSales = salesService.getAll();
+-  const allExpenses = expenseService.getAll();
+-  const allInvoices = invoiceService.getAll();
++  // FE-001: real data (async). Each list has its own permission; a list the user may not read is empty.
++  const salesData = useAsyncData<Sale[]>(() => salesService.getAllIfPermitted(), []);
++  const expensesData = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
++  const invoicesData = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
++  const allSales = salesData.data;
++  const allExpenses = expensesData.data;
++  const allInvoices = invoicesData.data;
++  const isLoading = salesData.isLoading || expensesData.isLoading || invoicesData.isLoading;
++  const loadError = salesData.error ?? expensesData.error ?? invoicesData.error;
++  const reloadAll = () => {
++    salesData.reload();
++    expensesData.reload();
++    invoicesData.reload();
++  };
+ 
+   const filteredSales = useMemo(() => {
+     if (rangeError) return [];
+@@ -188,14 +206,16 @@
+           <Button variant="outline" onClick={() => window.print()} aria-label="Print report as PDF">
+             <Printer size={14} aria-hidden="true" /> Print PDF
+           </Button>
+-          <Button variant="outline" onClick={() => exportReportExcel(dataset)} aria-label="Export report as Excel">
++          <Button variant="outline" onClick={() => exportReportExcel(dataset)} aria-label="Export report as Excel" disabled={isLoading}>
+             <Download size={14} aria-hidden="true" /> Export Excel
+           </Button>
+-          <Button variant="outline" onClick={() => exportReportPDF(dataset)} aria-label="Export report as PDF">
++          <Button variant="outline" onClick={() => exportReportPDF(dataset)} aria-label="Export report as PDF" disabled={isLoading}>
+             <FileText size={14} aria-hidden="true" /> Export PDF
+           </Button>
+         </div>
+       </div>
++      {isLoading && <Loading />}
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reloadAll} />}
+ 
+       <Card style={{ marginBottom: '20px' }}>
+         <div className="fin-pills" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/finance/SalesPage.tsx frontend/src/pages/finance/SalesPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/finance/SalesPage.tsx	2026-10-11 14:40:16.149925700 +0700
++++ frontend/src/pages/finance/SalesPage.tsx	2026-10-11 15:06:26.552749500 +0700
+@@ -8,7 +8,12 @@
+ import { SalesChart } from '@/components/shared/SalesChart';
+ import { salesService } from '@/services/salesService';
+ import { expenseService } from '@/services/expenseService';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { Loading } from '@/components/shared/Loading';
++import type { Expense, Sale } from '@/types/auth.types';
+ import { reservationSourceLabels } from '@/constants/reservationStatuses';
++import { toLocalISODate } from '@/utils/localDate';
+ import '../../styles/finance-responsive.css';
+ 
+ function formatCurrency(val: number): string {
+@@ -26,8 +31,10 @@
+ const FLAT_SERIES = ['#97764D', '#232D36', '#6B7881', '#7D6240', '#161D24', '#C7BBAB'];
+ 
+ function getDateRange(period: string): { start: string; end: string } {
+-  const today = new Date('2026-09-15');
+-  const formatDate = (d: Date) => d.toISOString().split('T')[0];
++  // FE-005: the real local day (was hardcoded to 2026-09-15) and a local-time formatter (no UTC day shift).
++  const now = new Date();
++  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
++  const formatDate = toLocalISODate;
+   switch (period) {
+     case 'today': {
+       const s = formatDate(today);
+@@ -54,14 +61,23 @@
+       return { start: formatDate(start), end: formatDate(today) };
+     }
+     default:
+-      return { start: '2026-01-01', end: '2026-09-15' };
++      return { start: `${today.getFullYear()}-01-01`, end: formatDate(today) };
+   }
+ }
+ 
+ export default function SalesPage() {
+   const [period, setPeriod] = useState('month');
+-  const allSales = salesService.getAll();
+-  const allExpenses = expenseService.getAll();
++  // FE-001: real data (async). Expenses need their own permission; without it the page still shows sales.
++  const salesData = useAsyncData<Sale[]>(() => salesService.getAll(), []);
++  const expensesData = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
++  const allSales = salesData.data;
++  const allExpenses = expensesData.data;
++  const isLoading = salesData.isLoading || expensesData.isLoading;
++  const loadError = salesData.error ?? expensesData.error;
++  const reloadAll = () => {
++    salesData.reload();
++    expensesData.reload();
++  };
+ 
+   const { start, end } = getDateRange(period);
+ 
+@@ -143,6 +159,8 @@
+   return (
+     <div className="fin-page">
+       <h1 className="fin-h1">Sales & Revenue</h1>
++      {isLoading && <Loading />}
++      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reloadAll} />}
+ 
+       <Card style={{ marginBottom: '20px' }}>
+         <div className="fin-pills">
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/reservations/ReservationDetailPage.tsx frontend/src/pages/reservations/ReservationDetailPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/reservations/ReservationDetailPage.tsx	2026-10-11 14:40:15.935872400 +0700
++++ frontend/src/pages/reservations/ReservationDetailPage.tsx	2026-10-11 15:23:14.499133900 +0700
+@@ -7,6 +7,8 @@
+ import { Button } from '@/components/shared/Button';
+ import { Badge } from '@/components/shared/Badge';
+ import { Card } from '@/components/shared/Card';
++import { ErrorState } from '@/components/shared/ErrorState';
++import { apiErrorMessage } from '@/services/api';
+ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+ import { reservationStatusLabels, reservationSourceLabels } from '@/constants/reservationStatuses';
+ import { ReservationWizardModal } from '@/components/shared/ReservationWizardModal';
+@@ -29,26 +31,33 @@
+   const [showEdit, setShowEdit] = useState(false);
+   const [reservation, setReservation] = useState<ApiReservation | null>(null);
+   const [isLoading, setIsLoading] = useState(true);
++  // FE-004: a real failure (not a 404) and a rejected status action are shown
++  // with the existing ErrorState instead of "not found" / silence.
++  const [loadError, setLoadError] = useState<string | null>(null);
++  const [actionError, setActionError] = useState<string | null>(null);
++  const [reloadKey, setReloadKey] = useState(0);
+ 
+   useEffect(() => {
+     if (!id) return;
+     let cancelled = false;
+     setIsLoading(true);
+-    service.getFullById(id).then((r) => {
++    setLoadError(null);
++    service.fetchFullById(id).then((r) => {
+       if (!cancelled) {
+         setReservation(r ?? null);
+         setIsLoading(false);
+       }
+-    }).catch(() => {
++    }).catch((err: unknown) => {
+       if (!cancelled) {
+         setReservation(null);
++        setLoadError(apiErrorMessage(err, ''));
+         setIsLoading(false);
+       }
+     });
+     return () => {
+       cancelled = true;
+     };
+-  }, [id, showEdit, service]);
++  }, [id, showEdit, service, reloadKey]);
+ 
+   const rooms = useMemo(() => reservation?.rooms ?? [], [reservation]);
+   const [allTypes, setAllTypes] = useState<Array<{ id: string; name: string; defaultRate: number }>>([]);
+@@ -137,6 +146,10 @@
+     );
+   }
+ 
++  if (loadError !== null && !reservation) {
++    return <ErrorState description={loadError || undefined} onRetry={() => setReloadKey((k) => k + 1)} />;
++  }
++
+   if (!reservation) {
+     return (
+       <div style={{ padding: 'var(--space-xl, 20px)', textAlign: 'center' }}>
+@@ -146,23 +159,23 @@
+     );
+   }
+ 
+-  const handleCheckIn = async () => {
+-    await service.checkIn(reservation.id);
+-    setConfirmAction(null);
+-    navigate(0);
+-  };
+-
+-  const handleCheckOut = async () => {
+-    await service.checkOut(reservation.id);
+-    setConfirmAction(null);
+-    navigate(0);
++  // Success keeps the old behavior (close + reload); a rejected action closes
++  // the dialog and shows the backend message instead of reloading silently.
++  const runAction = async (action: (id: string) => Promise<boolean>) => {
++    setActionError(null);
++    try {
++      await action(reservation.id);
++      setConfirmAction(null);
++      navigate(0);
++    } catch (err) {
++      setConfirmAction(null);
++      setActionError(apiErrorMessage(err, ''));
++    }
+   };
+ 
+-  const handleCancel = async () => {
+-    await service.cancel(reservation.id);
+-    setConfirmAction(null);
+-    navigate(0);
+-  };
++  const handleCheckIn = () => runAction((rid) => service.checkIn(rid));
++  const handleCheckOut = () => runAction((rid) => service.checkOut(rid));
++  const handleCancel = () => runAction((rid) => service.cancel(rid));
+ 
+   const displayTotal = calc?.roomTotal ?? reservation.totalAmount;
+ 
+@@ -268,6 +281,8 @@
+         </div>
+       )}
+ 
++      {actionError !== null && <ErrorState description={actionError || undefined} />}
++
+       <Card style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+           {reservation.status === 'reserved' && (
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/pages/reservations/ReservationListPage.tsx frontend/src/pages/reservations/ReservationListPage.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/pages/reservations/ReservationListPage.tsx	2026-10-11 14:40:16.002556100 +0700
++++ frontend/src/pages/reservations/ReservationListPage.tsx	2026-10-11 15:06:26.635912800 +0700
+@@ -5,6 +5,8 @@
+ import { roomService } from '@/services/roomService';
+ import { roomTypeService } from '@/services/roomTypeService';
+ import { invoiceService } from '@/services/invoiceService';
++import { useAsyncData } from '@/hooks/useAsyncData';
++import type { Invoice } from '@/types/auth.types';
+ import { ReservationCard } from '@/components/shared/ReservationCard';
+ import { Button } from '@/components/shared/Button';
+ import { Card } from '@/components/shared/Card';
+@@ -252,9 +254,11 @@
+       cancelled = true;
+     };
+   }, [showForm, service]);
++  // FE-001: real invoices (async); none for users without the invoice permission.
++  const { data: allInvoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
+   const invoiceByReservationId = useMemo(() => {
+-    return new Map(invoiceService.getAll().map((inv) => [inv.reservationId, inv]));
+-  }, []);
++    return new Map(allInvoices.map((inv) => [inv.reservationId, inv]));
++  }, [allInvoices]);
+ 
+   const filteredReservations = useMemo(() => {
+     const roomTypeByRoomId = new Map(allRooms.map((r) => [r.id, r.roomTypeId]));
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/activityService.ts frontend/src/services/activityService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/activityService.ts	2026-10-11 14:40:18.751539400 +0700
++++ frontend/src/services/activityService.ts	2026-10-11 14:42:57.009598600 +0700
+@@ -1,4 +1,4 @@
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+ import type { Activity } from '@/types/auth.types';
+ 
+ interface ListResponse {
+@@ -13,10 +13,13 @@
+  * no `create` method (no write endpoint exists), so the frontend can never
+  * fabricate audit records.
+  */
++/** The audit log grows without bound; load at most the newest 10 pages (1000 rows). */
++const ACTIVITY_MAX_PAGES = 10;
++
+ class ActivityService {
+   async getAll(): Promise<Activity[]> {
+-    const json = await apiFetch<ListResponse>('/api/activities?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: newest-first, so the 10-page cap keeps the most recent 1000 rows.
++    return fetchAllPages<Activity>('/api/activities', { maxPages: ACTIVITY_MAX_PAGES });
+   }
+ 
+   async getById(id: string): Promise<Activity | undefined> {
+@@ -29,17 +32,15 @@
+   }
+ 
+   async getByCategory(category: string): Promise<Activity[]> {
+-    const json = await apiFetch<ListResponse>(
+-      `/api/activities?category=${encodeURIComponent(category)}&page=1&pageSize=100`,
+-    );
+-    return json.data;
++    return fetchAllPages<Activity>(`/api/activities?category=${encodeURIComponent(category)}`, {
++      maxPages: ACTIVITY_MAX_PAGES,
++    });
+   }
+ 
+   async getByUser(userId: string): Promise<Activity[]> {
+-    const json = await apiFetch<ListResponse>(
+-      `/api/activities?userId=${encodeURIComponent(userId)}&page=1&pageSize=100`,
+-    );
+-    return json.data;
++    return fetchAllPages<Activity>(`/api/activities?userId=${encodeURIComponent(userId)}`, {
++      maxPages: ACTIVITY_MAX_PAGES,
++    });
+   }
+ 
+   async getByDateRange(startDate: string, endDate: string): Promise<Activity[]> {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/api.ts frontend/src/services/api.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/api.ts	2026-10-11 14:40:18.906335600 +0700
++++ frontend/src/services/api.ts	2026-10-11 14:42:37.445952100 +0700
+@@ -28,6 +28,7 @@
+ }
+ 
+ export function setToken(token: string): void {
++  unauthorizedFired = false; // a new session may be expired again later
+   try {
+     localStorage.setItem(TOKEN_KEY, token);
+   } catch {
+@@ -49,6 +50,33 @@
+   }
+ }
+ 
++/**
++ * FE-003: one global 401 policy for AUTHENTICATED calls. When a request that
++ * carried a Bearer token comes back 401 (expired / invalidated token) the
++ * stored token is cleared and the registered handler (AuthProvider) flips the
++ * session to logged-out, which sends protected pages to the login screen with
++ * `returnTo`. It fires at most once per session, so several in-flight
++ * requests cannot loop. The login call itself is never affected (it is sent
++ * without a token) and network/5xx errors never reach this path.
++ */
++let unauthorizedFired = false;
++let unauthorizedHandler: (() => void) | null = null;
++
++export function setUnauthorizedHandler(handler: (() => void) | null): void {
++  unauthorizedHandler = handler;
++}
++
++function handleUnauthorized(): void {
++  if (unauthorizedFired) return;
++  unauthorizedFired = true;
++  clearToken();
++  try {
++    unauthorizedHandler?.();
++  } catch {
++    /* a failing handler must not mask the original API error */
++  }
++}
++
+ export class ApiError extends Error {
+   status: number;
+   errors?: Record<string, string[]>;
+@@ -74,6 +102,7 @@
+     const token = getToken();
+     if (token) headers.Authorization = `Bearer ${token}`;
+   }
++  const sentToken = Boolean(headers.Authorization);
+   let res: Response;
+   try {
+     res = await fetch(`${API_BASE_URL}${path}`, {
+@@ -91,6 +120,7 @@
+   } catch {
+     /* non-JSON body */
+   }
++  if (res.status === 401 && sentToken) handleUnauthorized();
+   if (!res.ok) {
+     const message =
+       (json?.message as string | undefined) || `Request failed with status ${res.status}`;
+@@ -110,3 +140,32 @@
+   }
+   return fallback;
+ }
++
++/**
++ * FE-002: list endpoints cap `pageSize` at 100, so a single request silently
++ * truncates the table. This follows `pagination.total` and concatenates the
++ * pages (same row shape as one big page). Bounded by `maxPages` so a very
++ * large table cannot trigger an unbounded request storm; the backend orders
++ * rows deterministically (BE-035), so pages do not overlap or skip.
++ * With <= 100 rows it issues exactly the single request it always did.
++ */
++export async function fetchAllPages<T>(
++  path: string,
++  options: { pageSize?: number; maxPages?: number } = {},
++): Promise<T[]> {
++  const pageSize = options.pageSize ?? 100;
++  const maxPages = options.maxPages ?? 20;
++  const joiner = path.includes('?') ? '&' : '?';
++  const rows: T[] = [];
++  for (let page = 1; page <= maxPages; page += 1) {
++    const json = await apiFetch<{
++      data: T[];
++      pagination?: { page: number; pageSize: number; total: number };
++    }>(`${path}${joiner}page=${page}&pageSize=${pageSize}`);
++    const batch = json.data ?? [];
++    rows.push(...batch);
++    const total = json.pagination?.total ?? rows.length;
++    if (batch.length < pageSize || rows.length >= total) break;
++  }
++  return rows;
++}
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/authService.ts frontend/src/services/authService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/authService.ts	2026-10-11 14:40:18.891825900 +0700
++++ frontend/src/services/authService.ts	2026-10-11 14:42:37.480889600 +0700
+@@ -34,7 +34,10 @@
+       setToken(json.data.token);
+       return { user: json.data.user, token: json.data.token };
+     } catch (err) {
+-      if (err instanceof ApiError && err.status === 401) return null;
++      // X-005: bad credentials stay `null` (the store shows its usual text);
++      // any OTHER 401 message from the backend (e.g. "User is inactive") is
++      // passed through so the user learns why the login was refused.
++      if (err instanceof ApiError && err.status === 401 && err.message === 'Invalid email or password') return null;
+       throw err;
+     }
+   }
+@@ -71,20 +74,20 @@
+     try {
+       const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
+       return { user: json.data.user, token };
+-    } catch {
+-      clearToken();
++    } catch (err) {
++      // FE-003: only a 401 means the session is gone. A network blip or a 5xx
++      // must not wipe the stored token (the next load can retry).
++      if (err instanceof ApiError && err.status === 401) clearToken();
+       return null;
+     }
+   }
+ 
+   /** Fresh permission set for the current session (used by PermissionContext). */
+   async getMyPermissions(): Promise<string[]> {
+-    try {
+-      const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
+-      return json.data.permissions;
+-    } catch {
+-      return [];
+-    }
++    // FE-003: errors propagate. The permission store keeps the last known set
++    // when this rejects, and a 401 is handled globally by `apiFetch`.
++    const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
++    return json.data.permissions;
+   }
+ 
+   async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<boolean> {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/expenseService.ts frontend/src/services/expenseService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/expenseService.ts	2026-10-11 14:40:18.652469300 +0700
++++ frontend/src/services/expenseService.ts	2026-10-11 15:05:14.525901800 +0700
+@@ -1,55 +1,82 @@
+-import expensesData from '../data/mock/expenses.json';
+ import type { Expense } from '@/types/auth.types';
++import { ApiError, apiFetch, fetchAllPages } from './api';
++
++/**
++ * Expense client backed by the real API (`/api/expenses`) — FE-001.
++ * Method names match the previous in-memory mock service; every method is now
++ * async. The mock JSON is kept only as seed input for the backend.
++ */
++type ExpenseWrite = Pick<Expense, 'date' | 'category' | 'description' | 'amount'> & { status?: string };
++
++function toBody(data: Partial<ExpenseWrite>): Record<string, unknown> {
++  const body: Record<string, unknown> = {};
++  if (data.date !== undefined) body.date = data.date;
++  if (data.category !== undefined) body.category = data.category;
++  if (data.description !== undefined) body.description = data.description;
++  if (data.amount !== undefined) body.amount = data.amount;
++  if (data.status !== undefined) body.status = data.status;
++  return body;
++}
+ 
+ class ExpenseService {
+-  private data: Expense[] = [...expensesData as Expense[]];
++  async getAll(): Promise<Expense[]> {
++    return fetchAllPages<Expense>('/api/expenses');
++  }
+ 
+-  getAll(): Expense[] {
+-    return this.data.map((item) => ({ ...item }));
++  /** A user without `finance.expense.view` has no expenses to show (dashboard, sales, report). */
++  async getAllIfPermitted(): Promise<Expense[]> {
++    try {
++      return await this.getAll();
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 403) return [];
++      throw err;
++    }
+   }
+ 
+-  getById(id: string): Expense | undefined {
+-    return this.data.find((item) => item.id === id);
++  async getById(id: string): Promise<Expense | undefined> {
++    try {
++      const json = await apiFetch<{ data: Expense }>(`/api/expenses/${encodeURIComponent(id)}`);
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return undefined;
++      throw err;
++    }
+   }
+ 
+-  getByCategory(category: string): Expense[] {
+-    return this.data.filter((item) => item.category === category);
++  async getByCategory(category: string): Promise<Expense[]> {
++    return (await this.getAll()).filter((item) => item.category === category);
+   }
+ 
+-  getByStatus(status: string): Expense[] {
+-    return this.data.filter((item) => item.status === status);
++  async getByStatus(status: string): Promise<Expense[]> {
++    return (await this.getAll()).filter((item) => item.status === status);
+   }
+ 
+-  getTotalByPeriod(startDate: string, endDate: string): number {
+-    return this.data.filter((item) => {
+-      const date = new Date(item.date);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    }).reduce((sum, item) => sum + item.amount, 0);
++  async getTotalByPeriod(startDate: string, endDate: string): Promise<number> {
++    return (await this.getAll())
++      .filter((item) => item.date >= startDate && item.date <= endDate)
++      .reduce((sum, item) => sum + item.amount, 0);
+   }
+ 
+-  create(data: Omit<Expense, 'id' | 'createdAt' | 'updatedAt'>): Expense {
+-    const now = new Date().toISOString();
+-    const newItem: Expense = {
+-      ...data,
+-      id: `exp-${String(this.data.length + 1).padStart(3, '0')}`,
+-      createdAt: now,
+-      updatedAt: now,
+-    };
+-    this.data.push(newItem);
+-    return { ...newItem };
++  async create(data: ExpenseWrite): Promise<Expense> {
++    const json = await apiFetch<{ data: Expense }>('/api/expenses', { method: 'POST', body: toBody(data) });
++    return json.data;
+   }
+ 
+-  update(id: string, updates: Partial<Expense>): Expense | null {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return null;
+-    this.data[index] = { ...this.data[index], ...updates, updatedAt: new Date().toISOString() };
+-    return { ...this.data[index] };
++  async update(id: string, updates: Partial<ExpenseWrite>): Promise<Expense | null> {
++    try {
++      const json = await apiFetch<{ data: Expense }>(`/api/expenses/${encodeURIComponent(id)}`, {
++        method: 'PATCH',
++        body: toBody(updates),
++      });
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return null;
++      throw err;
++    }
+   }
+ 
+-  delete(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data.splice(index, 1);
++  async delete(id: string): Promise<boolean> {
++    await apiFetch(`/api/expenses/${encodeURIComponent(id)}`, { method: 'DELETE' });
+     return true;
+   }
+ }
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/invoiceService.ts frontend/src/services/invoiceService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/invoiceService.ts	2026-10-11 14:40:18.599648000 +0700
++++ frontend/src/services/invoiceService.ts	2026-10-11 15:05:14.039817800 +0700
+@@ -1,93 +1,187 @@
+ import { reservationSourceLabels } from '@/constants/reservationStatuses';
+-import invoicesData from '../data/mock/invoices.json';
+ import type { Invoice } from '@/types/auth.types';
++import { ApiError, apiFetch, fetchAllPages } from './api';
++
++/**
++ * Invoice client backed by the real API (`/api/invoices`) — FE-001.
++ *
++ * Method names match the previous in-memory mock service; every method is now
++ * async. The mock JSON (`data/mock/invoices.json`) is kept only as seed input
++ * for the backend and is no longer imported here.
++ *
++ * Money is authoritative on the server: `subtotal`/`total` sent by a form are
++ * ignored and recomputed (discount is a PERCENT 0-100).
++ *
++ * Status (Block 6 contract): the API does not accept a status on create or
++ * update; a status only moves through `send` / `pay` / `cancel`. The invoice
++ * form still offers both status selects, so `create`/`update` translate the
++ * chosen values into the matching action after saving. A combination that has
++ * no action (e.g. `Overdue`, `Partial`, or moving a Sent invoice back to
++ * Draft) is sent as-is so the user gets the backend's own message.
++ */
++type InvoiceStatus = Invoice['invoiceStatus'];
++type PaymentStatus = Invoice['paymentStatus'];
++
++interface InvoiceWrite {
++  invoiceNumber?: string;
++  reservationId?: string;
++  guestName?: string;
++  source?: string;
++  invoiceDate?: string;
++  items?: Array<{ description: string; quantity: number; unitPrice: number }>;
++  discount?: number;
++  invoiceStatus?: InvoiceStatus;
++  paymentStatus?: PaymentStatus;
++}
++
++type StatusAction = 'send' | 'pay' | 'cancel';
++
++/** The action that moves an invoice from its current status to the requested one, if any. */
++export function statusActionFor(
++  current: { invoiceStatus: InvoiceStatus; paymentStatus: PaymentStatus },
++  wanted: { invoiceStatus?: InvoiceStatus; paymentStatus?: PaymentStatus },
++): StatusAction | 'none' | 'unsupported' {
++  const status = wanted.invoiceStatus ?? current.invoiceStatus;
++  const payment = wanted.paymentStatus ?? current.paymentStatus;
++  if (status === current.invoiceStatus && payment === current.paymentStatus) return 'none';
++  const open = current.invoiceStatus === 'Draft' || current.invoiceStatus === 'Sent';
++  if (status === 'Completed' && payment === 'Paid' && open) return 'pay';
++  if (status === 'Sent' && payment === current.paymentStatus && current.invoiceStatus === 'Draft') return 'send';
++  if (status === 'Cancelled' && payment === current.paymentStatus && open) return 'cancel';
++  return 'unsupported';
++}
++
++/** Only the fields the API accepts (never ids, subtotals or totals computed in the browser). */
++function toBody(data: InvoiceWrite, withStatus: boolean): Record<string, unknown> {
++  const body: Record<string, unknown> = {};
++  if (data.invoiceNumber !== undefined && data.invoiceNumber !== '') body.invoiceNumber = data.invoiceNumber;
++  if (data.reservationId !== undefined && data.reservationId !== '') body.reservationId = data.reservationId;
++  if (data.guestName !== undefined) body.guestName = data.guestName;
++  if (data.source !== undefined) body.source = data.source;
++  if (data.invoiceDate !== undefined) body.invoiceDate = data.invoiceDate;
++  if (data.items !== undefined) {
++    body.items = data.items.map((it) => ({ description: it.description, quantity: it.quantity, unitPrice: it.unitPrice }));
++  }
++  if (data.discount !== undefined) body.discount = data.discount;
++  if (withStatus) {
++    if (data.invoiceStatus !== undefined) body.invoiceStatus = data.invoiceStatus;
++    if (data.paymentStatus !== undefined) body.paymentStatus = data.paymentStatus;
++  }
++  return body;
++}
+ 
+ class InvoiceService {
+-  private data: Invoice[] = [...invoicesData as Invoice[]];
++  async getAll(): Promise<Invoice[]> {
++    return fetchAllPages<Invoice>('/api/invoices');
++  }
+ 
+-  getAll(): Invoice[] {
+-    return this.data.map((item) => ({ ...item }));
++  /**
++   * For screens every signed-in user sees (dashboard, reservation list): a
++   * user without `finance.invoice.view` simply has no invoices to show.
++   */
++  async getAllIfPermitted(): Promise<Invoice[]> {
++    try {
++      return await this.getAll();
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 403) return [];
++      throw err;
++    }
+   }
+ 
+-  getById(id: string): Invoice | undefined {
+-    return this.data.find((item) => item.id === id);
++  async getById(id: string): Promise<Invoice | undefined> {
++    try {
++      const json = await apiFetch<{ data: Invoice }>(`/api/invoices/${encodeURIComponent(id)}`);
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return undefined;
++      throw err;
++    }
+   }
+ 
+-  getByStatus(status: Invoice['invoiceStatus']): Invoice[] {
+-    return this.data.filter((item) => item.invoiceStatus === status);
++  async getByStatus(status: InvoiceStatus): Promise<Invoice[]> {
++    return (await this.getAll()).filter((item) => item.invoiceStatus === status);
+   }
+ 
+-  getByPaymentStatus(status: Invoice['paymentStatus']): Invoice[] {
+-    return this.data.filter((item) => item.paymentStatus === status);
++  async getByPaymentStatus(status: PaymentStatus): Promise<Invoice[]> {
++    return (await this.getAll()).filter((item) => item.paymentStatus === status);
+   }
+ 
+-  getBySource(source: string): Invoice[] {
+-    return this.data.filter((item) => item.source === source);
++  async getBySource(source: string): Promise<Invoice[]> {
++    return (await this.getAll()).filter((item) => item.source === source);
+   }
+ 
+-  getSourceBreakdown() {
+-    const total = this.data.reduce((sum, item) => sum + item.total, 0);
++  async getSourceBreakdown() {
++    const data = await this.getAll();
++    const total = data.reduce((sum, item) => sum + item.total, 0);
+     const sourceMap: Record<string, number> = {};
+-    this.data.forEach((item) => {
++    data.forEach((item) => {
+       sourceMap[item.source] = (sourceMap[item.source] || 0) + item.total;
+     });
+     return Object.entries(sourceMap).map(([source, totalSales]) => ({
+       source,
+       label: reservationSourceLabels[source] || source,
+       totalSales,
+-      count: this.data.filter((i) => i.source === source).length,
++      count: data.filter((i) => i.source === source).length,
+       percentage: total > 0 ? Math.round((totalSales / total) * 100) : 0,
+     }));
+   }
+ 
+-  create(data: Omit<Invoice, 'id' | 'createdAt' | 'updatedAt'>): Invoice {
+-    const now = new Date().toISOString();
+-    const newItem: Invoice = {
+-      ...data,
+-      id: `inv-${String(this.data.length + 1).padStart(3, '0')}`,
+-      createdAt: now,
+-      updatedAt: now,
+-    };
+-    this.data.push(newItem);
+-    return { ...newItem };
+-  }
+-
+-  update(id: string, updates: Partial<Invoice>): Invoice | null {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return null;
+-    this.data[index] = { ...this.data[index], ...updates, updatedAt: new Date().toISOString() };
+-    return { ...this.data[index] };
+-  }
+-
+-  delete(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data.splice(index, 1);
++  /** Next free `INV-YYYY-NNN` for a date (server allocation; needs `finance.invoice.create`). */
++  async getNextNumber(date?: string): Promise<string> {
++    const query = date ? `?date=${encodeURIComponent(date)}` : '';
++    const json = await apiFetch<{ data: { invoiceNumber: string } }>(`/api/invoices/next-number${query}`);
++    return json.data.invoiceNumber;
++  }
++
++  private async runAction(id: string, action: StatusAction): Promise<Invoice> {
++    const json = await apiFetch<{ data: Invoice }>(`/api/invoices/${encodeURIComponent(id)}/${action}`, { method: 'POST' });
++    return json.data;
++  }
++
++  async create(data: InvoiceWrite): Promise<Invoice> {
++    const action = statusActionFor({ invoiceStatus: 'Draft', paymentStatus: 'Pending' }, data);
++    const json = await apiFetch<{ data: Invoice }>('/api/invoices', {
++      method: 'POST',
++      // An unsupported combination is sent WITH its status so the API answers
++      // with its own explanation and nothing is created.
++      body: toBody(data, action === 'unsupported'),
++    });
++    if (action === 'send' || action === 'pay' || action === 'cancel') return this.runAction(json.data.id, action);
++    return json.data;
++  }
++
++  async update(id: string, updates: InvoiceWrite): Promise<Invoice | null> {
++    const current = await this.getById(id);
++    if (!current) return null;
++    const action = statusActionFor(current, updates);
++    const body = toBody(updates, action === 'unsupported');
++    let saved = current;
++    if (Object.keys(body).length > 0) {
++      const json = await apiFetch<{ data: Invoice }>(`/api/invoices/${encodeURIComponent(id)}`, { method: 'PATCH', body });
++      saved = json.data;
++    }
++    if (action === 'send' || action === 'pay' || action === 'cancel') return this.runAction(id, action);
++    return saved;
++  }
++
++  /** Only Draft invoices can be deleted (the API answers 409 otherwise). */
++  async delete(id: string): Promise<boolean> {
++    await apiFetch(`/api/invoices/${encodeURIComponent(id)}`, { method: 'DELETE' });
+     return true;
+   }
+ 
+-  cancel(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data[index].invoiceStatus = 'Cancelled';
+-    this.data[index].updatedAt = new Date().toISOString();
++  async cancel(id: string): Promise<boolean> {
++    await this.runAction(id, 'cancel');
+     return true;
+   }
+ 
+-  send(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data[index].invoiceStatus = 'Sent';
+-    this.data[index].updatedAt = new Date().toISOString();
++  async send(id: string): Promise<boolean> {
++    await this.runAction(id, 'send');
+     return true;
+   }
+ 
+-  markPaid(id: string): boolean {
+-    const index = this.data.findIndex((item) => item.id === id);
+-    if (index === -1) return false;
+-    this.data[index].invoiceStatus = 'Completed';
+-    this.data[index].paymentStatus = 'Paid';
+-    this.data[index].updatedAt = new Date().toISOString();
++  async markPaid(id: string): Promise<boolean> {
++    await this.runAction(id, 'pay');
+     return true;
+   }
+ }
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/reportService.ts frontend/src/services/reportService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/reportService.ts	2026-10-11 14:40:18.671893000 +0700
++++ frontend/src/services/reportService.ts	2026-10-11 15:05:15.086039200 +0700
+@@ -26,17 +26,19 @@
+   amount: number;
+ }
+ 
++/**
++ * Report helpers over the (now API-backed, async) finance services — FE-001.
++ * Formulas are unchanged; every method is async because its inputs are.
++ */
+ class ReportService {
+-  getSalesSummary(startDate: string, endDate: string): SalesSummary {
+-    const sales = salesService.getByDateRange(startDate, endDate);
+-    const expenses = expenseService.getAll().filter((exp) => {
+-      const date = new Date(exp.date);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    });
+-    const invoices = invoiceService.getAll().filter((inv) => {
+-      const date = new Date(inv.invoiceDate);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    });
++  async getSalesSummary(startDate: string, endDate: string): Promise<SalesSummary> {
++    const [sales, allExpenses, allInvoices] = await Promise.all([
++      salesService.getByDateRange(startDate, endDate),
++      expenseService.getAll(),
++      invoiceService.getAll(),
++    ]);
++    const expenses = allExpenses.filter((exp) => exp.date >= startDate && exp.date <= endDate);
++    const invoices = allInvoices.filter((inv) => inv.invoiceDate >= startDate && inv.invoiceDate <= endDate);
+ 
+     const totalSales = sales.reduce((sum, s) => sum + s.amount, 0);
+     const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+@@ -57,18 +59,17 @@
+     };
+   }
+ 
+-  getRevenueByPeriod(months: string[]): RevenueByPeriod[] {
++  async getRevenueByPeriod(months: string[]): Promise<RevenueByPeriod[]> {
++    const [allSales, allExpenses] = await Promise.all([salesService.getAll(), expenseService.getAll()]);
+     return months.map((month) => {
+-      const sales = salesService.getAll().filter((s) => s.date.startsWith(month));
+-      const expenses = expenseService.getAll().filter((e) => e.date.startsWith(month));
+-      const revenue = sales.reduce((sum, s) => sum + s.amount, 0);
+-      const expense = expenses.reduce((sum, e) => sum + e.amount, 0);
++      const revenue = allSales.filter((s) => s.date.startsWith(month)).reduce((sum, s) => sum + s.amount, 0);
++      const expense = allExpenses.filter((e) => e.date.startsWith(month)).reduce((sum, e) => sum + e.amount, 0);
+       return { month, revenue, expenses: expense, net: revenue - expense };
+     });
+   }
+ 
+-  getExpensesByCategory(): ExpenseByCategory[] {
+-    const expenses = expenseService.getAll();
++  async getExpensesByCategory(): Promise<ExpenseByCategory[]> {
++    const expenses = await expenseService.getAll();
+     const categoryMap: Record<string, number> = {};
+     expenses.forEach((exp) => {
+       categoryMap[exp.category] = (categoryMap[exp.category] || 0) + exp.amount;
+@@ -76,8 +77,8 @@
+     return Object.entries(categoryMap).map(([category, amount]) => ({ category, amount }));
+   }
+ 
+-  getTopInvoices(limit = 5): Invoice[] {
+-    return invoiceService.getAll().sort((a, b) => b.total - a.total).slice(0, limit);
++  async getTopInvoices(limit = 5): Promise<Invoice[]> {
++    return (await invoiceService.getAll()).sort((a, b) => b.total - a.total).slice(0, limit);
+   }
+ }
+ 
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/reservationService.ts frontend/src/services/reservationService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/reservationService.ts	2026-10-11 14:40:18.797116500 +0700
++++ frontend/src/services/reservationService.ts	2026-10-11 14:52:46.470473500 +0700
+@@ -1,4 +1,4 @@
+-import { apiFetch } from './api';
++import { ApiError, apiFetch, fetchAllPages } from './api';
+ import type { Reservation, ReservationRoom } from '@/types/auth.types';
+ 
+ export interface ApiNightlyRate {
+@@ -78,11 +78,6 @@
+   rooms: Array<{ roomId: string; roomNumber: string; roomTypeName: string }>;
+ }
+ 
+-interface ListResponse {
+-  data: ApiReservation[];
+-  pagination: { page: number; pageSize: number; total: number };
+-}
+-
+ /**
+  * Reservation client backed by the real API (`/api/reservations`).
+  * `getAll` returns the full embedded shape (rooms/pricing/calc included);
+@@ -90,8 +85,8 @@
+  */
+ class ReservationService {
+   async getAll(): Promise<ApiReservation[]> {
+-    const json = await apiFetch<ListResponse>('/api/reservations?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<ApiReservation>('/api/reservations');
+   }
+ 
+   async getById(id: string): Promise<Reservation | undefined> {
+@@ -162,30 +157,39 @@
+     return json.data;
+   }
+ 
++  /**
++   * FE-004: the three status actions now REJECT with the real `ApiError`
++   * (status + backend message) instead of returning `false`. Every caller
++   * (ReservationDetailPage, CheckInButton, CheckOutButton) catches it and shows
++   * the message with the existing `ErrorState` component.
++   */
+   async cancel(id: string): Promise<boolean> {
+-    try {
+-      await apiFetch(`/api/reservations/${encodeURIComponent(id)}/cancel`, { method: 'POST' });
+-      return true;
+-    } catch {
+-      return false;
+-    }
++    await apiFetch(`/api/reservations/${encodeURIComponent(id)}/cancel`, { method: 'POST' });
++    return true;
+   }
+ 
+   async checkIn(id: string): Promise<boolean> {
+-    try {
+-      await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-in`, { method: 'POST' });
+-      return true;
+-    } catch {
+-      return false;
+-    }
++    await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-in`, { method: 'POST' });
++    return true;
+   }
+ 
+   async checkOut(id: string): Promise<boolean> {
++    await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-out`, { method: 'POST' });
++    return true;
++  }
++
++  /**
++   * Like `getFullById` but only a 404 means "not found" (`undefined`); any
++   * other failure (401/5xx/network) rejects so the page can say what happened.
++   * Additive: the many existing `getFullById` callers keep their behavior.
++   */
++  async fetchFullById(id: string): Promise<ApiReservation | undefined> {
+     try {
+-      await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-out`, { method: 'POST' });
+-      return true;
+-    } catch {
+-      return false;
++      const json = await apiFetch<{ data: ApiReservation }>(`/api/reservations/${encodeURIComponent(id)}`);
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return undefined;
++      throw err;
+     }
+   }
+ 
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/roleService.ts frontend/src/services/roleService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/roleService.ts	2026-10-11 14:40:18.781675900 +0700
++++ frontend/src/services/roleService.ts	2026-10-11 14:42:56.967108500 +0700
+@@ -1,4 +1,4 @@
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+ 
+ export interface RolePayload {
+   name: string;
+@@ -14,8 +14,8 @@
+  */
+ class RoleService {
+   async getAll(): Promise<any[]> {
+-    const json = await apiFetch<{ data: any[] }>('/api/roles?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<any>('/api/roles');
+   }
+ 
+   async getById(id: string): Promise<any | undefined> {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/roomService.ts frontend/src/services/roomService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/roomService.ts	2026-10-11 14:40:18.715105700 +0700
++++ frontend/src/services/roomService.ts	2026-10-11 14:42:56.918828700 +0700
+@@ -1,4 +1,4 @@
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+ import type { Room } from '@/types/auth.types';
+ 
+ export interface RoomPayload {
+@@ -15,8 +15,8 @@
+  */
+ class RoomService {
+   async getAll(): Promise<Room[]> {
+-    const json = await apiFetch<{ data: Room[] }>('/api/rooms?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<Room>('/api/rooms');
+   }
+ 
+   async getById(id: string): Promise<Room | undefined> {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/roomTypeService.ts frontend/src/services/roomTypeService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/roomTypeService.ts	2026-10-11 14:40:18.704332300 +0700
++++ frontend/src/services/roomTypeService.ts	2026-10-11 14:42:56.933036600 +0700
+@@ -1,4 +1,4 @@
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+ import type { RoomType } from '@/types/auth.types';
+ 
+ export interface RoomTypePayload {
+@@ -19,8 +19,8 @@
+  */
+ class RoomTypeService {
+   async getAll(): Promise<RoomType[]> {
+-    const json = await apiFetch<{ data: RoomType[] }>('/api/room-types?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<RoomType>('/api/room-types');
+   }
+ 
+   async getById(id: string): Promise<RoomType | undefined> {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/salesService.ts frontend/src/services/salesService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/salesService.ts	2026-10-11 14:40:18.627792800 +0700
++++ frontend/src/services/salesService.ts	2026-10-11 15:05:14.794771400 +0700
+@@ -1,5 +1,6 @@
+-import salesData from '../data/mock/sales.json';
+ import { reservationSourceLabels, reservationSourceColors } from '@/constants/reservationStatuses';
++import type { Sale } from '@/types/auth.types';
++import { ApiError, fetchAllPages } from './api';
+ 
+ interface SourceBreakdown {
+   source: string;
+@@ -20,37 +21,51 @@
+   averagePerTransaction: number;
+ }
+ 
++/**
++ * Sales client backed by the real API (`/api/sales`) — FE-001.
++ *
++ * There is no sales table: the server DERIVES one sale per non-cancelled
++ * invoice (`date = invoiceDate`, `amount = total`), so a sale appears as soon
++ * as its invoice exists (Draft and Sent included: "billed", not "received").
++ * Read-only; method names match the previous mock service and are now async.
++ */
+ class SalesService {
+-  private data: any[] = [...salesData];
++  async getAll(): Promise<Sale[]> {
++    return fetchAllPages<Sale>('/api/sales');
++  }
+ 
+-  getAll(): any[] {
+-    return this.data.map((item) => ({ ...item }));
++  /** A user without `finance.sales.view` has no sales to show (dashboard). */
++  async getAllIfPermitted(): Promise<Sale[]> {
++    try {
++      return await this.getAll();
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 403) return [];
++      throw err;
++    }
+   }
+ 
+-  getById(id: string): any | undefined {
+-    return this.data.find((item) => item.id === id);
++  async getById(id: string): Promise<Sale | undefined> {
++    return (await this.getAll()).find((item) => item.id === id);
+   }
+ 
+-  getByDateRange(startDate: string, endDate: string): any[] {
+-    return this.data.filter((item) => {
+-      const date = new Date(item.date);
+-      return date >= new Date(startDate) && date <= new Date(endDate);
+-    });
++  async getByDateRange(startDate: string, endDate: string): Promise<Sale[]> {
++    return (await this.getAll()).filter((item) => item.date >= startDate && item.date <= endDate);
+   }
+ 
+-  getTotalByPeriod(startDate: string, endDate: string): number {
+-    return this.getByDateRange(startDate, endDate).reduce((sum, item) => sum + item.amount, 0);
++  async getTotalByPeriod(startDate: string, endDate: string): Promise<number> {
++    return (await this.getByDateRange(startDate, endDate)).reduce((sum, item) => sum + item.amount, 0);
+   }
+ 
+-  getBySource(source: string): any[] {
+-    return this.data.filter((item) => item.source === source);
++  async getBySource(source: string): Promise<Sale[]> {
++    return (await this.getAll()).filter((item) => item.source === source);
+   }
+ 
+-  getSourceBreakdown(): SourceBreakdown[] {
+-    const total = this.data.reduce((sum, item) => sum + item.amount, 0);
++  async getSourceBreakdown(): Promise<SourceBreakdown[]> {
++    const data = await this.getAll();
++    const total = data.reduce((sum, item) => sum + item.amount, 0);
+     const sourceMap: Record<string, number> = {};
+     const countMap: Record<string, number> = {};
+-    this.data.forEach((item) => {
++    data.forEach((item) => {
+       sourceMap[item.source] = (sourceMap[item.source] || 0) + item.amount;
+       countMap[item.source] = (countMap[item.source] || 0) + 1;
+     });
+@@ -64,9 +79,9 @@
+     }));
+   }
+ 
+-  getSummary(startDate: string, endDate: string): SalesSummary {
+-    const filtered = this.getByDateRange(startDate, endDate);
+-    const totalSales = filtered.reduce((sum: number, s: any) => sum + s.amount, 0);
++  async getSummary(startDate: string, endDate: string): Promise<SalesSummary> {
++    const filtered = await this.getByDateRange(startDate, endDate);
++    const totalSales = filtered.reduce((sum, s) => sum + s.amount, 0);
+     return {
+       totalSales,
+       totalIncome: totalSales,
+@@ -77,15 +92,6 @@
+       averagePerTransaction: filtered.length > 0 ? Math.round(totalSales / filtered.length) : 0,
+     };
+   }
+-
+-  create(data: any): any {
+-    const newItem = {
+-      ...data,
+-      id: `sale-${String(this.data.length + 1).padStart(3, '0')}`,
+-    };
+-    this.data.push(newItem);
+-    return { ...newItem };
+-  }
+ }
+ 
+ export const salesService = new SalesService();
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/services/userService.ts frontend/src/services/userService.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/services/userService.ts	2026-10-11 14:40:18.838267400 +0700
++++ frontend/src/services/userService.ts	2026-10-11 14:42:56.951493800 +0700
+@@ -1,4 +1,4 @@
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+ import { roleService } from './roleService';
+ 
+ export interface UserPayload {
+@@ -15,8 +15,8 @@
+  */
+ class UserService {
+   async getAll(): Promise<any[]> {
+-    const json = await apiFetch<{ data: any[] }>('/api/users?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<any>('/api/users');
+   }
+ 
+   async getById(id: string): Promise<any | undefined> {
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/stores/authStore.tsx frontend/src/stores/authStore.tsx
+--- .tmp-fix/snapshot-block-8/frontend/src/stores/authStore.tsx	2026-10-11 14:40:15.122984800 +0700
++++ frontend/src/stores/authStore.tsx	2026-10-11 14:44:24.426043300 +0700
+@@ -1,20 +1,20 @@
+ import React, { createContext, useContext, useReducer, useEffect } from 'react';
+-import authService from '../services/authService';
+-import { apiErrorMessage } from '../services/api';
++import authService, { type ApiUser } from '../services/authService';
++import { apiErrorMessage, setUnauthorizedHandler } from '../services/api';
+ 
+ interface AuthState {
+-  user: any | null;
++  user: ApiUser | null;
+   isAuthenticated: boolean;
+   isLoading: boolean;
+   error: string;
+ }
+ 
+ type AuthAction =
+-  | { type: 'LOGIN_SUCCESS'; payload: any }
++  | { type: 'LOGIN_SUCCESS'; payload: { user: ApiUser } }
+   | { type: 'LOGIN_FAILURE'; payload: string }
+   | { type: 'LOGOUT' }
+   | { type: 'SET_LOADING'; payload: boolean }
+-  | { type: 'REGISTER_SUCCESS'; payload: any }
++  | { type: 'REGISTER_SUCCESS'; payload: ApiUser }
+   | { type: 'SET_ERROR'; payload: string };
+ 
+ interface AuthContextType extends AuthState {
+@@ -70,8 +70,17 @@
+     };
+   }, []);
+ 
++  // FE-003: an expired/invalidated token on an authenticated call ends the
++  // session in state too; ProtectedRoute then sends the user to /login with
++  // `returnTo`.
++  useEffect(() => {
++    setUnauthorizedHandler(() => dispatch({ type: 'LOGOUT' }));
++    return () => setUnauthorizedHandler(null);
++  }, []);
++
++  // FE-006: `isLoading` is only the initial session restore. Submitting a
++  // form must not flip it, otherwise PublicOnlyRoute unmounts the login form.
+   const login = async (email: string, password: string): Promise<boolean> => {
+-    dispatch({ type: 'SET_LOADING', payload: true });
+     try {
+       const result = await authService.login(email, password);
+       if (result) {
+@@ -83,8 +92,6 @@
+     } catch (err) {
+       dispatch({ type: 'LOGIN_FAILURE', payload: apiErrorMessage(err, 'An error occurred during login') });
+       return false;
+-    } finally {
+-      dispatch({ type: 'SET_LOADING', payload: false });
+     }
+   };
+ 
+@@ -94,7 +101,6 @@
+   };
+ 
+   const register = async (name: string, email: string, password: string): Promise<boolean> => {
+-    dispatch({ type: 'SET_LOADING', payload: true });
+     try {
+       const result = await authService.register({ name, email, password });
+       if (result) {
+@@ -106,8 +112,6 @@
+     } catch (err) {
+       dispatch({ type: 'SET_ERROR', payload: apiErrorMessage(err, 'Registration failed') });
+       return false;
+-    } finally {
+-      dispatch({ type: 'SET_LOADING', payload: false });
+     }
+   };
+ 
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/utils/formatUtils.ts frontend/src/utils/formatUtils.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/utils/formatUtils.ts	2026-10-11 14:40:15.306934500 +0700
++++ frontend/src/utils/formatUtils.ts	2026-10-11 14:46:31.791112500 +0700
+@@ -1,6 +1,8 @@
++import { toLocalISODate } from './localDate';
++
+ export function formatDate(date: Date, format: 'short' | 'long' | 'iso' = 'short'): string {
+   const d = new Date(date);
+-  if (format === 'iso') return d.toISOString().split('T')[0];
++  if (format === 'iso') return toLocalISODate(d);
+   if (format === 'short') return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+   return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+ }
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/utils/localDate.ts frontend/src/utils/localDate.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/utils/localDate.ts	1970-01-01 07:00:00.000000000 +0700
++++ frontend/src/utils/localDate.ts	2026-10-11 14:46:31.786048900 +0700
+@@ -0,0 +1,23 @@
++/**
++ * FE-005: calendar-day helpers in LOCAL time (the property and its staff are
++ * in WIB). `Date#toISOString()` is UTC, so a local-midnight `Date` serialises
++ * as the PREVIOUS day in WIB; these never go through UTC.
++ */
++const pad = (n: number) => String(n).padStart(2, '0');
++
++/** `YYYY-MM-DD` of the local calendar day of `d`. */
++export function toLocalISODate(d: Date): string {
++  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
++}
++
++/** Today's local calendar day as `YYYY-MM-DD`. */
++export function todayLocalISO(): string {
++  return toLocalISODate(new Date());
++}
++
++/** `YYYY-MM-DD` shifted by whole days (pure calendar arithmetic, no time zone involved). */
++export function shiftISODate(iso: string, days: number): string {
++  const [y, m, d] = iso.split('-').map(Number);
++  const t = new Date(Date.UTC(y, m - 1, d + days));
++  return `${t.getUTCFullYear()}-${pad(t.getUTCMonth() + 1)}-${pad(t.getUTCDate())}`;
++}
+diff -ruN --strip-trailing-cr .tmp-fix/snapshot-block-8/frontend/src/utils/returnTo.ts frontend/src/utils/returnTo.ts
+--- .tmp-fix/snapshot-block-8/frontend/src/utils/returnTo.ts	1970-01-01 07:00:00.000000000 +0700
++++ frontend/src/utils/returnTo.ts	2026-10-11 14:42:37.530051000 +0700
+@@ -0,0 +1,20 @@
++/**
++ * FE-003: `returnTo` carries the page a user was on when the session ended.
++ * Only same-origin application paths are honoured (open-redirect safe):
++ * must start with a single `/`, never `//`, and never point back at the
++ * public auth screens.
++ */
++const BLOCKED_PREFIXES = ['/login', '/register', '/forgot-password', '/reset-password'];
++
++export function safeReturnTo(search: string): string | null {
++  const raw = new URLSearchParams(search).get('returnTo');
++  if (!raw || !raw.startsWith('/') || raw.startsWith('//') || raw.includes('\\')) return null;
++  if (BLOCKED_PREFIXES.some((p) => raw === p || raw.startsWith(`${p}/`) || raw.startsWith(`${p}?`))) return null;
++  return raw;
++}
++
++export function loginPathFor(current: { pathname: string; search: string; hash?: string }, loginPath = '/login'): string {
++  const target = `${current.pathname}${current.search}${current.hash ?? ''}`;
++  if (target === '/' || target === '' || BLOCKED_PREFIXES.some((p) => current.pathname.startsWith(p))) return loginPath;
++  return `${loginPath}?returnTo=${encodeURIComponent(target)}`;
++}

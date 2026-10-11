@@ -1,0 +1,2 @@
+const e=["Utilities","Staff","Maintenance","Supplies","Marketing","Food & Beverage","Laundry","Other"],a={Utilities:"Utilities",Staff:"Staff",Maintenance:"Maintenance",Supplies:"Supplies",Marketing:"Marketing","Food & Beverage":"Food & Beverage",Laundry:"Laundry",Other:"Other"},t={Paid:"Paid",Pending:"Pending"};export{a,t as b,e};
+//# sourceMappingURL=expenseCategories-DfJknX5p.js.map

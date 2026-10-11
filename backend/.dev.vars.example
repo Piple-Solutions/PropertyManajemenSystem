@@ -14,3 +14,12 @@ RESET_TOKEN_TTL_MIN=15
 
 # Comma-separated list of allowed frontend origins for CORS (no wildcard with credentials).
 FRONTEND_ORIGIN=http://localhost:5173
+
+# Local-dev only. Makes `POST /api/auth/forgot-password` return the raw reset
+# token so the flow is testable without an email provider — required by e2e
+# test SCN-02-08/09. NEVER set this in production.
+DEV_EXPOSE_RESET_TOKEN=true
+
+# Optional. Override the upstream Indonesian-holiday feed used by
+# `GET /api/public/holidays`. Defaults to the community calendar.json dataset.
+# HOLIDAY_SOURCE_URL=https://raw.githubusercontent.com/guangrei/APIHariLibur_V2/main/calendar.json

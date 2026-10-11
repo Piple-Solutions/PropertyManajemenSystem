@@ -1,0 +1,99 @@
+/* Reservation boards (list + calendar) — flat tone only.
+ * Left: horizontal status bar chart. Right: stacked search/filter card.
+ * Equal heights via grid stretch. Mobile-first: stacked; 3fr/2fr >=1024px.
+ */
+
+.res-boards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.res-board {
+  background-color: #FFFFFF;
+  border: 1px solid #C7BBAB;
+  border-radius: 8px;
+  padding: 16px 20px;
+  min-width: 0;
+}
+
+.res-board__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #232D36;
+  margin: 0 0 4px;
+}
+
+.res-board__sub {
+  font-size: 14px;
+  color: #6B7881;
+  margin: 0 0 12px;
+}
+
+.res-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+}
+
+.res-bar__label {
+  width: 110px;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: #232D36;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.res-bar__track {
+  flex: 1;
+  min-width: 0;
+  height: 10px;
+  background-color: #EEEDE9;
+  border: 1px solid #C7BBAB;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.res-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 700ms ease;
+}
+
+.res-bar__value {
+  width: 48px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 700;
+  color: #232D36;
+}
+
+.res-filterstack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.res-count {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #6B7881;
+}
+
+@media (min-width: 1024px) {
+  .res-boards {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .res-bar__fill {
+    transition: none;
+  }
+}

@@ -1,0 +1,423 @@
+[
+  {
+    "step": "list room types",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "room-type-001",
+          "name": "Standard",
+          "description": "Comfortable standard room with modern amenities",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge"
+          ],
+          "defaultRate": 750000,
+          "images": [
+            "/images/room-type-001-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-002",
+          "name": "Homy",
+          "description": "Cozy homy room with warm, home-like comfort",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge",
+            "Coffee Maker",
+            "Safe"
+          ],
+          "defaultRate": 1200000,
+          "images": [
+            "/images/room-type-002-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-003",
+          "name": "Twin",
+          "description": "Two twin beds with elegant decor",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Desk",
+            "Wardrobe"
+          ],
+          "defaultRate": 950000,
+          "images": [
+            "/images/room-type-003-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-004",
+          "name": "Family",
+          "description": "Spacious family room ideal for families with children",
+          "capacity": 4,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge",
+            "Kitchenette",
+            "Sofa Bed"
+          ],
+          "defaultRate": 1800000,
+          "images": [
+            "/images/room-type-004-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-005",
+          "name": "Eco",
+          "description": "Eco-friendly room with sustainable amenities",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Bar",
+            "Jacuzzi",
+            "Butler Service",
+            "Private Lounge"
+          ],
+          "defaultRate": 3500000,
+          "images": [
+            "/images/room-type-005-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-006",
+          "name": "Joglo",
+          "description": "Joglo rental venue for events and gatherings",
+          "capacity": 50,
+          "facilities": [
+            "-"
+          ],
+          "defaultRate": 1000000,
+          "images": [],
+          "status": "active",
+          "createdAt": "2026-04-25T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 6
+      }
+    }
+  },
+  {
+    "step": "filter room types",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "room-type-004",
+          "name": "Family",
+          "description": "Spacious family room ideal for families with children",
+          "capacity": 4,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge",
+            "Kitchenette",
+            "Sofa Bed"
+          ],
+          "defaultRate": 1800000,
+          "images": [
+            "/images/room-type-004-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 1
+      }
+    }
+  },
+  {
+    "step": "get room type",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "room-type-004",
+        "name": "Family",
+        "description": "Spacious family room ideal for families with children",
+        "capacity": 4,
+        "facilities": [
+          "WiFi",
+          "TV",
+          "Air Conditioning",
+          "Mini Fridge",
+          "Kitchenette",
+          "Sofa Bed"
+        ],
+        "defaultRate": 1800000,
+        "images": [
+          "/images/room-type-004-1.jpg"
+        ],
+        "status": "active",
+        "createdAt": "2026-01-15T00:00:00Z",
+        "updatedAt": "2026-09-14T00:00:00Z"
+      }
+    }
+  },
+  {
+    "step": "get room type 404",
+    "status": 404,
+    "body": {
+      "message": "Room type not found"
+    }
+  },
+  {
+    "step": "create room type",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "room-type-<id-1>",
+        "name": "Golden Suite",
+        "description": "golden",
+        "capacity": 3,
+        "facilities": [
+          "WiFi"
+        ],
+        "defaultRate": 900000,
+        "images": [],
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:06.000Z",
+        "updatedAt": "2026-09-20T03:00:06.000Z"
+      }
+    }
+  },
+  {
+    "step": "duplicate room type name",
+    "status": 409,
+    "body": {
+      "message": "Room type name already exists",
+      "errors": {
+        "name": [
+          "Room type name already exists"
+        ]
+      }
+    }
+  },
+  {
+    "step": "patch room type",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "room-type-<id-1>",
+        "name": "Golden Suite",
+        "description": "golden",
+        "capacity": 4,
+        "facilities": [
+          "WiFi",
+          "TV"
+        ],
+        "defaultRate": 900000,
+        "images": [],
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:06.000Z",
+        "updatedAt": "2026-09-20T03:00:08.000Z"
+      }
+    }
+  },
+  {
+    "step": "toggle room type status",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "room-type-<id-1>",
+        "name": "Golden Suite",
+        "description": "golden",
+        "capacity": 4,
+        "facilities": [
+          "WiFi",
+          "TV"
+        ],
+        "defaultRate": 900000,
+        "images": [],
+        "status": "inactive",
+        "createdAt": "2026-09-20T03:00:06.000Z",
+        "updatedAt": "2026-09-20T03:00:09.000Z"
+      }
+    }
+  },
+  {
+    "step": "delete room type",
+    "status": 204,
+    "body": null
+  },
+  {
+    "step": "delete room type in use (409)",
+    "status": 409,
+    "body": {
+      "message": "Room type is still used by rooms",
+      "errors": {
+        "roomType": [
+          "Reassign rooms before deleting this type"
+        ]
+      }
+    }
+  },
+  {
+    "step": "staff cannot create room type (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): room.create"
+    }
+  },
+  {
+    "step": "public room types",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "room-type-005",
+          "name": "Eco",
+          "description": "Eco-friendly room with sustainable amenities",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Bar",
+            "Jacuzzi",
+            "Butler Service",
+            "Private Lounge"
+          ],
+          "defaultRate": 3500000,
+          "images": [
+            "/images/room-type-005-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-004",
+          "name": "Family",
+          "description": "Spacious family room ideal for families with children",
+          "capacity": 4,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge",
+            "Kitchenette",
+            "Sofa Bed"
+          ],
+          "defaultRate": 1800000,
+          "images": [
+            "/images/room-type-004-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-002",
+          "name": "Homy",
+          "description": "Cozy homy room with warm, home-like comfort",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge",
+            "Coffee Maker",
+            "Safe"
+          ],
+          "defaultRate": 1200000,
+          "images": [
+            "/images/room-type-002-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-006",
+          "name": "Joglo",
+          "description": "Joglo rental venue for events and gatherings",
+          "capacity": 50,
+          "facilities": [
+            "-"
+          ],
+          "defaultRate": 1000000,
+          "images": [],
+          "status": "active",
+          "createdAt": "2026-04-25T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-001",
+          "name": "Standard",
+          "description": "Comfortable standard room with modern amenities",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Mini Fridge"
+          ],
+          "defaultRate": 750000,
+          "images": [
+            "/images/room-type-001-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-type-003",
+          "name": "Twin",
+          "description": "Two twin beds with elegant decor",
+          "capacity": 2,
+          "facilities": [
+            "WiFi",
+            "TV",
+            "Air Conditioning",
+            "Desk",
+            "Wardrobe"
+          ],
+          "defaultRate": 950000,
+          "images": [
+            "/images/room-type-003-1.jpg"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ]
+    }
+  }
+]

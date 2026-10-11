@@ -1,75 +1,108 @@
-import { MessageCircle } from 'lucide-react';
+import { about } from '@/content/publicContent';
+import { ICONS, PageCta, PageHero, PlaceholderMedia, Reveal, usePageTitle, usePublicTone } from '@/components/public/kit';
+import '../styles/public.css';
 
-const WHATSAPP_URL = 'https://wa.me/6200000000000?text=Halo%2C%20saya%20ingin%20informasi%20properti.';
-
-const ctaStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-  backgroundColor: '#97764D',
-  border: '1px solid #97764D',
-  borderRadius: '8px',
-  color: '#FFFFFF',
-  fontSize: '18px',
-  fontWeight: 700,
-  lineHeight: 1.4,
-  padding: '12px 20px',
-  minHeight: '44px',
-  textDecoration: 'none',
-  cursor: 'pointer',
-  transition: 'background-color 150ms ease, opacity 150ms ease',
-};
-
-function handleCtaEnter(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.currentTarget.style.backgroundColor = '#7D6240';
-  e.currentTarget.style.borderColor = '#7D6240';
-}
-
-function handleCtaLeave(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.currentTarget.style.backgroundColor = '#97764D';
-  e.currentTarget.style.borderColor = '#97764D';
-  e.currentTarget.style.opacity = '1';
-}
+const TONES = ['light', 'warm', 'dark', 'light'] as const;
 
 export default function AboutPage() {
-  return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <section
-        aria-labelledby="about-title"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #C7BBAB', borderRadius: '8px', padding: '32px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }}
-      >
-        <h1
-          id="about-title"
-          style={{ fontSize: '24px', fontWeight: 700, color: '#232D36', fontFamily: 'var(--font-family-sans)', margin: 0 }}
-        >
-          Tentang Kami
-        </h1>
-        <p style={{ fontSize: '14px', color: '#6B7881', margin: 0 }}>Informasi properti dan fasilitas akan ditampilkan di sini.</p>
-      </section>
+  usePublicTone('dark');
+  usePageTitle(about.title);
+  const { story, concept, values, welcome } = about;
 
-      <section
-        aria-label="Kontak lanjutan"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #C7BBAB', borderRadius: '8px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}
-      >
-        <p style={{ fontSize: '14px', color: '#6B7881', margin: 0 }}>Ada pertanyaan tentang properti? Hubungi kami.</p>
-        <div style={{ alignSelf: 'flex-start' }}>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Hubungi kami via WhatsApp"
-            style={ctaStyle}
-            onMouseEnter={handleCtaEnter}
-            onMouseLeave={handleCtaLeave}
-            onMouseDown={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-            onMouseUp={(e) => { e.currentTarget.style.opacity = '1'; }}
-          >
-            <MessageCircle size={20} aria-hidden="true" color="#FFFFFF" />
-            Hubungi via WhatsApp
-          </a>
+  return (
+    <>
+      <PageHero id="about-title" content={about.hero} />
+
+      {/* Story */}
+      <section className="pub-section pub-section--sand" aria-labelledby="about-story-title">
+        <div className="pub-container pub-about">
+          <Reveal immediate className="pub-about__copy">
+            <p className="pub-eyebrow pub-eyebrow--dark">{story.eyebrow}</p>
+            <h2 id="about-story-title" className="pub-h2">
+              {story.title}
+            </h2>
+            {story.paragraphs.map((p) => (
+              <p className="pub-body" key={p}>
+                {p}
+              </p>
+            ))}
+          </Reveal>
+          <Reveal immediate delay={2} className="pub-about__visual pub-about__visual--page">
+            <PlaceholderMedia variant="wide" label={story.mediaLabel} />
+          </Reveal>
         </div>
       </section>
-    </div>
+
+      {/* Joglo concept */}
+      <section className="pub-section" aria-labelledby="about-concept-title">
+        <div className="pub-container">
+          <Reveal className="pub-sh">
+            <p className="pub-eyebrow pub-eyebrow--dark">{concept.eyebrow}</p>
+            <h2 id="about-concept-title" className="pub-h2">
+              {concept.title}
+            </h2>
+            <p className="pub-body">{concept.subtitle}</p>
+          </Reveal>
+          <ol className="pub-concept">
+            {concept.items.map((item, index) => (
+              <Reveal as="li" delay={index} className="pub-concept__item" key={item.title}>
+                <span className="pub-concept__no" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="pub-concept__title">{item.title}</h3>
+                <p>{item.text}</p>
+              </Reveal>
+            ))}
+          </ol>
+          <p className="pub-note">{concept.note}</p>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="pub-section pub-section--warm" aria-labelledby="about-values-title">
+        <div className="pub-container">
+          <Reveal className="pub-sh">
+            <h2 id="about-values-title" className="pub-h2">
+              {values.title}
+            </h2>
+          </Reveal>
+          <ul className="pub-grid4">
+            {values.items.map((item, index) => {
+              const Icon = ICONS[item.icon];
+              return (
+                <Reveal as="li" delay={index % 4} className={`pub-tile pub-tile--${TONES[index % 4]}`} key={item.title}>
+                  <span className="pub-icon-chip" aria-hidden="true">
+                    <Icon size={22} />
+                  </span>
+                  <h3 className="pub-tile__title">{item.title}</h3>
+                  <p>{item.text}</p>
+                </Reveal>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      {/* How guests are welcomed */}
+      <section className="pub-section" aria-labelledby="about-welcome-title">
+        <div className="pub-container">
+          <Reveal className="pub-sh">
+            <h2 id="about-welcome-title" className="pub-h2">
+              {welcome.title}
+            </h2>
+          </Reveal>
+          <ol className="pub-steps">
+            {welcome.steps.map((step, index) => (
+              <Reveal as="li" delay={index} className="pub-step" key={step.title}>
+                <h3 className="pub-step__title">{step.title}</h3>
+                <p>{step.text}</p>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <PageCta id="about-cta-title" content={about.cta} />
+    </>
   );
 }

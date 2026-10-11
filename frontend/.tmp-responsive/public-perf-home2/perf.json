@@ -1,0 +1,200 @@
+[
+  {
+    "page": "/",
+    "lcpMs": 1964,
+    "cls": 0,
+    "longTasks": 2,
+    "longTaskMaxMs": 145,
+    "domNodes": 476,
+    "requests": 11,
+    "jsKbRaw": 91.6,
+    "cssKbRaw": 12.6,
+    "jsKbGzip": 88.5,
+    "cssKbGzip": 11.9,
+    "fontKb": 0,
+    "imgKb": 124.4,
+    "jsFiles": [
+      "/assets/index-CTAw6OT8.js",
+      "/assets/phone-CP3EbXOd.js",
+      "/assets/clock-B2V_rCRq.js",
+      "/assets/message-circle-DfrxhXbt.js",
+      "/assets/PublicChrome-DtYRBcLT.js",
+      "/assets/OrnamentDivider-CDMgpAto.js",
+      "/assets/HomePage-DsY5lWoh.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-wtrysqyh.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 2004,
+        "cls": 0,
+        "longCount": 3,
+        "longMax": 145,
+        "dom": 476,
+        "requests": 11,
+        "jsRaw": 93757,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1960,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 142,
+        "dom": 476,
+        "requests": 11,
+        "jsRaw": 93757,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1964,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 146,
+        "dom": 476,
+        "requests": 11,
+        "jsRaw": 93757,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      }
+    ]
+  },
+  {
+    "page": "/rooms",
+    "lcpMs": 2160,
+    "cls": 0,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 127,
+    "requests": 11,
+    "jsKbRaw": 87.3,
+    "cssKbRaw": 12.6,
+    "jsKbGzip": 84.2,
+    "cssKbGzip": 11.9,
+    "fontKb": 0,
+    "imgKb": 124.4,
+    "jsFiles": [
+      "/assets/index-CTAw6OT8.js",
+      "/assets/phone-CP3EbXOd.js",
+      "/assets/clock-B2V_rCRq.js",
+      "/assets/message-circle-DfrxhXbt.js",
+      "/assets/PublicChrome-DtYRBcLT.js",
+      "/assets/OrnamentDivider-CDMgpAto.js",
+      "/assets/RoomTypesPage-CLGaQLol.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-wtrysqyh.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 2176,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 127,
+        "requests": 11,
+        "jsRaw": 89401,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 2160,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 127,
+        "requests": 11,
+        "jsRaw": 89401,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1916,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 127,
+        "requests": 11,
+        "jsRaw": 89401,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      }
+    ]
+  },
+  {
+    "page": "/about",
+    "lcpMs": 2172,
+    "cls": 0,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 127,
+    "requests": 11,
+    "jsKbRaw": 87.3,
+    "cssKbRaw": 12.6,
+    "jsKbGzip": 84.2,
+    "cssKbGzip": 11.9,
+    "fontKb": 0,
+    "imgKb": 124.4,
+    "jsFiles": [
+      "/assets/index-CTAw6OT8.js",
+      "/assets/phone-CP3EbXOd.js",
+      "/assets/clock-B2V_rCRq.js",
+      "/assets/message-circle-DfrxhXbt.js",
+      "/assets/PublicChrome-DtYRBcLT.js",
+      "/assets/OrnamentDivider-CDMgpAto.js",
+      "/assets/AboutPage-BoAeeNu1.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-wtrysqyh.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 2188,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 127,
+        "requests": 11,
+        "jsRaw": 89395,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 2168,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 127,
+        "requests": 11,
+        "jsRaw": 89395,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 2172,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 127,
+        "requests": 11,
+        "jsRaw": 89395,
+        "cssRaw": 12945,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      }
+    ]
+  }
+]

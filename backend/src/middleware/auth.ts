@@ -52,7 +52,8 @@ export async function authenticate(c: Context<{ Bindings: AppEnv; Variables: Aut
     throw unauthorized('Token has been invalidated (password changed)');
   }
 
-  const auth = await loadAuthContext(db, row.id);
+  // The user row is already loaded: reuse it (one auth context per request).
+  const auth = await loadAuthContext(db, row.id, row);
   if (!auth) throw unauthorized('User no longer exists');
   c.set('auth', auth);
   await next();

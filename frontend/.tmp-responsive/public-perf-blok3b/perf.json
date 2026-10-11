@@ -1,0 +1,292 @@
+[
+  {
+    "page": "/",
+    "lcpMs": 1420,
+    "cls": 0,
+    "longTasks": 3,
+    "longTaskMaxMs": 149,
+    "domNodes": 485,
+    "requests": 16,
+    "jsKbRaw": 98,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 92.3,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-CodnT9Uq.js",
+      "/assets/Accordion-DyLf7ACb.js",
+      "/assets/OrnamentDivider-CEma5PO0.js",
+      "/assets/icons-DtVtyQFP.js",
+      "/assets/HomePage-CKLgyPyi.js",
+      "/assets/public-BIevnHIH.js",
+      "/assets/usePublicPage-B9wBfzQG.js",
+      "/assets/Reveal-BmeRjXqc.js",
+      "/assets/message-circle-79YBsbAu.js",
+      "/assets/useRoomTypes-REcIjzY6.js",
+      "/assets/phone-CvV0Vgsu.js",
+      "/assets/clock-XKw9bSE1.js",
+      "/assets/PublicChrome-Dp_fCFCI.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1456,
+        "cls": 0,
+        "longCount": 3,
+        "longMax": 152,
+        "dom": 485,
+        "requests": 16,
+        "jsRaw": 100399,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1396,
+        "cls": 0,
+        "longCount": 3,
+        "longMax": 148,
+        "dom": 485,
+        "requests": 16,
+        "jsRaw": 100399,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1420,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 149,
+        "dom": 485,
+        "requests": 16,
+        "jsRaw": 100399,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1388,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 145,
+        "dom": 485,
+        "requests": 16,
+        "jsRaw": 100399,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1464,
+        "cls": 0,
+        "longCount": 3,
+        "longMax": 171,
+        "dom": 485,
+        "requests": 16,
+        "jsRaw": 100399,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/about",
+    "lcpMs": 1416,
+    "cls": 0,
+    "longTasks": 1,
+    "longTaskMaxMs": 153,
+    "domNodes": 232,
+    "requests": 16,
+    "jsKbRaw": 96.1,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 89.9,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-CodnT9Uq.js",
+      "/assets/AboutPage-DjIF-691.js",
+      "/assets/PageCta-Bd9oQnW6.js",
+      "/assets/Reveal-BmeRjXqc.js",
+      "/assets/icons-DtVtyQFP.js",
+      "/assets/public-BIevnHIH.js",
+      "/assets/message-circle-79YBsbAu.js",
+      "/assets/PageHero-Cw1eQafJ.js",
+      "/assets/usePublicPage-B9wBfzQG.js",
+      "/assets/phone-CvV0Vgsu.js",
+      "/assets/OrnamentDivider-CEma5PO0.js",
+      "/assets/clock-XKw9bSE1.js",
+      "/assets/PublicChrome-Dp_fCFCI.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1424,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 153,
+        "dom": 232,
+        "requests": 16,
+        "jsRaw": 98387,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1404,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 153,
+        "dom": 232,
+        "requests": 16,
+        "jsRaw": 98387,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1416,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 154,
+        "dom": 232,
+        "requests": 16,
+        "jsRaw": 98387,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1416,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 147,
+        "dom": 232,
+        "requests": 16,
+        "jsRaw": 98387,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1376,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 148,
+        "dom": 232,
+        "requests": 16,
+        "jsRaw": 98387,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/rooms",
+    "lcpMs": 1484,
+    "cls": 0,
+    "longTasks": 1,
+    "longTaskMaxMs": 152,
+    "domNodes": 381,
+    "requests": 18,
+    "jsKbRaw": 98.7,
+    "cssKbRaw": 14.4,
+    "jsKbGzip": 91.5,
+    "cssKbGzip": 13.7,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-CodnT9Uq.js",
+      "/assets/Accordion-DyLf7ACb.js",
+      "/assets/OrnamentDivider-CEma5PO0.js",
+      "/assets/RoomTypesPage-etHoYMJA.js",
+      "/assets/icons-DtVtyQFP.js",
+      "/assets/public-BIevnHIH.js",
+      "/assets/PageCta-Bd9oQnW6.js",
+      "/assets/Reveal-BmeRjXqc.js",
+      "/assets/PageHero-Cw1eQafJ.js",
+      "/assets/message-circle-79YBsbAu.js",
+      "/assets/useRoomTypes-REcIjzY6.js",
+      "/assets/usePublicPage-B9wBfzQG.js",
+      "/assets/phone-CvV0Vgsu.js",
+      "/assets/PublicChrome-Dp_fCFCI.js",
+      "/assets/clock-XKw9bSE1.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-D--unh2R.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1508,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 159,
+        "dom": 381,
+        "requests": 18,
+        "jsRaw": 101053,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1484,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 151,
+        "dom": 381,
+        "requests": 18,
+        "jsRaw": 101053,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1480,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 152,
+        "dom": 381,
+        "requests": 18,
+        "jsRaw": 101053,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1492,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 155,
+        "dom": 381,
+        "requests": 18,
+        "jsRaw": 101053,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1480,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 152,
+        "dom": 381,
+        "requests": 18,
+        "jsRaw": 101053,
+        "cssRaw": 14783,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  }
+]

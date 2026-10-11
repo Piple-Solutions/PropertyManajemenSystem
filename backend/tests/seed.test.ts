@@ -56,7 +56,7 @@ describe('scripts/generate-seed-sql.mjs', () => {
   function generateSeedSql(): string {
     const dir = mkdtempSync(join(tmpdir(), 'pms-seed-'));
     const out = join(dir, 'seed.sql');
-    execSync(`node "${resolve(backendRoot, 'scripts', 'generate-seed-sql.mjs')}" --out="${out}"`, {
+    execSync(`node "${resolve(backendRoot, 'scripts', 'generate-seed-sql.mjs')}" --out="${out}" --allow-default-credentials`, {
       cwd: backendRoot,
       stdio: 'pipe',
     });
@@ -97,14 +97,14 @@ describe('scripts/generate-seed-sql.mjs', () => {
     expect(count('permissions')).toBe(31);
     expect(count('roles')).toBe(5);
     expect(count('users')).toBe(5);
-    expect(count('room_types')).toBe(5);
-    expect(count('rooms')).toBe(8);
+    expect(count('room_types')).toBe(6);
+    expect(count('rooms')).toBe(21);
     expect(count('reservations')).toBe(15);
     expect(count('reservation_rooms')).toBe(16);
     expect(count('reservation_nightly_rates')).toBe(35);
     expect(count('activities')).toBe(10);
-    expect(count('invoices')).toBe(8);
-    expect(count('invoice_items')).toBe(9);
+    expect(count('invoices')).toBe(9);
+    expect(count('invoice_items')).toBe(27);
     expect(count('expenses')).toBe(10);
   });
 

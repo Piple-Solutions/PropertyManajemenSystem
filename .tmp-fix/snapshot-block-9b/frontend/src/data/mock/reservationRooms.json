@@ -1,0 +1,162 @@
+[
+  {
+    "id": "res-room-001",
+    "reservationId": "res-001",
+    "roomId": "room-001",
+    "roomNumber": "101",
+    "roomTypeName": "Standard",
+    "rate": 750000,
+    "subtotal": 1500000,
+    "createdAt": "2026-09-01T00:00:00Z"
+  },
+  {
+    "id": "res-room-002",
+    "reservationId": "res-002",
+    "roomId": "room-003",
+    "roomNumber": "103",
+    "roomTypeName": "Homy",
+    "rate": 1200000,
+    "subtotal": 2400000,
+    "createdAt": "2026-09-02T00:00:00Z"
+  },
+  {
+    "id": "res-room-003",
+    "reservationId": "res-002",
+    "roomId": "room-001",
+    "roomNumber": "102",
+    "roomTypeName": "Standard",
+    "rate": 1200000,
+    "subtotal": 1200000,
+    "createdAt": "2026-09-02T00:00:00Z"
+  },
+  {
+    "id": "res-room-004",
+    "reservationId": "res-003",
+    "roomId": "room-001",
+    "roomNumber": "101",
+    "roomTypeName": "Standard",
+    "rate": 750000,
+    "subtotal": 1500000,
+    "createdAt": "2026-08-28T00:00:00Z"
+  },
+  {
+    "id": "res-room-005",
+    "reservationId": "res-004",
+    "roomId": "room-003",
+    "roomNumber": "103",
+    "roomTypeName": "Homy",
+    "rate": 1200000,
+    "subtotal": 2400000,
+    "createdAt": "2026-09-05T00:00:00Z"
+  },
+  {
+    "id": "res-room-006",
+    "reservationId": "res-004",
+    "roomId": "room-004",
+    "roomNumber": "201",
+    "roomTypeName": "Twin",
+    "rate": 1200000,
+    "subtotal": 1200000,
+    "createdAt": "2026-09-05T00:00:00Z"
+  },
+  {
+    "id": "res-room-007",
+    "reservationId": "res-006",
+    "roomId": "room-002",
+    "roomNumber": "102",
+    "roomTypeName": "Standard",
+    "rate": 750000,
+    "subtotal": 1500000,
+    "createdAt": "2026-09-06T00:00:00Z"
+  },
+  {
+    "id": "res-room-008",
+    "reservationId": "res-007",
+    "roomId": "room-004",
+    "roomNumber": "201",
+    "roomTypeName": "Twin",
+    "rate": 950000,
+    "subtotal": 2850000,
+    "createdAt": "2026-09-07T00:00:00Z"
+  },
+  {
+    "id": "res-room-009",
+    "reservationId": "res-008",
+    "roomId": "room-003",
+    "roomNumber": "103",
+    "roomTypeName": "Homy",
+    "rate": 1200000,
+    "subtotal": 2400000,
+    "createdAt": "2026-09-01T00:00:00Z"
+  },
+  {
+    "id": "res-room-010",
+    "reservationId": "res-009",
+    "roomId": "room-008",
+    "roomNumber": "401",
+    "roomTypeName": "Family",
+    "rate": 1800000,
+    "subtotal": 5400000,
+    "createdAt": "2026-09-08T00:00:00Z"
+  },
+  {
+    "id": "res-room-011",
+    "reservationId": "res-010",
+    "roomId": "room-006",
+    "roomNumber": "301",
+    "roomTypeName": "Homy",
+    "rate": 1100000,
+    "subtotal": 1100000,
+    "createdAt": "2026-09-09T00:00:00Z"
+  },
+  {
+    "id": "res-room-012",
+    "reservationId": "res-011",
+    "roomId": "room-001",
+    "roomNumber": "101",
+    "roomTypeName": "Standard",
+    "rate": 700000,
+    "subtotal": 2100000,
+    "createdAt": "2026-08-25T00:00:00Z"
+  },
+  {
+    "id": "res-room-013",
+    "reservationId": "res-011",
+    "roomId": "room-002",
+    "roomNumber": "102",
+    "roomTypeName": "Standard",
+    "rate": 700000,
+    "subtotal": 2100000,
+    "createdAt": "2026-08-25T00:00:00Z"
+  },
+  {
+    "id": "res-room-014",
+    "reservationId": "res-012",
+    "roomId": "room-003",
+    "roomNumber": "103",
+    "roomTypeName": "Homy",
+    "rate": 1150000,
+    "subtotal": 2300000,
+    "createdAt": "2026-09-20T00:00:00Z"
+  },
+  {
+    "id": "res-room-015",
+    "reservationId": "res-013",
+    "roomId": "room-004",
+    "roomNumber": "201",
+    "roomTypeName": "Twin",
+    "rate": 950000,
+    "subtotal": 2850000,
+    "createdAt": "2026-09-21T00:00:00Z"
+  },
+  {
+    "id": "res-room-016",
+    "reservationId": "res-015",
+    "roomId": "room-008",
+    "roomNumber": "401",
+    "roomTypeName": "Family",
+    "rate": 1750000,
+    "subtotal": 5250000,
+    "createdAt": "2026-09-22T00:00:00Z"
+  }
+]

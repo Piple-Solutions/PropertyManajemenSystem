@@ -1,0 +1,198 @@
+/* Multi-step Reservation Wizard — Joglo Seruni PMS (warm brown / neutral, flat 8px) */
+
+.wizard-stepper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.wizard-step {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  padding: 4px 2px;
+  font-family: var(--font-family-sans);
+  min-height: 44px;
+}
+
+.wizard-step__dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  border: 2px solid #c7bbab;
+  background: #fff;
+  color: #6b7881;
+  flex-shrink: 0;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.wizard-step--current .wizard-step__dot {
+  border-color: #97764d;
+  background: #232d36;
+  color: #fff;
+}
+
+.wizard-step--completed .wizard-step__dot {
+  border-color: #97764d;
+  background: #f0e7d3;
+  color: #7a5a1e;
+}
+
+.wizard-step__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7881;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.wizard-step--current .wizard-step__label {
+  color: #232d36;
+}
+
+.wizard-step--completed .wizard-step__label {
+  color: #7a5a1e;
+}
+
+button.wizard-step--completed {
+  cursor: pointer;
+}
+
+button.wizard-step--completed:hover .wizard-step__dot {
+  border-color: #7d6240;
+}
+
+.wizard-step--upcoming {
+  cursor: not-allowed;
+}
+
+.wizard-step__connector {
+  flex: 1 1 0;
+  height: 2px;
+  background: #c7bbab;
+  margin-top: 20px;
+  min-width: 12px;
+}
+
+.wizard-step__connector--done {
+  background: #97764d;
+}
+
+.wizard-compact {
+  display: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7881;
+  margin-bottom: 12px;
+}
+
+.wizard-notice {
+  background: #f0e7d3;
+  border: 1px solid #97764d;
+  border-left: 4px solid #97764d;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #232d36;
+  margin-bottom: 12px;
+}
+
+.wizard-error-summary {
+  background: #f3dede;
+  border: 1px solid #962222;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.wizard-error-summary h3 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  color: #962222;
+}
+
+.wizard-error-summary ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: #962222;
+}
+
+.wizard-error-summary a {
+  color: #962222;
+  font-weight: 600;
+}
+
+.wizard-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.wizard-footer__group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.wizard-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.wizard-review-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .wizard-stepper {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .wizard-step__label {
+    font-size: 12px;
+  }
+  .wizard-step__dot {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .wizard-compact {
+    display: block;
+  }
+  .wizard-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .wizard-footer__group {
+    width: 100%;
+  }
+  .wizard-footer__group > * {
+    flex: 1 1 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wizard-step__dot {
+    transition: none;
+  }
+}

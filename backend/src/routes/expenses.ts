@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import type { AppDb } from '../db/client';
 import { badRequest, ok, paginated } from '../lib/errors';
-import { auditActor, auditIp } from '../lib/audit';
+import { auditActor, auditIp, withPrefix } from '../lib/audit';
 import {
   createExpenseSchema,
   expenseListQuerySchema,
@@ -60,7 +60,10 @@ expenses.post('/', requirePermissions('finance.expense.create'), async (c) => {
 
 expenses.patch('/:id', requirePermissions('finance.expense.update'), async (c) => {
   const body = parseOr422(updateExpenseSchema, await c.req.json().catch(() => ({})));
-  const updated = await updateExpense(c.get('db'), pathParam(c, 'id'), body);
+  let before: Record<string, string> = {};
+  const updated = await updateExpense(c.get('db'), pathParam(c, 'id'), body, (row) => {
+    before = withPrefix('before', { date: row.date, category: row.category, amount: row.amount, status: row.status });
+  });
   const actor = auditActor(getAuth(c));
   await recordActivity(c.get('db'), {
     category: 'finance',
@@ -70,7 +73,12 @@ expenses.patch('/:id', requirePermissions('finance.expense.update'), async (c) =
     userName: actor.name,
     entityType: 'expense',
     entityId: updated.id,
-    metadata: { category: updated.category, amount: String(updated.amount) },
+metadata: {
+      category: updated.category,
+      amount: String(updated.amount),
+      ...before,
+      ...withPrefix('after', { date: updated.date, category: updated.category, amount: updated.amount, status: updated.status }),
+    },
     ipAddress: auditIp(c),
   });
   return ok(c, updated);
@@ -89,7 +97,11 @@ expenses.delete('/:id', requirePermissions('finance.expense.delete'), async (c) 
     userName: actor.name,
     entityType: 'expense',
     entityId: id,
-    metadata: { category: existing.category, amount: String(existing.amount) },
+    metadata: {
+      category: existing.category,
+      amount: String(existing.amount),
+      ...withPrefix('before', { date: existing.date, category: existing.category, amount: existing.amount, status: existing.status }),
+    },
     ipAddress: auditIp(c),
   });
   return c.body(null, 204);

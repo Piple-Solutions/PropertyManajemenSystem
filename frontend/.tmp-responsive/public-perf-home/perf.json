@@ -1,0 +1,134 @@
+[
+  {
+    "page": "/",
+    "lcpMs": 1604,
+    "cls": 0,
+    "longTasks": 2,
+    "longTaskMaxMs": 148,
+    "domNodes": 475,
+    "requests": 11,
+    "jsKbRaw": 91.4,
+    "cssKbRaw": 12.6,
+    "jsKbGzip": 88.4,
+    "cssKbGzip": 11.9,
+    "fontKb": 0,
+    "imgKb": 124.4,
+    "jsFiles": [
+      "/assets/index-B5rBNdOK.js",
+      "/assets/phone-BNRTjRVI.js",
+      "/assets/clock-D6uGv8lJ.js",
+      "/assets/message-circle-BJ0OHsk4.js",
+      "/assets/PublicChrome-DDw5D3tO.js",
+      "/assets/public-UoEiwwTc.js",
+      "/assets/HomePage-CbzTFqqh.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-CkDUFFD2.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1648,
+        "cls": 0,
+        "longCount": 3,
+        "longMax": 148,
+        "dom": 475,
+        "requests": 11,
+        "jsRaw": 93633,
+        "cssRaw": 12923,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1572,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 135,
+        "dom": 475,
+        "requests": 11,
+        "jsRaw": 93633,
+        "cssRaw": 12923,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1604,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 148,
+        "dom": 475,
+        "requests": 11,
+        "jsRaw": 93633,
+        "cssRaw": 12923,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      }
+    ]
+  },
+  {
+    "page": "/rooms",
+    "lcpMs": 1928,
+    "cls": 0.3319,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 126,
+    "requests": 11,
+    "jsKbRaw": 87.2,
+    "cssKbRaw": 12.6,
+    "jsKbGzip": 84.1,
+    "cssKbGzip": 11.9,
+    "fontKb": 0,
+    "imgKb": 124.4,
+    "jsFiles": [
+      "/assets/index-B5rBNdOK.js",
+      "/assets/phone-BNRTjRVI.js",
+      "/assets/message-circle-BJ0OHsk4.js",
+      "/assets/clock-D6uGv8lJ.js",
+      "/assets/PublicChrome-DDw5D3tO.js",
+      "/assets/public-UoEiwwTc.js",
+      "/assets/RoomTypesPage-C9yKZ8ds.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-CkDUFFD2.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 2008,
+        "cls": 0.3319463170969934,
+        "longCount": 1,
+        "longMax": 57,
+        "dom": 126,
+        "requests": 11,
+        "jsRaw": 89299,
+        "cssRaw": 12923,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1928,
+        "cls": 0.40455181589579947,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 126,
+        "requests": 11,
+        "jsRaw": 89299,
+        "cssRaw": 12923,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1908,
+        "cls": 0.3319463170969934,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 126,
+        "requests": 11,
+        "jsRaw": 89299,
+        "cssRaw": 12923,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      }
+    ]
+  }
+]

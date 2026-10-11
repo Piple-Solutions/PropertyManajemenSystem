@@ -1,0 +1,19 @@
+{
+ "userCreate": 10,
+ "userUpdate": 11,
+ "userStatus": 12,
+ "userRoles": 13,
+ "userDelete": 11,
+ "roleCreate": 11,
+ "roleUpdate": 11,
+ "rolePerms": 17,
+ "roleDelete": 11,
+ "invoiceCreate": 12,
+ "invoiceUpdate": 13,
+ "invoiceSend": 10,
+ "invoicePay": 10,
+ "expenseCreate": 8,
+ "expenseUpdate": 9,
+ "expenseDelete": 9,
+ "loginFailed": 3
+}

@@ -1,0 +1,120 @@
+[
+  {
+    "id": "act-001",
+    "category": "authentication",
+    "action": "login",
+    "description": "Admin logged in from dashboard",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "session",
+    "entityId": "session-001",
+    "createdAt": "2026-09-15T08:00:00Z"
+  },
+  {
+    "id": "act-002",
+    "category": "reservation",
+    "action": "create",
+    "description": "Created new reservation RSV-2026-006 for John Doe",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "reservation",
+    "entityId": "res-006",
+    "metadata": { "reservationCode": "RSV-2026-006", "guestName": "John Doe", "totalAmount": "1500000" },
+    "createdAt": "2026-09-15T09:15:00Z"
+  },
+  {
+    "id": "act-003",
+    "category": "reservation",
+    "action": "checkin",
+    "description": "Checked in guest Jane Smith for reservation RSV-2026-002",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "reservation",
+    "entityId": "res-002",
+    "metadata": { "reservationCode": "RSV-2026-002", "guestName": "Jane Smith" },
+    "createdAt": "2026-09-16T14:30:00Z"
+  },
+  {
+    "id": "act-004",
+    "category": "finance",
+    "action": "invoice_create",
+    "description": "Created invoice INV-2026-003 for Robert Johnson",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "invoice",
+    "entityId": "inv-003",
+    "metadata": { "invoiceNumber": "INV-2026-003", "guestName": "Robert Johnson", "total": "1500000" },
+    "createdAt": "2026-09-17T10:00:00Z"
+  },
+  {
+    "id": "act-005",
+    "category": "finance",
+    "action": "payment",
+    "description": "Marked invoice INV-2026-001 as paid",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "invoice",
+    "entityId": "inv-001",
+    "metadata": { "invoiceNumber": "INV-2026-001", "amount": "1500000", "paymentStatus": "Paid" },
+    "createdAt": "2026-09-17T11:30:00Z"
+  },
+  {
+    "id": "act-006",
+    "category": "reservation",
+    "action": "checkout",
+    "description": "Checked out guest Emily Wilson for reservation RSV-2026-004",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "reservation",
+    "entityId": "res-004",
+    "metadata": { "reservationCode": "RSV-2026-004", "guestName": "Emily Wilson" },
+    "createdAt": "2026-09-18T12:00:00Z"
+  },
+  {
+    "id": "act-007",
+    "category": "finance",
+    "action": "expense_create",
+    "description": "Created expense for Utilities bill",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "expense",
+    "entityId": "exp-001",
+    "metadata": { "category": "Utilities", "amount": "2500000" },
+    "createdAt": "2026-09-19T09:00:00Z"
+  },
+  {
+    "id": "act-008",
+    "category": "reservation",
+    "action": "cancel",
+    "description": "Cancelled reservation RSV-2026-005 for Michael Brown",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "reservation",
+    "entityId": "res-005",
+    "metadata": { "reservationCode": "RSV-2026-005", "guestName": "Michael Brown" },
+    "createdAt": "2026-09-20T15:45:00Z"
+  },
+  {
+    "id": "act-009",
+    "category": "system",
+    "action": "login",
+    "description": "Staff user logged in from dashboard",
+    "userId": "user-002",
+    "userName": "Staff User",
+    "entityType": "session",
+    "entityId": "session-002",
+    "createdAt": "2026-09-21T07:30:00Z"
+  },
+  {
+    "id": "act-010",
+    "category": "finance",
+    "action": "invoice_send",
+    "description": "Sent invoice INV-2026-002 to guest",
+    "userId": "user-001",
+    "userName": "Admin User",
+    "entityType": "invoice",
+    "entityId": "inv-002",
+    "metadata": { "invoiceNumber": "INV-2026-002", "guestName": "Jane Smith" },
+    "createdAt": "2026-09-22T10:15:00Z"
+  }
+]

@@ -1,0 +1,234 @@
+{
+  "role-001": {
+    "createUserWithRole": {
+      "role-001": 201,
+      "role-002": 201,
+      "role-003": 201,
+      "role-004": 201,
+      "role-005": 201
+    },
+    "assignRoleToStaffUser": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "demoteUserHoldingRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "deactivateUserHoldingRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "changeEmailOfUserHoldingRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "deleteUserHoldingRole": {
+      "role-001": 204,
+      "role-002": 204,
+      "role-003": 204,
+      "role-004": 204,
+      "role-005": 204
+    },
+    "createRoleCopyingRole": {
+      "role-001": 201,
+      "role-002": 201,
+      "role-003": 201,
+      "role-004": 201,
+      "role-005": 201
+    },
+    "setPermissionsOfCustomRoleToRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    }
+  },
+  "role-002": {
+    "createUserWithRole": {
+      "role-001": 403,
+      "role-002": 201,
+      "role-003": 201,
+      "role-004": 201,
+      "role-005": 201
+    },
+    "assignRoleToStaffUser": {
+      "role-001": 403,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "demoteUserHoldingRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "deactivateUserHoldingRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "changeEmailOfUserHoldingRole": {
+      "role-001": 200,
+      "role-002": 200,
+      "role-003": 200,
+      "role-004": 200,
+      "role-005": 200
+    },
+    "deleteUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "createRoleCopyingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "setPermissionsOfCustomRoleToRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    }
+  },
+  "role-003": {
+    "createUserWithRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "assignRoleToStaffUser": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "demoteUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "deactivateUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "changeEmailOfUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "deleteUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "createRoleCopyingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "setPermissionsOfCustomRoleToRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    }
+  },
+  "role-005": {
+    "createUserWithRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "assignRoleToStaffUser": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "demoteUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "deactivateUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "changeEmailOfUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "deleteUserHoldingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "createRoleCopyingRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    },
+    "setPermissionsOfCustomRoleToRole": {
+      "role-001": 403,
+      "role-002": 403,
+      "role-003": 403,
+      "role-004": 403,
+      "role-005": 403
+    }
+  }
+}

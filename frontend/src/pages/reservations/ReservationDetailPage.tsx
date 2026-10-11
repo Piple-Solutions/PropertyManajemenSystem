@@ -7,6 +7,8 @@ import { roomTypeService } from '@/services/roomTypeService';
 import { Button } from '@/components/shared/Button';
 import { Badge } from '@/components/shared/Badge';
 import { Card } from '@/components/shared/Card';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { apiErrorMessage } from '@/services/api';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { reservationStatusLabels, reservationSourceLabels } from '@/constants/reservationStatuses';
 import { ReservationWizardModal } from '@/components/shared/ReservationWizardModal';
@@ -29,26 +31,33 @@ export default function ReservationDetailPage() {
   const [showEdit, setShowEdit] = useState(false);
   const [reservation, setReservation] = useState<ApiReservation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // FE-004: a real failure (not a 404) and a rejected status action are shown
+  // with the existing ErrorState instead of "not found" / silence.
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (!id) return;
     let cancelled = false;
     setIsLoading(true);
-    service.getFullById(id).then((r) => {
+    setLoadError(null);
+    service.fetchFullById(id).then((r) => {
       if (!cancelled) {
         setReservation(r ?? null);
         setIsLoading(false);
       }
-    }).catch(() => {
+    }).catch((err: unknown) => {
       if (!cancelled) {
         setReservation(null);
+        setLoadError(apiErrorMessage(err, ''));
         setIsLoading(false);
       }
     });
     return () => {
       cancelled = true;
     };
-  }, [id, showEdit, service]);
+  }, [id, showEdit, service, reloadKey]);
 
   const rooms = useMemo(() => reservation?.rooms ?? [], [reservation]);
   const [allTypes, setAllTypes] = useState<Array<{ id: string; name: string; defaultRate: number }>>([]);
@@ -137,6 +146,10 @@ export default function ReservationDetailPage() {
     );
   }
 
+  if (loadError !== null && !reservation) {
+    return <ErrorState description={loadError || undefined} onRetry={() => setReloadKey((k) => k + 1)} />;
+  }
+
   if (!reservation) {
     return (
       <div style={{ padding: 'var(--space-xl, 20px)', textAlign: 'center' }}>
@@ -146,23 +159,23 @@ export default function ReservationDetailPage() {
     );
   }
 
-  const handleCheckIn = async () => {
-    await service.checkIn(reservation.id);
-    setConfirmAction(null);
-    navigate(0);
+  // Success keeps the old behavior (close + reload); a rejected action closes
+  // the dialog and shows the backend message instead of reloading silently.
+  const runAction = async (action: (id: string) => Promise<boolean>) => {
+    setActionError(null);
+    try {
+      await action(reservation.id);
+      setConfirmAction(null);
+      navigate(0);
+    } catch (err) {
+      setConfirmAction(null);
+      setActionError(apiErrorMessage(err, ''));
+    }
   };
 
-  const handleCheckOut = async () => {
-    await service.checkOut(reservation.id);
-    setConfirmAction(null);
-    navigate(0);
-  };
-
-  const handleCancel = async () => {
-    await service.cancel(reservation.id);
-    setConfirmAction(null);
-    navigate(0);
-  };
+  const handleCheckIn = () => runAction((rid) => service.checkIn(rid));
+  const handleCheckOut = () => runAction((rid) => service.checkOut(rid));
+  const handleCancel = () => runAction((rid) => service.cancel(rid));
 
   const displayTotal = calc?.roomTotal ?? reservation.totalAmount;
 
@@ -267,6 +280,8 @@ export default function ReservationDetailPage() {
           />
         </div>
       )}
+
+      {actionError !== null && <ErrorState description={actionError || undefined} />}
 
       <Card style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>

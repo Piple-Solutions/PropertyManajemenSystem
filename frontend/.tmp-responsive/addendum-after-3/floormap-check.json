@@ -1,0 +1,44 @@
+{
+  "375x812": {
+    "mapW": 269,
+    "mapH": 151,
+    "cardW": 269,
+    "rooms": 11,
+    "minRoomPx": 21,
+    "medianRoomPx": 21,
+    "belowTarget": 10,
+    "minLabelPx": 10,
+    "pageOverflow": false,
+    "mapScrollable": true
+  },
+  "375x812-popup": {
+    "visible": true,
+    "box": {
+      "x": 27.5,
+      "y": 665,
+      "width": 320,
+      "height": 131
+    }
+  },
+  "768x1024": {
+    "mapW": 503,
+    "mapH": 283,
+    "cardW": 503,
+    "rooms": 11,
+    "minRoomPx": 39,
+    "medianRoomPx": 39,
+    "belowTarget": 10,
+    "minLabelPx": 11,
+    "pageOverflow": false,
+    "mapScrollable": false
+  },
+  "768x1024-popup": {
+    "visible": true,
+    "box": {
+      "x": 224,
+      "y": 872,
+      "width": 320,
+      "height": 136
+    }
+  }
+}

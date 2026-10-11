@@ -1,0 +1,432 @@
+/* Invoice print template — A4, Joglo Seruni visual identity.
+ * Layout follows assets/InvoiceTemplate.pdf (visual reference only); footer
+ * content follows assets/FooterTextInvoice.txt. Palette: white paper, ink
+ * #232D36, brown accent #9B4C24, light tan #F3E7D7 table header.
+ *
+ * Screen: print area hidden. Print: only the invoice document is visible.
+ * General print-CSS guidance (no verified ui-ux-pro-max print match found):
+ * proper @page margins, repeating thead, break-inside avoidance, no clipping.
+ */
+
+.invoice-print-area {
+  display: none;
+}
+
+.invoice-print {
+  font-family: var(--font-family-sans);
+  color: #232d36;
+  background: #ffffff;
+  /* Containing block for the absolutely positioned LUNAS watermark. */
+  position: relative;
+  padding: 8px 4px 0;
+}
+
+/* Layering: the LUNAS watermark sits on the TOP layer, above every invoice
+ * field, text and table. It stays readable-through (low opacity, transparent
+ * background) and non-interactive (`pointer-events: none`), so it stamps the
+ * document without hiding information.
+ * `position: relative` on siblings keeps normal flow painting predictable. */
+.invoice-print > *:not(.invoice-watermark) {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- LUNAS watermark --------------------------------------------------------
+ * One large word inside a thin rectangular frame, centred right-of-middle of
+ * the sheet, rotated slightly, on the TOP layer (above all invoice content).
+ *
+ * Border and text are ONE element, so:
+ *  - the single `transform` rotates them together as one object;
+ *  - `border: ... solid currentColor` gives them one colour;
+ *  - one `opacity` keeps them visually coherent;
+ *  - `padding` in `em` makes the whole frame scale from `font-size` alone.
+ *
+ * Corners are minimally rounded so this reads as a document frame rather than a
+ * UI card. Background is transparent: invoice content stays fully visible
+ * through it. No shadow, glow, gradient or 3D — ink on paper.
+ *
+ * Sizing uses `clamp()` with `vw`. In print, `.invoice-print-area` is
+ * `position: absolute; inset: 0` against the page box, so `vw` tracks the paper
+ * width and the frame scales with the sheet instead of being a fixed size.
+ *
+ * Colour is a muted brick red derived from the existing danger red (#962222)
+ * and harmonious with the invoice's bronze accent (#97764D). At this opacity it
+ * prints as a light grey in B&W, so meaning never depends on colour alone.
+ *
+ * Absolutely positioned => zero flow height, so it cannot add a page or push
+ * content down. `break-inside: avoid` keeps it whole near a page boundary.
+ */
+.invoice-watermark {
+  position: absolute;
+  top: 45%;
+  left: 52%;
+  transform: translate(-50%, -50%) rotate(-11deg);
+  /* Top layer: always above invoice fields, text and tables. */
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42em 0.8em;
+
+  font-family: var(--font-family-sans);
+  font-size: clamp(40px, 8.6vw, 92px);
+  /* Medium/semibold: hierarchy comes from size + tracking, not a heavy face. */
+  font-weight: 600;
+  /* Moderate tracking — legible as tracked-out, not exaggerated. */
+  letter-spacing: 0.16em;
+  /* Trailing letter-space would otherwise push the word off-centre. */
+  text-indent: 0.16em;
+  line-height: 1;
+  white-space: nowrap;
+
+  /* Frame and text share one ink colour and one opacity. Border width is in
+   * `em` so the frame stays tied to the word it encloses and scales with it,
+   * reading as an inked rule of comparable weight to the letterforms. */
+  color: #8c3a33;
+  border: 0.08em solid currentColor;
+  border-radius: 2px;
+  background: transparent;
+
+  opacity: 0.16;
+  user-select: none;
+
+  /* Keep the ink when the browser strips backgrounds by default. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+  break-inside: avoid;
+  /* Purely decorative: never a hit target or selectable as an action. */
+  pointer-events: none;
+}
+
+/* --- Masthead: large INVOICE title left, brown logo right ------------------- */
+.invoice-print__masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #232d36;
+  margin-bottom: 0;
+}
+
+.invoice-print__mastitle {
+  font-family: var(--font-family-display);
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: #232d36;
+}
+
+.invoice-print__logo {
+  width: 110px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* Centered brand subtitle below the header divider. Tracking is modest so
+ * the longer brand name stays balanced and never overflows the page. */
+.invoice-print__doctitle {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  /* Trailing tracking would otherwise push the text off-centre. */
+  text-indent: 0.12em;
+  color: #232D36;
+  margin: 20px 0 22px;
+  overflow-wrap: anywhere;
+}
+
+/* --- Invoice information: two-column grid --------------------------------- */
+.invoice-print__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 48px;
+  margin-bottom: 12px;
+}
+
+.invoice-print__infocol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.invoice-print__inforow {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.invoice-print__infolabel {
+  font-size: 11px;
+  color: #756a61;
+}
+
+.invoice-print__infovalue {
+  font-size: 13px;
+  font-weight: 700;
+  color: #232d36;
+  overflow-wrap: anywhere;
+}
+
+.invoice-print__statusline {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #756a61;
+  margin-bottom: 10px;
+}
+
+.invoice-print__statusline strong {
+  color: #232d36;
+  font-weight: 700;
+}
+
+.invoice-print__reservation {
+  margin-bottom: 14px;
+}
+
+.invoice-print__muted {
+  font-size: 13px;
+  color: #3a454e;
+  overflow-wrap: anywhere;
+}
+
+/* --- Purchase details table ----------------------------------------------- */
+.invoice-print__section {
+  margin-bottom: 16px;
+}
+
+.invoice-print__sectiontitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #232d36;
+  margin: 0 0 8px;
+}
+
+.invoice-print__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  /* Breathing room between the items table and the payment summary box. */
+  margin-bottom: 24px;
+}
+
+.invoice-print__table th {
+  background-color: #f3e7d7;
+  color: #232d36;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  padding: 8px 10px;
+  border: 1px solid #d8cbbe;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.invoice-print__table td {
+  border: 1px solid #e3ded6;
+  padding: 8px 10px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.invoice-print__table tr {
+  break-inside: avoid;
+}
+
+/* --- Payment summary: right-aligned bordered box --------------------------- */
+.invoice-print__totals {
+  margin-left: auto;
+  margin-top: 0;
+  width: 300px;
+  max-width: 100%;
+  margin-bottom: 4px;
+  border: 1px solid #d8cbbe;
+  break-inside: avoid;
+  /* Lift above the watermark layer (asserted by e2e layering tests). */
+  position: relative;
+  z-index: 1;
+}
+
+.invoice-print__trow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 7px 12px;
+  border-bottom: 1px solid #ede6da;
+  font-size: 13px;
+  color: #232d36;
+}
+
+.invoice-print__trow:last-child {
+  border-bottom: none;
+}
+
+.invoice-print__trow > span:first-child {
+  color: #756a61;
+}
+
+.invoice-print__trow > span:last-child {
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.invoice-print__trow--total {
+  border-top: 1px solid #d8cbbe;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.invoice-print__trow--total > span {
+  color: #232d36;
+}
+
+/* --- Notes ----------------------------------------------------------------- */
+.invoice-print__notes {
+  margin-bottom: 16px;
+  break-inside: avoid;
+}
+
+/* --- Footer ---------------------------------------------------------------- */
+.invoice-print__footer {
+  border-top: 1px solid #232d36;
+  margin-top: 28px;
+  padding-top: 16px;
+  padding-bottom: 4px;
+  text-align: center;
+  break-inside: avoid;
+}
+
+.invoice-print__footbrand {
+  font-size: 14px;
+  font-weight: 700;
+  color: #232d36;
+  margin-bottom: 6px;
+}
+
+.invoice-print__footline {
+  font-size: 12px;
+  color: #3a454e;
+  margin-bottom: 2px;
+  overflow-wrap: anywhere;
+}
+
+.invoice-print__footicons {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin-top: 14px;
+}
+
+.invoice-print__footicon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #756a61;
+  min-width: 64px;
+}
+
+.invoice-print__footiconcircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #9b4c24;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .invoice-print-area,
+  .invoice-print-area * {
+    visibility: visible;
+  }
+
+  .invoice-print-area {
+    display: block;
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .invoice-print {
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Repeating page furniture: the outer sheet table's thead (masthead) and
+   * tfoot (footer) repeat at the top/bottom of every printed page, with
+   * space reserved in-flow so they never overlap content. */
+  .invoice-print__sheet {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .invoice-print__sheet > thead {
+    display: table-header-group;
+  }
+
+  .invoice-print__sheet > tfoot {
+    display: table-footer-group;
+  }
+
+  .invoice-print__sheet > thead > tr > td,
+  .invoice-print__sheet > tbody > tr > td,
+  .invoice-print__sheet > tfoot > tr > td {
+    padding: 0;
+    border: none;
+    vertical-align: top;
+  }
+
+  .invoice-print__logo,
+  .invoice-print__footiconcircle {
+    /* Keep artwork crisp and icon circles filled when the browser strips
+     * backgrounds/images by default. */
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .invoice-print__table thead {
+    display: table-header-group;
+  }
+
+  .invoice-print__table tfoot {
+    display: table-footer-group;
+  }
+}

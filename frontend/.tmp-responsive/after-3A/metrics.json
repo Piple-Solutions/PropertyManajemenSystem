@@ -1,0 +1,4242 @@
+{
+  "viewports": [
+    {
+      "name": "375x812",
+      "width": 375,
+      "height": 812
+    },
+    {
+      "name": "430x932",
+      "width": 430,
+      "height": 932
+    },
+    {
+      "name": "768x1024",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "1024x768",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "name": "1366x768",
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "name": "1440x900",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "pages": [
+    {
+      "name": "contact-public",
+      "url": "/contact"
+    },
+    {
+      "name": "dashboard",
+      "url": "/dashboard"
+    },
+    {
+      "name": "reservation-list",
+      "url": "/dashboard/reservations"
+    },
+    {
+      "name": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar"
+    },
+    {
+      "name": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new"
+    },
+    {
+      "name": "reservation-detail",
+      "url": "/dashboard/reservations/res-001"
+    },
+    {
+      "name": "room-list",
+      "url": "/dashboard/rooms"
+    },
+    {
+      "name": "room-type-list",
+      "url": "/dashboard/room-types"
+    },
+    {
+      "name": "invoice-list",
+      "url": "/dashboard/finance/invoices"
+    },
+    {
+      "name": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001"
+    },
+    {
+      "name": "user-list",
+      "url": "/dashboard/users"
+    },
+    {
+      "name": "role-list",
+      "url": "/dashboard/roles"
+    },
+    {
+      "name": "permission-list",
+      "url": "/dashboard/permissions"
+    },
+    {
+      "name": "finance-sales",
+      "url": "/dashboard/finance/sales"
+    },
+    {
+      "name": "finance-reports",
+      "url": "/dashboard/finance/reports"
+    },
+    {
+      "name": "finance-expenses",
+      "url": "/dashboard/finance/expenses"
+    },
+    {
+      "name": "activity-log",
+      "url": "/dashboard/activity"
+    },
+    {
+      "name": "change-password",
+      "url": "/change-password"
+    }
+  ],
+  "skipped": [
+    "wizard step advance attempted at 375px: {\"nextVisible\":true,\"afterNextUrl\":\"http://localhost:5173/dashboard/reservations/new\",\"afterNextBody\":\"rendered\"}",
+    "drawer checks at 375px: {\"hamburgerVisible\":true,\"hamburgerExpandedBefore\":\"false\",\"topbarHeight\":56,\"mainMarginLeft\":\"0px\",\"hamburgerExpandedAfter\":\"true\",\"backdropVisible\":true,\"focusInsideDrawer\":true,\"closedByEscape\":true,\"closedByBackdrop\":true,\"closedByRouteChange\":false,\"noPageOverflow375\":true}"
+  ],
+  "metrics": [
+    {
+      "viewport": "375x812",
+      "page": "contact-public",
+      "url": "/contact",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": false
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 0,
+      "smallTargetSamples": [],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "375x812",
+      "page": "dashboard",
+      "url": "/dashboard",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div.dm-marquee__track",
+          "widthPx": 2936
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link.pms-link--active 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "button.dm-btn.dm-btn--primary 83x36"
+      ],
+      "smallTextNodes": 19,
+      "topSmallText": [
+        "span.dm-legend__item x8",
+        "th x6",
+        "strong x4",
+        "text x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "375x812",
+      "page": "reservation-list",
+      "url": "/dashboard/reservations",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 8,
+      "topSmallText": [
+        "span x8"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div",
+          "widthPx": 700
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 6,
+      "topSmallText": [
+        "div x6"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 3,
+      "topSmallText": [
+        "span.wizard-step__label x3"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "reservation-detail",
+      "url": "/dashboard/reservations/res-001",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "375x812",
+      "page": "room-list",
+      "url": "/dashboard/rooms",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 53,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 26,
+      "topSmallText": [
+        "span x22",
+        "th x4"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "room-type-list",
+      "url": "/dashboard/room-types",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 27,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 32,
+      "topSmallText": [
+        "span x32"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "invoice-list",
+      "url": "/dashboard/finance/invoices",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 33,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 11,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span.invoice-print__infolabel x6",
+        "th x5",
+        "span x5"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "375x812",
+      "page": "user-list",
+      "url": "/dashboard/users",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 54,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "a 55x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "role-list",
+      "url": "/dashboard/roles",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 16,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "button 48x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "permission-list",
+      "url": "/dashboard/permissions",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "button 40x40"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "finance-sales",
+      "url": "/dashboard/finance/sales",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 16,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 1,
+      "topSmallText": [
+        "span x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "375x812",
+      "page": "finance-reports",
+      "url": "/dashboard/finance/reports",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 26,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "th x15",
+        "span x1"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px"
+      ],
+      "inputFontsMin": 13.3333,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "finance-expenses",
+      "url": "/dashboard/finance/expenses",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 11,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "375x812",
+      "page": "activity-log",
+      "url": "/dashboard/activity",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link.pms-link--active 216x41",
+        "button 216x36",
+        "button 40x40"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span x16"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "375x812",
+      "page": "change-password",
+      "url": "/change-password",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 375,
+      "docClientWidth": 375,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.64,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 8,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "a 126x17"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "contact-public",
+      "url": "/contact",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": false
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 0,
+      "smallTargetSamples": [],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "430x932",
+      "page": "dashboard",
+      "url": "/dashboard",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div.dm-marquee__track",
+          "widthPx": 2936
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link.pms-link--active 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "button.dm-btn.dm-btn--primary 83x36"
+      ],
+      "smallTextNodes": 19,
+      "topSmallText": [
+        "span.dm-legend__item x8",
+        "th x6",
+        "strong x4",
+        "text x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "430x932",
+      "page": "reservation-list",
+      "url": "/dashboard/reservations",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 8,
+      "topSmallText": [
+        "span x8"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div",
+          "widthPx": 700
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 6,
+      "topSmallText": [
+        "div x6"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 3,
+      "topSmallText": [
+        "span.wizard-step__label x3"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "reservation-detail",
+      "url": "/dashboard/reservations/res-001",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "430x932",
+      "page": "room-list",
+      "url": "/dashboard/rooms",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 53,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 26,
+      "topSmallText": [
+        "span x22",
+        "th x4"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "room-type-list",
+      "url": "/dashboard/room-types",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 27,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 32,
+      "topSmallText": [
+        "span x32"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "invoice-list",
+      "url": "/dashboard/finance/invoices",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 33,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 11,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span.invoice-print__infolabel x6",
+        "th x5",
+        "span x5"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "430x932",
+      "page": "user-list",
+      "url": "/dashboard/users",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 54,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "a 55x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "role-list",
+      "url": "/dashboard/roles",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 16,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "button 48x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "permission-list",
+      "url": "/dashboard/permissions",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "button 40x40"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "finance-sales",
+      "url": "/dashboard/finance/sales",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 16,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 1,
+      "topSmallText": [
+        "span x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "430x932",
+      "page": "finance-reports",
+      "url": "/dashboard/finance/reports",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 26,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "th x15",
+        "span x1"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px"
+      ],
+      "inputFontsMin": 13.3333,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "finance-expenses",
+      "url": "/dashboard/finance/expenses",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 11,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "430x932",
+      "page": "activity-log",
+      "url": "/dashboard/activity",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 14,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link.pms-link--active 216x41",
+        "button 216x36",
+        "button 40x40"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span x16"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "430x932",
+      "page": "change-password",
+      "url": "/change-password",
+      "htmlFont": "13px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 430,
+      "docClientWidth": 430,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.558,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 8,
+      "smallTargetSamples": [
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36",
+        "a 126x17"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "contact-public",
+      "url": "/contact",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": false
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 0,
+      "smallTargetSamples": [],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "768x1024",
+      "page": "dashboard",
+      "url": "/dashboard",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div.dm-marquee__track",
+          "widthPx": 2936
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button.dm-btn.dm-btn--primary 83x36",
+        "a.dm-btn.dm-btn--primary 62x36",
+        "a 71x36",
+        "a 71x36",
+        "a 71x36",
+        "a 71x36"
+      ],
+      "smallTextNodes": 19,
+      "topSmallText": [
+        "span.dm-legend__item x8",
+        "th x6",
+        "strong x4",
+        "text x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "768x1024",
+      "page": "reservation-list",
+      "url": "/dashboard/reservations",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 7,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "select 91x37"
+      ],
+      "smallTextNodes": 8,
+      "topSmallText": [
+        "span x8"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 2,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36"
+      ],
+      "smallTextNodes": 6,
+      "topSmallText": [
+        "div x6"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 2,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "reservation-detail",
+      "url": "/dashboard/reservations/res-001",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 2,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "768x1024",
+      "page": "room-list",
+      "url": "/dashboard/rooms",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 36,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 77x29",
+        "button 77x29",
+        "button 124x24",
+        "button 111x24",
+        "button 100x24",
+        "button 96x24"
+      ],
+      "smallTextNodes": 26,
+      "topSmallText": [
+        "span x22",
+        "th x4"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "room-type-list",
+      "url": "/dashboard/room-types",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 20,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 33x36",
+        "button 33x36",
+        "button 33x36",
+        "button 33x36",
+        "button 33x36",
+        "button 33x36"
+      ],
+      "smallTextNodes": 32,
+      "topSmallText": [
+        "span x32"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "invoice-list",
+      "url": "/dashboard/finance/invoices",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 24,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 16x36",
+        "button 16x36",
+        "button 16x36",
+        "button 16x36",
+        "button 16x36",
+        "button 16x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 2,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span.invoice-print__infolabel x6",
+        "th x5",
+        "span x5"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "768x1024",
+      "page": "user-list",
+      "url": "/dashboard/users",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 49,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "a 55x36",
+        "button 55x36",
+        "button 66x36",
+        "button 91x36",
+        "a 55x36",
+        "button 55x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "role-list",
+      "url": "/dashboard/roles",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 11,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 48x36",
+        "button 48x36",
+        "button 48x36",
+        "button 48x36",
+        "button 48x36",
+        "button 40x40"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "permission-list",
+      "url": "/dashboard/permissions",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "finance-sales",
+      "url": "/dashboard/finance/sales",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 7,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 67x36",
+        "button 87x36",
+        "button 75x36",
+        "button 120x36",
+        "button 121x36"
+      ],
+      "smallTextNodes": 1,
+      "topSmallText": [
+        "span x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "768x1024",
+      "page": "finance-reports",
+      "url": "/dashboard/finance/reports",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 67x36",
+        "button 87x36",
+        "button 75x36",
+        "button 69x36",
+        "button 70x36",
+        "button 79x36"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "th x15",
+        "span x1"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px"
+      ],
+      "inputFontsMin": 13.3333,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "finance-expenses",
+      "url": "/dashboard/finance/expenses",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 2,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "768x1024",
+      "page": "activity-log",
+      "url": "/dashboard/activity",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40",
+        "button 40x40"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span x16"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "768x1024",
+      "page": "change-password",
+      "url": "/change-password",
+      "htmlFont": "14px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 768,
+      "docClientWidth": 768,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 60,
+        "shareOfViewport": 0.078,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 3,
+      "smallTargetSamples": [
+        "button 44x36",
+        "button 46x36",
+        "a 126x17"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "contact-public",
+      "url": "/contact",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": false
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 0,
+      "smallTargetSamples": [],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1024x768",
+      "page": "dashboard",
+      "url": "/dashboard",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div.dm-marquee__track",
+          "widthPx": 2936
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link.pms-link--active 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 19,
+      "topSmallText": [
+        "span.dm-legend__item x8",
+        "th x6",
+        "strong x4",
+        "text x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1024x768",
+      "page": "reservation-list",
+      "url": "/dashboard/reservations",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 8,
+      "topSmallText": [
+        "span x8"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 6,
+      "topSmallText": [
+        "div x6"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "reservation-detail",
+      "url": "/dashboard/reservations/res-001",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1024x768",
+      "page": "room-list",
+      "url": "/dashboard/rooms",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 44,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 26,
+      "topSmallText": [
+        "span x22",
+        "th x4"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "room-type-list",
+      "url": "/dashboard/room-types",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 28,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 32,
+      "topSmallText": [
+        "span x32"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "invoice-list",
+      "url": "/dashboard/finance/invoices",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 34,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 12,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span.invoice-print__infolabel x6",
+        "th x5",
+        "span x5"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1024x768",
+      "page": "user-list",
+      "url": "/dashboard/users",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 55,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "role-list",
+      "url": "/dashboard/roles",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "permission-list",
+      "url": "/dashboard/permissions",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "finance-sales",
+      "url": "/dashboard/finance/sales",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 1,
+      "topSmallText": [
+        "span x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1024x768",
+      "page": "finance-reports",
+      "url": "/dashboard/finance/reports",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 27,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "th x15",
+        "span x1"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px"
+      ],
+      "inputFontsMin": 13.3333,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "finance-expenses",
+      "url": "/dashboard/finance/expenses",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 12,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1024x768",
+      "page": "activity-log",
+      "url": "/dashboard/activity",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link.pms-link--active 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span x16"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1024x768",
+      "page": "change-password",
+      "url": "/change-password",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.234,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "contact-public",
+      "url": "/contact",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": false
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 0,
+      "smallTargetSamples": [],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1366x768",
+      "page": "dashboard",
+      "url": "/dashboard",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div.dm-marquee__track",
+          "widthPx": 2936
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link.pms-link--active 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 19,
+      "topSmallText": [
+        "span.dm-legend__item x8",
+        "th x6",
+        "strong x4",
+        "text x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1366x768",
+      "page": "reservation-list",
+      "url": "/dashboard/reservations",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 8,
+      "topSmallText": [
+        "span x8"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 6,
+      "topSmallText": [
+        "div x6"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "reservation-detail",
+      "url": "/dashboard/reservations/res-001",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1366x768",
+      "page": "room-list",
+      "url": "/dashboard/rooms",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 44,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 26,
+      "topSmallText": [
+        "span x22",
+        "th x4"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "room-type-list",
+      "url": "/dashboard/room-types",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 28,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 32,
+      "topSmallText": [
+        "span x32"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "invoice-list",
+      "url": "/dashboard/finance/invoices",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 34,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 12,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span.invoice-print__infolabel x6",
+        "th x5",
+        "span x5"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1366x768",
+      "page": "user-list",
+      "url": "/dashboard/users",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 55,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "role-list",
+      "url": "/dashboard/roles",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "permission-list",
+      "url": "/dashboard/permissions",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "finance-sales",
+      "url": "/dashboard/finance/sales",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 1,
+      "topSmallText": [
+        "span x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1366x768",
+      "page": "finance-reports",
+      "url": "/dashboard/finance/reports",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 27,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "th x15",
+        "span x1"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px"
+      ],
+      "inputFontsMin": 13.3333,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "finance-expenses",
+      "url": "/dashboard/finance/expenses",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 12,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1366x768",
+      "page": "activity-log",
+      "url": "/dashboard/activity",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link.pms-link--active 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span x16"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1366x768",
+      "page": "change-password",
+      "url": "/change-password",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1366,
+      "docClientWidth": 1366,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.176,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "contact-public",
+      "url": "/contact",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": false
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 0,
+      "smallTargetSamples": [],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1440x900",
+      "page": "dashboard",
+      "url": "/dashboard",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [
+        {
+          "selector": "div.dm-marquee__track",
+          "widthPx": 2936
+        }
+      ],
+      "wideElementsTotal": 1,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link.pms-link--active 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 13,
+      "topSmallText": [
+        "span.dm-legend__item x8",
+        "strong x4",
+        "text x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1440x900",
+      "page": "reservation-list",
+      "url": "/dashboard/reservations",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 8,
+      "topSmallText": [
+        "span x8"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "reservation-calendar",
+      "url": "/dashboard/reservations/calendar",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 6,
+      "topSmallText": [
+        "div x6"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "reservation-wizard-new",
+      "url": "/dashboard/reservations/new",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "reservation-detail",
+      "url": "/dashboard/reservations/res-001",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 10,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1440x900",
+      "page": "room-list",
+      "url": "/dashboard/rooms",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 44,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 26,
+      "topSmallText": [
+        "span x22",
+        "th x4"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "room-type-list",
+      "url": "/dashboard/room-types",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 28,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-link 216x41"
+      ],
+      "smallTextNodes": 32,
+      "topSmallText": [
+        "span x32"
+      ],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "invoice-list",
+      "url": "/dashboard/finance/invoices",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 34,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "invoice-detail",
+      "url": "/dashboard/finance/invoices/inv-001",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 12,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span.invoice-print__infolabel x6",
+        "th x5",
+        "span x5"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1440x900",
+      "page": "user-list",
+      "url": "/dashboard/users",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 55,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "role-list",
+      "url": "/dashboard/roles",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "permission-list",
+      "url": "/dashboard/permissions",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link.pms-link--active 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "finance-sales",
+      "url": "/dashboard/finance/sales",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 17,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 1,
+      "topSmallText": [
+        "span x1"
+      ],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1440x900",
+      "page": "finance-reports",
+      "url": "/dashboard/finance/reports",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 27,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37",
+        "a.pms-sublink 184x37"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "th x15",
+        "span x1"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px",
+        "13.3333px"
+      ],
+      "inputFontsMin": 13.3333,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "finance-expenses",
+      "url": "/dashboard/finance/expenses",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 12,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink 184x37",
+        "a.pms-sublink.pms-sublink--active 184x37"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [],
+      "inputFontsMin": null,
+      "inputBelow16": false
+    },
+    {
+      "viewport": "1440x900",
+      "page": "activity-log",
+      "url": "/dashboard/activity",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 15,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link.pms-link--active 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 16,
+      "topSmallText": [
+        "span x16"
+      ],
+      "inputFonts": [
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    },
+    {
+      "viewport": "1440x900",
+      "page": "change-password",
+      "url": "/change-password",
+      "htmlFont": "16px",
+      "bodyFont": "14px",
+      "pageOverflow": false,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "sidebar": {
+        "present": true,
+        "position": "fixed",
+        "widthPx": 240,
+        "shareOfViewport": 0.167,
+        "visible": true
+      },
+      "wideElements": [],
+      "wideElementsTotal": 0,
+      "smallTargets": 9,
+      "smallTargetSamples": [
+        "button 44x36",
+        "a.pms-link 216x41",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "button.pms-link.pms-link--parent 216x42",
+        "a.pms-link 216x41",
+        "a.pms-link 216x41",
+        "button 216x36"
+      ],
+      "smallTextNodes": 0,
+      "topSmallText": [],
+      "inputFonts": [
+        "14px",
+        "14px",
+        "14px"
+      ],
+      "inputFontsMin": 14,
+      "inputBelow16": true
+    }
+  ]
+}

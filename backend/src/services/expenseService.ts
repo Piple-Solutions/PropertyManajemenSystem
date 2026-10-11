@@ -1,5 +1,6 @@
-import { and, eq, like, or, sql } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 import { expenses } from '../db/schema';
+import { likeContains } from '../lib/sql';
 import type { AppDb } from '../db/client';
 import { notFound } from '../lib/errors';
 import { toPublicExpense, type PublicExpense } from '../lib/presenters';
@@ -25,8 +26,7 @@ export interface UpdateExpenseInput {
 export async function listExpenses(db: AppDb, query: ExpenseListQuery): Promise<{ items: PublicExpense[]; total: number }> {
   const conditions = [];
   if (query.search) {
-    const pattern = `%${query.search}%`;
-    conditions.push(or(like(expenses.description, pattern), like(expenses.category, pattern)));
+    conditions.push(or(likeContains(expenses.description, query.search), likeContains(expenses.category, query.search)));
   }
   if (query.category !== 'all') conditions.push(eq(expenses.category, query.category));
   if (query.status !== 'all') conditions.push(eq(expenses.status, query.status));
@@ -41,7 +41,16 @@ export async function listExpenses(db: AppDb, query: ExpenseListQuery): Promise<
   const total = Number(totalRows[0]?.count ?? 0);
 
   const offset = (query.page - 1) * query.pageSize;
-  const rows = await db.select().from(expenses).where(where).limit(query.pageSize).offset(offset);
+  // BE-035: insertion order; a date-range-only filter has always walked the date index.
+  const byIndexedEquality = query.category !== 'all' || query.status !== 'all';
+  const order = !byIndexedEquality && (query.start || query.end) ? [expenses.date, sql`rowid`] : [sql`rowid`];
+  const rows = await db
+    .select()
+    .from(expenses)
+    .where(where)
+    .orderBy(...order)
+    .limit(query.pageSize)
+    .offset(offset);
 
   return { items: rows.map(toPublicExpense), total };
 }
@@ -69,9 +78,16 @@ export async function createExpense(db: AppDb, input: CreateExpenseInput): Promi
   return getExpense(db, id);
 }
 
-export async function updateExpense(db: AppDb, id: string, input: UpdateExpenseInput): Promise<PublicExpense> {
-  const rows = await db.select({ id: expenses.id }).from(expenses).where(eq(expenses.id, id)).limit(1);
+export async function updateExpense(
+  db: AppDb,
+  id: string,
+  input: UpdateExpenseInput,
+  /** Audit hook (Block 3): the row as loaded BEFORE the mutation (no extra query). */
+  capture?: (row: { date: string; category: string; description: string; amount: number; status: string }) => void,
+): Promise<PublicExpense> {
+  const rows = await db.select().from(expenses).where(eq(expenses.id, id)).limit(1);
   if (rows.length === 0) throw notFound('Expense not found');
+  capture?.(rows[0]);
 
   const patch: Partial<{ date: string; category: string; description: string; amount: number; status: string; updatedAt: string }> = {
     updatedAt: nowIso(),

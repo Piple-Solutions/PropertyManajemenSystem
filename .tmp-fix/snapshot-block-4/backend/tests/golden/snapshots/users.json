@@ -1,0 +1,317 @@
+[
+  {
+    "step": "list users",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "user-001",
+          "name": "Admin User",
+          "email": "admin@hotel.com",
+          "roles": [
+            "role-001"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-01T00:00:00Z",
+          "updatedAt": "2026-09-20T03:00:00.000Z",
+          "lastLoginAt": "2026-09-20T03:00:00.000Z"
+        },
+        {
+          "id": "user-002",
+          "name": "Manager User",
+          "email": "manager@hotel.com",
+          "roles": [
+            "role-002"
+          ],
+          "status": "active",
+          "createdAt": "2026-01-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z",
+          "lastLoginAt": "2026-09-14T09:00:00Z"
+        },
+        {
+          "id": "user-003",
+          "name": "Staff User",
+          "email": "staff@hotel.com",
+          "roles": [
+            "role-003"
+          ],
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-20T03:00:01.000Z",
+          "lastLoginAt": "2026-09-20T03:00:01.000Z"
+        },
+        {
+          "id": "user-004",
+          "name": "Inactive User",
+          "email": "inactive@hotel.com",
+          "roles": [
+            "role-004"
+          ],
+          "status": "inactive",
+          "createdAt": "2026-03-01T00:00:00Z",
+          "updatedAt": "2026-06-01T00:00:00Z"
+        },
+        {
+          "id": "user-005",
+          "name": "Another Staff",
+          "email": "another@hotel.com",
+          "roles": [
+            "role-003"
+          ],
+          "status": "active",
+          "createdAt": "2026-04-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 5
+      }
+    }
+  },
+  {
+    "step": "list users filtered",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "user-003",
+          "name": "Staff User",
+          "email": "staff@hotel.com",
+          "roles": [
+            "role-003"
+          ],
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-20T03:00:01.000Z",
+          "lastLoginAt": "2026-09-20T03:00:01.000Z"
+        },
+        {
+          "id": "user-005",
+          "name": "Another Staff",
+          "email": "another@hotel.com",
+          "roles": [
+            "role-003"
+          ],
+          "status": "active",
+          "createdAt": "2026-04-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 2
+      }
+    }
+  },
+  {
+    "step": "get user",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "user-003",
+        "name": "Staff User",
+        "email": "staff@hotel.com",
+        "roles": [
+          "role-003"
+        ],
+        "status": "active",
+        "createdAt": "2026-02-01T00:00:00Z",
+        "updatedAt": "2026-09-20T03:00:01.000Z",
+        "lastLoginAt": "2026-09-20T03:00:01.000Z"
+      }
+    }
+  },
+  {
+    "step": "get user 404",
+    "status": 404,
+    "body": {
+      "message": "User not found"
+    }
+  },
+  {
+    "step": "staff cannot list users (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): user.view"
+    }
+  },
+  {
+    "step": "list users without token",
+    "status": 401,
+    "body": {
+      "message": "Missing or malformed Authorization header"
+    }
+  },
+  {
+    "step": "create user",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "user-<id-1>",
+        "name": "Golden User",
+        "email": "golden@hotel.com",
+        "roles": [
+          "role-003"
+        ],
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:08.000Z",
+        "updatedAt": "2026-09-20T03:00:08.000Z"
+      }
+    }
+  },
+  {
+    "step": "create user duplicate email",
+    "status": 409,
+    "body": {
+      "message": "Email already registered",
+      "errors": {
+        "email": [
+          "Email already registered"
+        ]
+      }
+    }
+  },
+  {
+    "step": "create user unknown role",
+    "status": 409,
+    "body": {
+      "message": "Role not found: role-999",
+      "errors": {
+        "roles": [
+          "Role not found: role-999"
+        ]
+      }
+    }
+  },
+  {
+    "step": "create user invalid",
+    "status": 422,
+    "body": {
+      "message": "Validation failed",
+      "errors": {
+        "name": [
+          "Name must be at least 2 characters"
+        ],
+        "email": [
+          "Invalid email address"
+        ],
+        "password": [
+          "Password must be at least 6 characters"
+        ],
+        "roles": [
+          "At least one role is required"
+        ]
+      }
+    }
+  },
+  {
+    "step": "patch user",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "user-<id-1>",
+        "name": "Golden Renamed",
+        "email": "golden@hotel.com",
+        "roles": [
+          "role-003"
+        ],
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:08.000Z",
+        "updatedAt": "2026-09-20T03:00:12.000Z"
+      }
+    }
+  },
+  {
+    "step": "patch user email clash",
+    "status": 409,
+    "body": {
+      "message": "Email already registered",
+      "errors": {
+        "email": [
+          "Email already registered"
+        ]
+      }
+    }
+  },
+  {
+    "step": "set status inactive",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "user-<id-1>",
+        "name": "Golden Renamed",
+        "email": "golden@hotel.com",
+        "roles": [
+          "role-003"
+        ],
+        "status": "inactive",
+        "createdAt": "2026-09-20T03:00:08.000Z",
+        "updatedAt": "2026-09-20T03:00:14.000Z"
+      }
+    }
+  },
+  {
+    "step": "set status active",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "user-<id-1>",
+        "name": "Golden Renamed",
+        "email": "golden@hotel.com",
+        "roles": [
+          "role-003"
+        ],
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:08.000Z",
+        "updatedAt": "2026-09-20T03:00:15.000Z"
+      }
+    }
+  },
+  {
+    "step": "cannot deactivate self",
+    "status": 403,
+    "body": {
+      "message": "You cannot deactivate your own account"
+    }
+  },
+  {
+    "step": "set roles",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "user-<id-1>",
+        "name": "Golden Renamed",
+        "email": "golden@hotel.com",
+        "roles": [
+          "role-005",
+          "role-003"
+        ],
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:08.000Z",
+        "updatedAt": "2026-09-20T03:00:15.000Z"
+      }
+    }
+  },
+  {
+    "step": "delete user",
+    "status": 204,
+    "body": null
+  },
+  {
+    "step": "delete user again 404",
+    "status": 404,
+    "body": {
+      "message": "User not found"
+    }
+  },
+  {
+    "step": "cannot delete self",
+    "status": 403,
+    "body": {
+      "message": "You cannot delete your own account"
+    }
+  }
+]

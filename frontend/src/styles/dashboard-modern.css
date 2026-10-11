@@ -501,6 +501,14 @@
   }
 }
 
+/* Narrow laptops / tablet landscape: the invoice card is only ~4/12 wide, so
+   keep the stacked tiles stacked instead of the 3-column override above. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .dm-tiles--stack {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (min-width: 1024px) {
   .dm-grid {
     grid-template-columns: repeat(12, 1fr);

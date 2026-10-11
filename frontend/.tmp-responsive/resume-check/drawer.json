@@ -1,0 +1,65 @@
+{
+  "initial": {
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": false,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "tabbedIntoClosedDrawer": false,
+  "afterOpen": {
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "drawerLeft": 0
+  },
+  "afterEscape": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "afterBackdrop": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "afterTapGroupKamar": {
+    "url": "http://localhost:5173/dashboard/rooms",
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "drawerLeft": 0
+  },
+  "afterRouteChange": {
+    "url": "http://localhost:5173/dashboard",
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "afterSameRouteLinkTap": {
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "drawerLeft": 0
+  },
+  "outletNodeSurvivesResize": false,
+  "markerSet": true,
+  "afterResizeToDesktopWhileOpen": {
+    "bodyOverflow": "unset"
+  }
+}

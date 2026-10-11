@@ -33,6 +33,10 @@
   `room-types`, `rooms`, `reservations` incl. `new/:id/:id/edit/calendar`,
   `finance/sales|invoices|reports|expenses`, `activity`), `/change-password`.
   Route guards check **only `*.view`** (Phase 1) — backend enforces actions.
+- **Reservation calendar** (`/dashboard/reservations/calendar`): reads live
+  data from `GET /api/reservations/calendar` (month range, half-open) and
+  overlays Indonesian public holidays from `GET /api/public/holidays`. Month is
+  deep-linkable via `?month=YYYY-MM`; defaults to real "now".
 
 ## B. Module Status
 
@@ -102,11 +106,39 @@ Validation mirror: name min2, email format (backend lowercases), password min6.
   async save, server errors surfaced via `apiErrorMessage`.
 - Availability: `GET /availability` params `{checkIn,checkOut,excludeId?}`;
   client pre-validates `co>ci`, fail-open `[]` (server re-enforces 409).
-- Calendar pages/components read `getAll()` (embedded rooms); the dedicated
-  `GET /calendar` endpoint exists server-side but is **not yet consumed**.
+- **Calendar (adopted):** `getCalendar(from, to, {roomId?, status?})` →
+  `GET /api/reservations/calendar`, returning the slim `ApiCalendarEntry`
+  (id/code/guest/source/dates/status/total + room snapshots; no pricing/calc).
+  Requires `to > from` (400 otherwise). `CalendarView` passes
+  `from = 1st of month`, `to = 1st of NEXT month` and refetches on month change;
+  `DayReservationsPopup` passes `from = day`, `to = day + 1`.
+  **Interval is half-open `[checkIn, checkOut)`** — checkout day is NOT painted.
 - Transitions: `reserved→Check In / Cancel`, `checked-in→Check Out`
   (ConfirmDialog + `navigate(0)`); edit via wizard modal (ungated by
   `reservation.update` in UI — server enforces).
+
+### Public Holidays (`services/holidayService.ts` → `GET /api/public/holidays`)
+- **No auth** (like `/api/public/room-types`). `?year=YYYY[&force=true]`;
+  `year` validated 2000–2100 (422 otherwise), `force` bypasses the TTL cache.
+- Backend proxies + normalizes the upstream feed
+  `guangrei/APIHariLibur_V2` `calendar.json` and caches the **parsed document**
+  for 6h, so any number of years/months cost one upstream request.
+  `HOLIDAY_SOURCE_URL` env var overrides the upstream.
+- **Upstream is date-keyed and has a non-date `info` key.** The service
+  validates every key against `^\d{4}-\d{2}-\d{2}$` before use; without that
+  guard `info` becomes a phantom holiday. Upstream publishes only some years
+  (2026 + 2027 at time of writing).
+- Shape: `{ year, days[{date,name,kind,isCutiBersama,isTentative}], available,
+  source, sourceUpdated?, fetchedAt, error? }`. `kind: 'holiday'` = national day
+  off; `kind: 'observance'` = `holiday:false` upstream (NOT a day off, e.g.
+  "1 Ramadan"). `isCutiBersama` and `isTentative` are **derived server-side**
+  from the name (`"Cuti_shared"` prefix / `"(belum pasti)"`) because this feed
+  has no boolean for them.
+- **Never fabricated, never fatal.** Upstream failure → HTTP **200** with
+  `available:false` + `days:[]`; unpublished year → `available:true` +
+  `days:[]`. The UI distinguishes all three states ("Holiday data unavailable
+  for YYYY" / "No holiday data published for YYYY" / "No holidays this month")
+  and always renders a usable grid.
 
 ## D. Current Data Models
 
@@ -177,21 +209,14 @@ Single type home: `types/auth.types.ts` (others re-export).
 
 ## G. Known Issues
 
-### 1. Known Pre-existing Frontend TypeScript Errors (39, unchanged)
-```text
-Known Pre-existing Frontend TypeScript Errors
-```
-`npx tsc --noEmit` → **39 errors**, byte-identical baseline to Phase 1/2
-reports (verified again this task). Distribution:
-DayReservationsPopup 1, InvoiceDetailPopup 4, ActivityLogPage 1,
-DashboardPage 1, ExpensesPage 4, InvoiceDetailPage 1, InvoiceFormPage 1,
-InvoiceListPage 5, ReportPage 1, RoleListPage 3, RoomListPage 6,
-RoomTypeListPage 5, UserListPage 3, invoiceService 2, reportService 1.
-Root causes: (a) invoice/payment status literals (`Overdue/Partial/Sent/
-Cancelled`) wider than the `Invoice` type; (b) `draft[cat.key]` index
-signatures in filter panels; (c) unused imports/vars. **None are in
-Phase 1/2-integrated files.** `npm run build` stops at `tsc -b` because of
-them (expected); `vite build` alone succeeds. DO NOT fix in backend phases.
+### 1. Frontend TypeScript status
+`npx tsc --noEmit` → **0 errors** (verified this task). The previously recorded
+"39 pre-existing errors" no longer reproduce and that claim is retired.
+`npm run build` (`tsc -b && vite build`) therefore succeeds.
+`npm run lint` still reports **19 errors + 96 warnings**, all pre-existing and
+none in calendar/holiday code: `'React' is not defined` (`no-undef`) in legacy
+files that rely on the classic JSX runtime, and `'__dirname' is not defined` in
+`vite.config.js` / `vite.config.ts`. Not touched by this task.
 
 ### 2. Frontend/backend contract mismatches (do not auto-fix)
 - **M1.** Lists ignore server filtering/pagination (`?search&status&source&date`,
@@ -202,9 +227,11 @@ them (expected); `vite build` alone succeeds. DO NOT fix in backend phases.
 - **M3.** Action buttons largely ungated beyond `*.view`
   (user/role/reservation create-update-delete, check-in/out) — server 403s,
   UI doesn't pre-hide.
-- **M4.** `GET /calendar` implemented server-side but never called (calendar
-  UI reads `getAll()`); latent 1-day semantic gap (UI includes checkout day,
-  API half-open; single-day `from==to` → 400).
+- **M4. RESOLVED.** `GET /calendar` is now consumed by `CalendarView` /
+  `DayReservationsPopup`, and the checkout-day semantic gap is closed in favour
+  of the server: the interval is half-open `[checkIn, checkOut)`, matching the
+  overlap rule used by `GET /availability` and the pricing nightly window.
+  Single-day queries are expressed as `[day, day+1)` so `to > from` always holds.
 - **M5.** Detail page shows recomputed `calc.roomTotal` after cancel instead
   of stored `0`.
 - **M6.** `login()` drops `permissions/expiresIn`; expiry never proactively
@@ -225,10 +252,15 @@ them (expected); `vite build` alone succeeds. DO NOT fix in backend phases.
   derivation (independent `sales.json` vs derived), expense CRUD UI gaps.
 - Room inventory FK + `roomId` existence validation (Phase 3).
 - Server-driven search/pagination adoption (all lists).
-- `GET /calendar` adoption + checkout-day semantics decision.
 - Activity server-side audit hooks (Phase 4); activity taxonomy overlaps
   (`system/login` vs `authentication/login`, `payment` vs `invoice_pay`),
   `metadata` string-vs-number, `ipAddress` include/drop, deep-link routes.
+- Persisting holidays to D1 (currently proxy + in-memory 6h cache, so the
+  calendar depends on the upstream at request time) — revisit only if the
+  upstream needs history or SLO guarantees.
+- Richer holiday flags (`is_civic` / `is_religious` / `is_cuti_bersama`):
+  the SKB-3-Menteri feed carries real booleans where the current one only has
+  `holiday` + a name prefix. Only `holidayService` would change.
 
 ### 4. Known technical limitations
 - localStorage JWT (XSS ≠ HttpOnly; mitigated by 1h expiry + server checks).
@@ -238,6 +270,14 @@ them (expected); `vite build` alone succeeds. DO NOT fix in backend phases.
   share room-001; `reservationRooms` roomNumber vs roomId mismatches;
   multi-room subtotals ≠ pricing totals) — server recomputes going forward.
 - Homepage WhatsApp `6200000000000` hardcoded; homepage excluded.
+- Holiday data is third-party and community-sourced; `isCutiBersama`/
+  `isTentative` are name-based heuristics until a structured feed is adopted.
+- E2E requires a running backend (`wrangler dev` on 8787, after
+  `d1 migrations apply --local` + `db:seed:local`) and, for `SCN-02-08/09`,
+  `DEV_EXPOSE_RESET_TOKEN=true` in `.dev.vars`. Playwright serves the
+  **production build** via `vite preview` on 5173.
+- `SCN-06-09` is flaky: it reads `body.innerText()` without waiting for the
+  lazy route chunk (passes 4/4 in isolation). Not fixed by this task.
 
 ## H. Backend Development Guidance (per upcoming phase)
 
@@ -278,4 +318,5 @@ them (expected); `vite build` alone succeeds. DO NOT fix in backend phases.
 
 *Generated from working tree at HEAD `a42d040` + uncommitted Phases 1–2
 (audit date per session). Companion evidence: Phase 0 audit (historical),
-Phase 1 & Phase 2 final reports.*
+Phase 1 & Phase 2 final reports. Last updated for the real-time calendar +
+public-holidays integration.*

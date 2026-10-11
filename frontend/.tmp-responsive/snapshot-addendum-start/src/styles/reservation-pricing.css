@@ -1,0 +1,153 @@
+/* Dynamic Reservation Pricing — Joglo Seruni PMS (warm brown / neutral, flat 8px) */
+
+.pricing-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pricing-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.pricing-ref {
+  background: #f2f0eb;
+  border: 1px solid #c7bbab;
+  border-left: 4px solid #97764d;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 14px;
+}
+
+.pricing-radio-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pricing-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 2px solid #c7bbab;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #232d36;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.pricing-radio--active {
+  border-color: #97764d;
+  background: #f0e7d3;
+}
+
+.pricing-radio input {
+  width: 18px;
+  height: 18px;
+  accent-color: #97764d;
+}
+
+.pricing-nightly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pricing-nightly-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #c7bbab;
+  border-radius: 8px;
+  background: #fff;
+  flex-wrap: wrap;
+}
+
+.pricing-nightly-row__date {
+  min-width: 140px;
+}
+
+.pricing-nightly-row__input {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.pricing-summary {
+  background: #fff;
+  border: 1px solid #c7bbab;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pricing-summary__section {
+  padding: 14px 16px;
+}
+
+.pricing-summary__section + .pricing-summary__section {
+  border-top: 1px solid #c7bbab;
+}
+
+.pricing-summary__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.pricing-summary__total {
+  background: #232d36;
+  color: #fff;
+  padding: 14px 16px;
+}
+
+.pricing-summary__total .pricing-summary__row {
+  color: #fff;
+}
+
+.pricing-error {
+  font-size: 12px;
+  color: #962222;
+  margin-top: 4px;
+  display: block;
+}
+
+.pricing-hint {
+  font-size: 12px;
+  color: #6b7881;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .pricing-nightly-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .pricing-nightly-row__input {
+    min-width: 0;
+  }
+  .pricing-radio-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pricing-radio {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-radio,
+  .pricing-nightly-row {
+    transition: none;
+  }
+}

@@ -1,0 +1,484 @@
+CHANGED 23
+   src/components/ProtectedRoute.tsx
+   src/components/PublicOnlyRoute.tsx
+   src/components/pms/CheckInButton.tsx
+   src/components/pms/CheckOutButton.tsx
+   src/pages/DashboardPage.tsx
+   src/pages/LoginPage.tsx
+   src/pages/RegisterPage.tsx
+   src/pages/finance/InvoiceFormPage.tsx
+   src/pages/finance/ReportPage.tsx
+   src/pages/finance/SalesPage.tsx
+   src/pages/reservations/ReservationDetailPage.tsx
+   src/services/activityService.ts
+   src/services/api.ts
+   src/services/authService.ts
+   src/services/reservationService.ts
+   src/services/roleService.ts
+   src/services/roomService.ts
+   src/services/roomTypeService.ts
+   src/services/userService.ts
+   src/stores/authStore.tsx
+   src/utils/formatUtils.ts
+   vite.config.ts
+   eslint.config.js
+ADDED ['src/utils/localDate.ts', 'src/utils/returnTo.ts']
+REMOVED []
+
+===== src/components/ProtectedRoute.tsx (+5/-2)
+-import { useNavigate } from 'react-router-dom';
++import { useLocation, useNavigate } from 'react-router-dom';
++import { loginPathFor } from '../utils/returnTo';
++  const location = useLocation();
+-      navigate(fallbackPath, { replace: true });
++      navigate(loginPathFor(location, fallbackPath), { replace: true });
++    // `location` is read once at the moment the session ends (returnTo).
+
+===== src/components/PublicOnlyRoute.tsx (+4/-2)
+-import { Navigate, Outlet } from 'react-router-dom';
++import { Navigate, Outlet, useLocation } from 'react-router-dom';
++import { safeReturnTo } from '../utils/returnTo';
++  const location = useLocation();
+-    return <Navigate to="/dashboard" replace />;
++    return <Navigate to={safeReturnTo(location.search) ?? '/dashboard'} replace />;
+
+===== src/components/pms/CheckInButton.tsx (+14/-3)
++import { ErrorState } from '@/components/shared/ErrorState';
++import { apiErrorMessage } from '@/services/api';
++  const [actionError, setActionError] = useState<string | null>(null);
+-    await reservationService.checkIn(reservationId);
+-    setConfirmOpen(false);
+-    navigate(0);
++    setActionError(null);
++    try {
++      await reservationService.checkIn(reservationId);
++      setConfirmOpen(false);
++      navigate(0);
++    } catch (err) {
++      // FE-004: show the backend message (existing ErrorState) instead of failing silently.
++      setConfirmOpen(false);
++      setActionError(apiErrorMessage(err, ''));
++    }
++      {actionError !== null && <ErrorState description={actionError || undefined} />}
+
+===== src/components/pms/CheckOutButton.tsx (+14/-3)
++import { ErrorState } from '@/components/shared/ErrorState';
++import { apiErrorMessage } from '@/services/api';
++  const [actionError, setActionError] = useState<string | null>(null);
+-    await reservationService.checkOut(reservationId);
+-    setConfirmOpen(false);
+-    navigate(0);
++    setActionError(null);
++    try {
++      await reservationService.checkOut(reservationId);
++      setConfirmOpen(false);
++      navigate(0);
++    } catch (err) {
++      // FE-004: show the backend message (existing ErrorState) instead of failing silently.
++      setConfirmOpen(false);
++      setActionError(apiErrorMessage(err, ''));
++    }
++      {actionError !== null && <ErrorState description={actionError || undefined} />}
+
+===== src/pages/DashboardPage.tsx (+6/-7)
++import { shiftISODate, todayLocalISO } from '@/utils/localDate';
+-  // Real "today" (server UTC day); replaces the hardcoded '2026-09-15'.
+-  // Falls back to the identical client-side UTC computation while loading.
+-  const today = overview?.today ?? new Date().toISOString().slice(0, 10);
++  // Real "today": the server's business day (Asia/Jakarta); falls back to the
++  // local calendar day while the overview loads (FE-005: no UTC day shift).
++  const today = overview?.today ?? todayLocalISO();
+-    const todayDate = new Date(today);
+-        const d = new Date(todayDate);
+-        d.setDate(d.getDate() - i);
+-        const key = d.toISOString().slice(0, 10);
++        const key = shiftISODate(today, -i);
++        const d = new Date(`${key}T00:00:00`);
+
+===== src/pages/LoginPage.tsx (+14/-5)
+-import { useNavigate, Link } from 'react-router-dom';
++import { useNavigate, useLocation, Link } from 'react-router-dom';
++import { safeReturnTo } from '@/utils/returnTo';
+-  const { login, isLoading, error } = useAuth();
++  const location = useLocation();
++  const { login, error } = useAuth();
++  // FE-006: local flag, so the form is not unmounted while the request runs.
++  const [submitting, setSubmitting] = useState(false);
+-    const success = await login(email, password);
+-    if (success) navigate('/dashboard');
++    setSubmitting(true);
++    try {
++      const success = await login(email, password);
++      if (success) navigate(safeReturnTo(location.search) ?? '/dashboard');
++    } finally {
++      setSubmitting(false);
++    }
+-          <Button type="submit" variant="primary" disabled={isLoading} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#7A5E
++          <Button type="submit" variant="primary" disabled={submitting} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#7A5
+
+===== src/pages/RegisterPage.tsx (+10/-3)
+-  const { register, isLoading, error } = useAuth();
++  const { register, error } = useAuth();
++  // FE-006: local flag (the global loading flag would unmount this form).
++  const [submitting, setSubmitting] = useState(false);
+-    await register(formData.name, formData.email, formData.password);
++    setSubmitting(true);
++    try {
++      await register(formData.name, formData.email, formData.password);
++    } finally {
++      setSubmitting(false);
++    }
+-          <Button type="submit" variant="primary" disabled={isLoading}>{isLoading ? 'Creating Account...' : 'Sign Up'}</Button>
++          <Button type="submit" variant="primary" disabled={submitting}>{submitting ? 'Creating Account...' : 'Sign Up'}</Button>
+
+===== src/pages/finance/InvoiceFormPage.tsx (+4/-3)
++import { todayLocalISO } from '@/utils/localDate';
+-    invoiceDate: invoiceService.getById(id)?.invoiceDate || new Date().toISOString().split('T')[0],
++    invoiceDate: invoiceService.getById(id)?.invoiceDate || todayLocalISO(),
+-    invoiceNumber: `INV-2026-${String(invoiceService.getAll().length + 1).padStart(3, '0')}`,
++    invoiceNumber: `INV-${new Date().getFullYear()}-${String(invoiceService.getAll().length + 1).padStart(3, '0')}`,
+-    invoiceDate: new Date().toISOString().split('T')[0],
++    invoiceDate: todayLocalISO(),
+
+===== src/pages/finance/ReportPage.tsx (+6/-3)
++import { toLocalISODate } from '@/utils/localDate';
+-  const today = new Date('2026-09-15');
+-  const formatDate = (d: Date) => d.toISOString().split('T')[0];
++  // FE-005: the real local day (was hardcoded to 2026-09-15) and a local-time formatter (no UTC day shift).
++  const now = new Date();
++  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
++  const formatDate = toLocalISODate;
+-    default: return { start: '2026-01-01', end: '2026-09-15' };
++    default: return { start: `${today.getFullYear()}-01-01`, end: formatDate(today) };
+
+===== src/pages/finance/SalesPage.tsx (+6/-3)
++import { toLocalISODate } from '@/utils/localDate';
+-  const today = new Date('2026-09-15');
+-  const formatDate = (d: Date) => d.toISOString().split('T')[0];
++  // FE-005: the real local day (was hardcoded to 2026-09-15) and a local-time formatter (no UTC day shift).
++  const now = new Date();
++  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
++  const formatDate = toLocalISODate;
+-      return { start: '2026-01-01', end: '2026-09-15' };
++      return { start: `${today.getFullYear()}-01-01`, end: formatDate(today) };
+
+===== src/pages/reservations/ReservationDetailPage.tsx (+41/-18)
++import { ErrorState } from '@/components/shared/ErrorState';
++import { apiErrorMessage } from '@/services/api';
++  // FE-004: a real failure (not a 404) and a rejected status action are shown
++  // with the existing ErrorState instead of "not found" / silence.
++  const [loadError, setLoadError] = useState<string | null>(null);
++  const [actionError, setActionError] = useState<string | null>(null);
++  const [reloadKey, setReloadKey] = useState(0);
+-    service.getFullById(id).then((r) => {
++    setLoadError(null);
++    service.fetchFullById(id).then((r) => {
+-    }).catch(() => {
++    }).catch((err: unknown) => {
++        setLoadError(apiErrorMessage(err, ''));
+-  }, [id, showEdit, service]);
++  }, [id, showEdit, service, reloadKey]);
++  if (loadError !== null && !reservation) {
++    return (
++      <div style={{ padding: 'var(--space-xl, 20px)', maxWidth: '1000px', margin: '0 auto' }}>
++        <ErrorState description={loadError || undefined} onRetry={() => setReloadKey((k) => k + 1)} />
++      </div>
++    );
++  }
++
+-  const handleCheckIn = async () => {
+-    await service.checkIn(reservation.id);
+-    setConfirmAction(null);
+-    navigate(0);
++  // Success keeps the old behavior (close + reload); a rejected action closes
++  // the dialog and shows the backend message instead of reloading silently.
++  const runAction = async (action: (id: string) => Promise<boolean>) => {
++    setActionError(null);
++    try {
++      await action(reservation.id);
++      setConfirmAction(null);
++      navigate(0);
++    } catch (err) {
++      setConfirmAction(null);
++      setActionError(apiErrorMessage(err, ''));
++    }
+-  const handleCheckOut = async () => {
+-    await service.checkOut(reservation.id);
+-    setConfirmAction(null);
+-    navigate(0);
+-  };
+-
+-  const handleCancel = async () => {
+-    await service.cancel(reservation.id);
+-    setConfirmAction(null);
+-    navigate(0);
+-  };
++  const handleCheckIn = () => runAction((rid) => service.checkIn(rid));
++  const handleCheckOut = () => runAction((rid) => service.checkOut(rid));
++  const handleCancel = () => runAction((rid) => service.cancel(rid));
++      {actionError !== null && (
++        <div style={{ marginBottom: '16px' }}>
++          <ErrorState description={actionError || undefined} />
++        </div>
++      )}
++
+
+===== src/services/activityService.ts (+12/-11)
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
++/** The audit log grows without bound; load at most the newest 10 pages (1000 rows). */
++const ACTIVITY_MAX_PAGES = 10;
++
+-    const json = await apiFetch<ListResponse>('/api/activities?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: newest-first, so the 10-page cap keeps the most recent 1000 rows.
++    return fetchAllPages<Activity>('/api/activities', { maxPages: ACTIVITY_MAX_PAGES });
+-    const json = await apiFetch<ListResponse>(
+-      `/api/activities?category=${encodeURIComponent(category)}&page=1&pageSize=100`,
+-    );
+-    return json.data;
++    return fetchAllPages<Activity>(`/api/activities?category=${encodeURIComponent(category)}`, {
++      maxPages: ACTIVITY_MAX_PAGES,
++    });
+-    const json = await apiFetch<ListResponse>(
+-      `/api/activities?userId=${encodeURIComponent(userId)}&page=1&pageSize=100`,
+-    );
+-    return json.data;
++    return fetchAllPages<Activity>(`/api/activities?userId=${encodeURIComponent(userId)}`, {
++      maxPages: ACTIVITY_MAX_PAGES,
++    });
+
+===== src/services/api.ts (+59/-0)
++  unauthorizedFired = false; // a new session may be expired again later
++  }
++}
++
++/**
++ * FE-003: one global 401 policy for AUTHENTICATED calls. When a request that
++ * carried a Bearer token comes back 401 (expired / invalidated token) the
++ * stored token is cleared and the registered handler (AuthProvider) flips the
++ * session to logged-out, which sends protected pages to the login screen with
++ * `returnTo`. It fires at most once per session, so several in-flight
++ * requests cannot loop. The login call itself is never affected (it is sent
++ * without a token) and network/5xx errors never reach this path.
++ */
++let unauthorizedFired = false;
++let unauthorizedHandler: (() => void) | null = null;
++
++export function setUnauthorizedHandler(handler: (() => void) | null): void {
++  unauthorizedHandler = handler;
++}
++
++function handleUnauthorized(): void {
++  if (unauthorizedFired) return;
++  unauthorizedFired = true;
++  clearToken();
++  try {
++    unauthorizedHandler?.();
++  } catch {
++    /* a failing handler must not mask the original API error */
++  const sentToken = Boolean(headers.Authorization);
++  if (res.status === 401 && sentToken) handleUnauthorized();
++
++/**
++ * FE-002: list endpoints cap `pageSize` at 100, so a single request silently
++ * truncates the table. This follows `pagination.total` and concatenates the
++ * pages (same row shape as one big page). Bounded by `maxPages` so a very
++ * large table cannot trigger an unbounded request storm; the backend orders
++ * rows deterministically (BE-035), so pages do not overlap or skip.
++ * With <= 100 rows it issues exactly the single request it always did.
++ */
++export async function fetchAllPages<T>(
++  path: string,
++  options: { pageSize?: number; maxPages?: number } = {},
++): Promise<T[]> {
++  const pageSize = options.pageSize ?? 100;
++  const maxPages = options.maxPages ?? 20;
++  const joiner = path.includes('?') ? '&' : '?';
++  const rows: T[] = [];
++  for (let page = 1; page <= maxPages; page += 1) {
++    const json = await apiFetch<{
++      data: T[];
++      pagination?: { page: number; pageSize: number; total: number };
++    }>(`${path}${joiner}page=${page}&pageSize=${pageSize}`);
++    const batch = json.data ?? [];
++    rows.push(...batch);
++    const total = json.pagination?.total ?? rows.length;
++    if (batch.length < pageSize || rows.length >= total) break;
++  }
++  return rows;
++}
+
+===== src/services/authService.ts (+12/-9)
+-      if (err instanceof ApiError && err.status === 401) return null;
++      // X-005: bad credentials stay `null` (the store shows its usual text);
++      // any OTHER 401 message from the backend (e.g. "User is inactive") is
++      // passed through so the user learns why the login was refused.
++      if (err instanceof ApiError && err.status === 401 && err.message === 'Invalid email or password') return null;
+-    } catch {
+-      clearToken();
++    } catch (err) {
++      // FE-003: only a 401 means the session is gone. A network blip or a 5xx
++      // must not wipe the stored token (the next load can retry).
++      if (err instanceof ApiError && err.status === 401) clearToken();
+-    try {
+-      const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
+-      return json.data.permissions;
+-    } catch {
+-      return [];
+-    }
++    // FE-003: errors propagate. The permission store keeps the last known set
++    // when this rejects, and a 401 is handled globally by `apiFetch`.
++    const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
++    return json.data.permissions;
+
+===== src/services/reservationService.ts (+29/-25)
+-import { apiFetch } from './api';
++import { ApiError, apiFetch, fetchAllPages } from './api';
+-interface ListResponse {
+-  data: ApiReservation[];
+-  pagination: { page: number; pageSize: number; total: number };
+-}
+-
+-    const json = await apiFetch<ListResponse>('/api/reservations?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<ApiReservation>('/api/reservations');
++  /**
++   * FE-004: the three status actions now REJECT with the real `ApiError`
++   * (status + backend message) instead of returning `false`. Every caller
++   * (ReservationDetailPage, CheckInButton, CheckOutButton) catches it and shows
++   * the message with the existing `ErrorState` component.
++   */
+-    try {
+-      await apiFetch(`/api/reservations/${encodeURIComponent(id)}/cancel`, { method: 'POST' });
+-      return true;
+-    } catch {
+-      return false;
+-    }
++    await apiFetch(`/api/reservations/${encodeURIComponent(id)}/cancel`, { method: 'POST' });
++    return true;
+-    try {
+-      await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-in`, { method: 'POST' });
+-      return true;
+-    } catch {
+-      return false;
+-    }
++    await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-in`, { method: 'POST' });
++    return true;
+-    try {
+-      await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-out`, { method: 'POST' });
+-      return true;
+-    } catch {
+-      return false;
++    await apiFetch(`/api/reservations/${encodeURIComponent(id)}/check-out`, { method: 'POST' });
++    return true;
++  }
++
++  /**
++   * Like `getFullById` but only a 404 means "not found" (`undefined`); any
++   * other failure (401/5xx/network) rejects so the page can say what happened.
++   * Additive: the many existing `getFullById` callers keep their behavior.
++   */
++  async fetchFullById(id: string): Promise<ApiReservation | undefined> {
++    try {
++      const json = await apiFetch<{ data: ApiReservation }>(`/api/reservations/${encodeURIComponent(id)}`);
++      return json.data;
++    } catch (err) {
++      if (err instanceof ApiError && err.status === 404) return undefined;
++      throw err;
+
+===== src/services/roleService.ts (+3/-3)
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+-    const json = await apiFetch<{ data: any[] }>('/api/roles?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<any>('/api/roles');
+
+===== src/services/roomService.ts (+3/-3)
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+-    const json = await apiFetch<{ data: Room[] }>('/api/rooms?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<Room>('/api/rooms');
+
+===== src/services/roomTypeService.ts (+3/-3)
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+-    const json = await apiFetch<{ data: RoomType[] }>('/api/room-types?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<RoomType>('/api/room-types');
+
+===== src/services/userService.ts (+3/-3)
+-import { apiFetch } from './api';
++import { apiFetch, fetchAllPages } from './api';
+-    const json = await apiFetch<{ data: any[] }>('/api/users?page=1&pageSize=100');
+-    return json.data;
++    // FE-002: all pages (was only the first 100 rows).
++    return fetchAllPages<any>('/api/users');
+
+===== src/stores/authStore.tsx (+15/-11)
+-import authService from '../services/authService';
+-import { apiErrorMessage } from '../services/api';
++import authService, { type ApiUser } from '../services/authService';
++import { apiErrorMessage, setUnauthorizedHandler } from '../services/api';
+-  user: any | null;
++  user: ApiUser | null;
+-  | { type: 'LOGIN_SUCCESS'; payload: any }
++  | { type: 'LOGIN_SUCCESS'; payload: { user: ApiUser } }
+-  | { type: 'REGISTER_SUCCESS'; payload: any }
++  | { type: 'REGISTER_SUCCESS'; payload: ApiUser }
++  // FE-003: an expired/invalidated token on an authenticated call ends the
++  // session in state too; ProtectedRoute then sends the user to /login with
++  // `returnTo`.
++  useEffect(() => {
++    setUnauthorizedHandler(() => dispatch({ type: 'LOGOUT' }));
++    return () => setUnauthorizedHandler(null);
++  }, []);
++
++  // FE-006: `isLoading` is only the initial session restore. Submitting a
++  // form must not flip it, otherwise PublicOnlyRoute unmounts the login form.
+-    dispatch({ type: 'SET_LOADING', payload: true });
+-    } finally {
+-      dispatch({ type: 'SET_LOADING', payload: false });
+-    dispatch({ type: 'SET_LOADING', payload: true });
+-    } finally {
+-      dispatch({ type: 'SET_LOADING', payload: false });
+
+===== src/utils/formatUtils.ts (+3/-1)
++import { toLocalISODate } from './localDate';
++
+-  if (format === 'iso') return d.toISOString().split('T')[0];
++  if (format === 'iso') return toLocalISODate(d);
+
+===== vite.config.ts (+3/-1)
+-    sourcemap: true,
++    // FE-008: maps are generated (for error tracking) but not referenced from
++    // the bundles, so browsers do not download or expose the source.
++    sourcemap: 'hidden',
+
+===== eslint.config.js (+20/-1)
+-    files: ['playwright.config.ts', 'e2e/**/*.ts'],
++    // FE-010: the same applies to the Node scripts at the project root and to
++    // the scratch Node/Playwright files in `.tmp-responsive`
++    // (`console`, `__dirname`, `process`, `Buffer` were reported as `no-undef`).
++    files: [
++      'playwright.config.ts',
++      'e2e/**/*.ts',
++      '*.{js,mjs,cjs}',
++      '.tmp-responsive/**/*.{ts,js,mjs,cjs}',
++    ],
++  {
++    // Plain script files (verify-*.mjs drive a browser page and a Node
++    // process): both global sets are legitimately available there.
++    files: ['**/*.{js,mjs,cjs}'],
++    languageOptions: {
++      globals: {
++        ...globals.node,
++        ...globals.browser,
++      },
++    },
++  },

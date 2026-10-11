@@ -1,7 +1,8 @@
-import { and, eq, like, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { reservationRooms, rooms, roomTypes } from '../db/schema';
 import type { AppDb } from '../db/client';
 import { conflict, notFound } from '../lib/errors';
+import { likeContains } from '../lib/sql';
 import { toPublicRoom, type PublicRoom } from '../lib/presenters';
 import { newId, nowIso } from '../lib/tokens';
 import type { RoomListQuery } from '../lib/validation';
@@ -28,7 +29,7 @@ async function assertRoomTypeExists(db: AppDb, roomTypeId: string): Promise<void
 export async function listRooms(db: AppDb, query: RoomListQuery): Promise<{ items: PublicRoom[]; total: number }> {
   const conditions = [];
   if (query.search) {
-    conditions.push(like(rooms.roomNumber, `%${query.search}%`));
+    conditions.push(likeContains(rooms.roomNumber, query.search));
   }
   if (query.status !== 'all') conditions.push(eq(rooms.status, query.status));
   if (query.roomTypeId !== 'all') conditions.push(eq(rooms.roomTypeId, query.roomTypeId));
@@ -41,7 +42,8 @@ export async function listRooms(db: AppDb, query: RoomListQuery): Promise<{ item
   const total = Number(totalRows[0]?.count ?? 0);
 
   const offset = (query.page - 1) * query.pageSize;
-  const rows = await db.select().from(rooms).where(where).limit(query.pageSize).offset(offset);
+  // BE-035: insertion order (scan or equality index), made explicit.
+  const rows = await db.select().from(rooms).where(where).orderBy(sql`rowid`).limit(query.pageSize).offset(offset);
 
   return { items: rows.map(toPublicRoom), total };
 }

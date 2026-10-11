@@ -1,0 +1,129 @@
+[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (../.tmp-audit/poc/vitest.poc.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.[39m
+
+ RUN  v5.0.2 E:/Project/Web/pms-internal/backend
+
+POC|BE-015b|{"statuses":[201,409],"rowsForRoom":[{"reservation_code":"RSV-2026-016","guest_name":"Guest A","status":"reserved","room_id":"room-01"}]}
+POC|BE-015c|{"+0ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+3ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+6ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+9ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+12ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+15ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+18ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+21ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+24ms":{"statuses":[201,409],"bookingsForSameRoomNights":1},"+30ms":{"statuses":[201,409],"bookingsForSameRoomNights":1}}
+POC|BE-029|{"statuses":[201,201],"messages":["RSV-2026-016","RSV-2026-017"]}
+POC|BE-018|{"pay":200,"cancel":409,"finalRow":{"s":"Completed","p":"Paid"}}
+POC|BE-002|{"demoteStatus":403,"adminPermsAfterDemote":["user.view","user.create","user.update","user.delete","role.view","role.create","role.update","role.delete","permission.view","permission.assign","room.view","room.create","room.update","room.delete","reservation.view","reservation.create","reservation.update","reservation.delete","reservation.checkin","reservation.checkout","finance.sales.view","finance.invoice.view","finance.invoice.create","finance.invoice.update","finance.report.view","activity.view","finance.invoice.delete","finance.expense.view","finance.expense.create","finance.expense.update","finance.expense.delete"],"deactStatus":403,"adminMeAfterDeact":200}
+POC|BE-007|{"patch":200,"permsBefore":24,"permsAfter":0}
+POC|BE-015|{"statuses":[201,409],"rowsForRoom":[{"reservation_code":"RSV-2026-016","guest_name":"Guest A","status":"reserved","room_id":"room-01"}]}
+POC|BE-016|{"blocker":201,"editStatus":409,"before":{"ci":"2027-07-01","total":200000,"nights":["2027-07-01","2027-07-02"],"calcTotal":200000},"after":{"ci":"2027-07-01","co":"2027-07-03","total":200000,"nights":["2027-07-01","2027-07-02"],"calcTotal":200000}}
+POC|BE-017|{"checkedOut":{"patch":409,"totalBefore":1500000},"cancelled":{"patch":409,"totalBefore":0}}
+POC|BE-019|{"deleted":{"id":"inv-009","n":"INV-2026-009","s":"Completed","p":"Paid"},"deleteStatus":409,"newNumber":"INV-2026-010","reusedSameNumber":false}
+POC|BE-023|{"before":11,"after":15,"rowsAdded":4}
+POC|BE-025|{"impossibleDate":[422,null,"Validation failed"],"nightsInRange":90,"longStay":[422,null,null,"Maksimal menginap 60 malam per reservasi."]}
+POC|BE-024|{"status":422,"realRoomNumber":"01"}
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts (16 tests | 6 failed) 3405ms
+   ❯ verification PoCs (12)
+     × BE-001 anonymous register -> operational access 25ms
+     × BE-002 manager demotes + deactivates Super Admin 41ms
+     × BE-003 role.create + user.update => escalate without permission.assign 28ms
+     × BE-007 inactive role keeps granting permissions 27ms
+     × BE-020/BE-022 create Completed/Paid directly; drafts counted as sales 34ms
+     × BE-023 role/user changes leave no audit rows 30ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-001 anonymous register -> operational access
+TypeError: Cannot read properties of undefined (reading 'token')
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts:136:33
+    134|     const ctx = setupTestApp();
+    135|     const reg = await call(ctx, 'POST', '/api/auth/register', undefine…
+    136|     const token = reg.json.data.token;
+       |                                 ^
+    137|     const list = await call(ctx, 'GET', '/api/reservations?page=1&page…
+    138|     const rooms = await call(ctx, 'GET', '/api/rooms?page=1&pageSize=1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-002 manager demotes + deactivates Super Admin
+AssertionError: expected 403 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 403
+
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts:154:27
+    152|     const me2 = await call(ctx, 'GET', '/api/auth/me', adminTok);
+    153|     log('BE-002', { demoteStatus: demote.status, adminPermsAfterDemote…
+    154|     expect(demote.status).toBe(200);
+       |                           ^
+    155|   });
+    156|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-003 role.create + user.update => escalate without permission.assign
+TypeError: Cannot read properties of undefined (reading 'id')
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts:164:121
+    162|     const staff = await loginAs(ctx.app, ctx.env, 'staff@hotel.com', '…
+    163|     const evil = await call(ctx, 'POST', '/api/roles', staff, { name: …
+    164|     const grant = await call(ctx, 'PUT', '/api/users/user-003/roles', …
+       |                                                                                                                         ^
+    165|     const me = await call(ctx, 'GET', '/api/auth/me', staff);
+    166|     const withAssign = await call(ctx, 'POST', '/api/roles', staff, { …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-007 inactive role keeps granting permissions
+AssertionError: expected +0 to be 24 // Object.is equality
+
+- Expected
++ Received
+
+- 24
++ 0
+
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts:186:48
+    184|     const after = await call(ctx, 'GET', '/api/auth/me', mgr);
+    185|     log('BE-007', { patch: off.status, permsBefore: before.json.data.p…
+    186|     expect(after.json.data.permissions.length).toBe(before.json.data.p…
+       |                                                ^
+    187|   });
+    188|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-020/BE-022 create Completed/Paid directly; drafts counted as sales
+TypeError: Cannot read properties of undefined (reading 'invoiceStatus')
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts:303:54
+    301|       salesAfterDraft: sum1.json.data.totalSales,
+    302|       netAfter: sum1.json.data.netRevenue,
+    303|       directCreate: [direct.status, direct.json.data.invoiceStatus, di…
+       |                                                      ^
+    304|       sentThenPatchBackToDraftPaid: [sent.status, back.status, back.js…
+    305|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-023 role/user changes leave no audit rows
+AssertionError: expected 15 to be 11 // Object.is equality
+
+- Expected
++ Received
+
+- 11
++ 15
+
+ ❯ ../.tmp-audit/poc/verify.poc.test.ts:319:16
+    317|     const c1 = count();
+    318|     log('BE-023', { before: c0, after: c1, rowsAdded: c1 - c0 });
+    319|     expect(c1).toBe(c0);
+       |                ^
+    320|   });
+    321|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 10 passed (16)
+   Start at  15:19:55
+   Duration  4.72s (tests 75%, import 15%, transform 10%)
+

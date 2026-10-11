@@ -1,0 +1,47 @@
+[
+  {
+    "id": "role-001",
+    "name": "Super Admin",
+    "description": "Full system access with all permissions",
+    "permissions": ["user.view", "user.create", "user.update", "user.delete", "role.view", "role.create", "role.update", "role.delete", "permission.view", "permission.assign", "room.view", "room.create", "room.update", "room.delete", "reservation.view", "reservation.create", "reservation.update", "reservation.delete", "reservation.checkin", "reservation.checkout", "finance.sales.view", "finance.invoice.view", "finance.invoice.create", "finance.invoice.update", "finance.report.view", "activity.view"],
+    "status": "active",
+    "createdAt": "2026-01-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "role-002",
+    "name": "Manager",
+    "description": "Manager with access to all management modules",
+    "permissions": ["user.view", "user.create", "user.update", "room.view", "room.create", "room.update", "room.delete", "reservation.view", "reservation.create", "reservation.update", "reservation.delete", "reservation.checkin", "reservation.checkout", "finance.sales.view", "finance.invoice.view", "finance.invoice.create", "finance.invoice.update", "finance.report.view", "activity.view"],
+    "status": "active",
+    "createdAt": "2026-01-15T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "role-003",
+    "name": "Staff",
+    "description": "Staff with limited access to reservations and rooms",
+    "permissions": ["room.view", "reservation.view", "reservation.create", "reservation.update", "reservation.checkin", "reservation.checkout"],
+    "status": "active",
+    "createdAt": "2026-02-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "role-004",
+    "name": "Viewer",
+    "description": "Read-only access to reservations and rooms",
+    "permissions": ["room.view", "reservation.view"],
+    "status": "inactive",
+    "createdAt": "2026-03-01T00:00:00Z",
+    "updatedAt": "2026-06-01T00:00:00Z"
+  },
+  {
+    "id": "role-005",
+    "name": "Reception",
+    "description": "Reception staff with check-in/check-out permissions",
+    "permissions": ["room.view", "reservation.view", "reservation.create", "reservation.checkin", "reservation.checkout", "activity.view"],
+    "status": "active",
+    "createdAt": "2026-04-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  }
+]
