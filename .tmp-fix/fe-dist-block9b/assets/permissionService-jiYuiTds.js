@@ -1,0 +1,1 @@
+import{f as e}from"./index-DWEkONrH.js";class i{async getAll(){return(await e("/api/permissions")).data}async getById(a){return(await this.getAll()).find(s=>s.id===a)}async getByName(a){return(await this.getAll()).find(s=>s.name===a)}}const r=new i;export{r as p};

@@ -44,7 +44,7 @@ export function InvoiceDetailPopup({ invoice, onClose, onEdit, onDelete }: Invoi
       onClose={onClose}
       title={invoice ? `Invoice ${invoice.invoiceNumber}` : 'Invoice'}
       titleAddon={invoice ? (
-        <Badge variant={invoice.invoiceStatus === 'Completed' ? 'success' : invoice.invoiceStatus === 'Cancelled' ? 'danger' : invoice.invoiceStatus === 'Sent' ? 'info' : 'default'}>
+        <Badge variant={invoice.invoiceStatus === 'Completed' ? 'success' : invoice.invoiceStatus === 'Cancelled' ? 'danger' : invoice.invoiceStatus === 'Sent' ? 'info' : invoice.invoiceStatus === 'Draft' ? 'warning' : 'default'}>
           {invoiceStatusLabels[invoice.invoiceStatus] || invoice.invoiceStatus}
         </Badge>
       ) : undefined}
@@ -63,9 +63,9 @@ export function InvoiceDetailPopup({ invoice, onClose, onEdit, onDelete }: Invoi
               type="button"
               aria-label="Edit invoice"
               onClick={() => onEdit(invoice)}
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #2563EB', backgroundColor: '#2563EB', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#2563EB'; }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #97764D', backgroundColor: 'transparent', color: '#232D36', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#232D36'; e.currentTarget.style.borderColor = '#97764D'; }}
             >
               <Pencil size={14} aria-hidden="true" />
             </button>
@@ -73,9 +73,9 @@ export function InvoiceDetailPopup({ invoice, onClose, onEdit, onDelete }: Invoi
               type="button"
               aria-label="Delete invoice"
               onClick={() => onDelete(invoice)}
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #DC2626', backgroundColor: '#DC2626', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#DC2626'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#DC2626'; }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #232D36', backgroundColor: '#232D36', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#97764D'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#97764D'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
             >
               <Trash2 size={14} aria-hidden="true" />
             </button>
@@ -107,7 +107,7 @@ export function InvoiceDetailPopup({ invoice, onClose, onEdit, onDelete }: Invoi
 
             <div>
               <h4 style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6B7881', textTransform: 'uppercase' }}>Payment Status</h4>
-              <Badge variant={invoice.paymentStatus === 'Paid' ? 'success' : invoice.paymentStatus === 'Overdue' ? 'danger' : invoice.paymentStatus === 'Partial' ? 'warning' : 'default'}>
+              <Badge variant={invoice.paymentStatus === 'Paid' ? 'success' : invoice.paymentStatus === 'Overdue' ? 'danger' : (invoice.paymentStatus === 'Partial' || invoice.paymentStatus === 'Pending') ? 'warning' : 'default'}>
                 {paymentStatusLabels[invoice.paymentStatus] || invoice.paymentStatus}
               </Badge>
             </div>

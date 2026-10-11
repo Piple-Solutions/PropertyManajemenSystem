@@ -177,11 +177,3 @@ img {
   }
   html { scroll-behavior: auto; }
 }
-
-@media (max-width: 768px) {
-  html { font-size: 14px; }
-}
-
-@media (max-width: 480px) {
-  html { font-size: 13px; }
-}

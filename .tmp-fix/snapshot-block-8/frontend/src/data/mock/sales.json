@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sale-001",
+    "reservationId": "res-001",
+    "invoiceId": "inv-001",
+    "date": "2026-09-15",
+    "amount": 1500000,
+    "source": "direct",
+    "description": "Room charge - John Doe"
+  },
+  {
+    "id": "sale-002",
+    "reservationId": "res-002",
+    "invoiceId": "inv-002",
+    "date": "2026-09-16",
+    "amount": 2200000,
+    "source": "website",
+    "description": "Room charge - Jane Smith"
+  },
+  {
+    "id": "sale-003",
+    "reservationId": "res-003",
+    "invoiceId": "inv-003",
+    "date": "2026-09-10",
+    "amount": 1500000,
+    "source": "whatsapp",
+    "description": "Room charge - Robert Johnson"
+  },
+  {
+    "id": "sale-004",
+    "reservationId": "res-004",
+    "invoiceId": "inv-004",
+    "date": "2026-09-20",
+    "amount": 3600000,
+    "source": "ota",
+    "description": "Room charge - Emily Wilson"
+  },
+  {
+    "id": "sale-005",
+    "reservationId": "res-005",
+    "invoiceId": "inv-005",
+    "date": "2026-09-18",
+    "amount": 1800000,
+    "source": "direct",
+    "description": "Room charge - Michael Brown"
+  },
+  {
+    "id": "sale-006",
+    "reservationId": "res-006",
+    "invoiceId": "inv-006",
+    "date": "2026-09-21",
+    "amount": 1500000,
+    "source": "direct",
+    "description": "Room charge - Sarah Connor"
+  },
+  {
+    "id": "sale-007",
+    "reservationId": "res-011",
+    "invoiceId": "inv-007",
+    "date": "2026-09-05",
+    "amount": 4000000,
+    "source": "direct",
+    "description": "Room charge - Maria Garcia"
+  },
+  {
+    "id": "sale-008",
+    "reservationId": "res-012",
+    "invoiceId": "inv-008",
+    "date": "2026-09-28",
+    "amount": 2300000,
+    "source": "whatsapp",
+    "description": "Room charge - Ahmad Hidayat"
+  }
+]

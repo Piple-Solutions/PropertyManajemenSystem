@@ -1,0 +1,131 @@
+{
+  "375x812/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 0,
+    "mainWidth": 375,
+    "sideWidth": 240,
+    "sideVisibility": "hidden",
+    "htmlFont": "13px"
+  },
+  "375x812/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 0,
+    "mainWidth": 375,
+    "sideWidth": 240,
+    "sideVisibility": "hidden",
+    "htmlFont": "13px"
+  },
+  "768x1024/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 60,
+    "mainWidth": 708,
+    "sideWidth": 60,
+    "sideVisibility": "visible",
+    "htmlFont": "14px"
+  },
+  "768x1024/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 60,
+    "mainWidth": 708,
+    "sideWidth": 60,
+    "sideVisibility": "visible",
+    "htmlFont": "14px"
+  },
+  "1024x768/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 784,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  },
+  "1024x768/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 784,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  },
+  "1440x900/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 1200,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  },
+  "1440x900/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 1200,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  }
+}
+{
+  "initial": {
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": false,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "tabbedIntoClosedDrawer": false,
+  "afterOpen": {
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "drawerLeft": 0
+  },
+  "afterEscape": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "afterBackdrop": {
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "afterTapGroupKamar": {
+    "url": "http://localhost:5173/dashboard/rooms",
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "drawerLeft": 0
+  },
+  "afterRouteChange": {
+    "url": "http://localhost:5173/dashboard",
+    "expanded": "false",
+    "bodyOverflow": "unset",
+    "focusInDrawer": false,
+    "focusOnHamburger": true,
+    "drawerVisibility": "hidden",
+    "drawerLeft": -252
+  },
+  "afterSameRouteLinkTap": {
+    "expanded": "true",
+    "bodyOverflow": "hidden",
+    "focusInDrawer": true,
+    "focusOnHamburger": false,
+    "drawerVisibility": "visible",
+    "drawerLeft": 0
+  },
+  "outletNodeSurvivesResize": false,
+  "markerSet": true,
+  "afterResizeToDesktopWhileOpen": {
+    "bodyOverflow": "unset"
+  }
+}

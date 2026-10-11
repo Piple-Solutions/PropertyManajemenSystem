@@ -118,4 +118,66 @@ test.describe('SCN-04 Reservations', () => {
     await expect(page.getByRole('heading', { name: /reservation calendar/i })).toBeVisible({ timeout: 15000 });
     await page.waitForTimeout(1000);
   });
+
+  test('SCN-04-12 calendar shows real holidays for a known month', async ({ page }) => {
+    // Deep link to December 2026 (Natal 12-24/12-25) rather than clicking
+    // Prev/Next, so the assertion is deterministic regardless of today's date.
+    await page.goto('/dashboard/reservations/calendar?month=2026-12');
+    await expect(page.getByRole('heading', { name: /reservation calendar/i })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: /december 2026/i })).toBeVisible({ timeout: 15000 });
+
+    // Holiday markers must render, and Natal must be one of them.
+    const markers = page.getByTestId('holiday-marker');
+    await expect.poll(async () => markers.count(), 'holiday markers in Dec 2026').toBeGreaterThan(0);
+    await expect(page.locator('[data-holiday-name="Hari Raya Natal"]')).toHaveCount(1);
+
+    // 2026-12-31 is an observance ("Malam Tahun Baru"), not a day off. `kind`
+    // must still reach the DOM (tooltip/popup) even though colour no longer
+    // differentiates it.
+    await expect(page.locator('[data-holiday-kind="observance"]')).toHaveCount(1);
+
+    // Every marker is the same solid red strip bar, regardless of kind.
+    // #962222 -> rgb(150, 34, 34).
+    const HOLIDAY_BAR_RGB = 'rgb(150, 34, 34)';
+    await expect
+      .poll(
+        async () => {
+          const colors: string[] = await page
+            .locator('[data-testid="holiday-marker"]')
+            .evaluateAll((els) => els.map((e) => getComputedStyle(e).backgroundColor));
+          return colors.length > 0 && colors.every((c) => c === HOLIDAY_BAR_RGB);
+        },
+        'all holiday markers solid red',
+      )
+      .toBe(true);
+
+    // Clicking a holiday day surfaces it in the day popup.
+    await page.locator('button[aria-label*="Hari Raya Natal"]').first().click();
+    await expect(page.getByTestId('popup-holiday')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('popup-holiday')).toContainText('Hari Raya Natal');
+    await page.keyboard.press('Escape');
+  });
+
+  test('SCN-04-13 calendar navigates months and updates the grid', async ({ page }) => {
+    await page.goto('/dashboard/reservations/calendar?month=2026-11');
+    await expect(page.getByRole('heading', { name: /november 2026/i })).toBeVisible({ timeout: 15000 });
+
+    await page.getByRole('button', { name: /next/i }).first().click();
+    await expect(page.getByRole('heading', { name: /december 2026/i })).toBeVisible({ timeout: 10000 });
+
+    await page.getByRole('button', { name: /prev/i }).first().click();
+    await expect(page.getByRole('heading', { name: /november 2026/i })).toBeVisible({ timeout: 10000 });
+  });
+
+  test('SCN-04-14 unpublished year degrades without breaking the grid', async ({ page }) => {
+    // Upstream publishes only some years. 2099 is reachable upstream but has no
+    // entries, so the UI must say so honestly and still render a usable grid —
+    // never a fabricated holiday.
+    await page.goto('/dashboard/reservations/calendar?month=2099-05');
+    await expect(page.getByRole('heading', { name: /reservation calendar/i })).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('body')).toContainText(/no holiday data published for 2099/i, { timeout: 15000 });
+    await expect(page.getByTestId('holiday-marker')).toHaveCount(0);
+    // The grid itself must still work.
+    await expect(page.getByRole('heading', { name: /may 2099/i })).toBeVisible();
+  });
 });

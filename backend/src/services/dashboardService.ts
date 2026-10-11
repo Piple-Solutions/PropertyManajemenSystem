@@ -1,7 +1,7 @@
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, sql } from 'drizzle-orm';
 import { reservations, rooms } from '../db/schema';
 import type { AppDb } from '../db/client';
-import { nowIso } from '../lib/tokens';
+import { todayInJakarta } from '../lib/time';
 
 export interface DashboardRecentReservation {
   id: string;
@@ -15,7 +15,7 @@ export interface DashboardRecentReservation {
 }
 
 export interface DashboardOverview {
-  /** Server UTC date (YYYY-MM-DD). Replaces the hardcoded `2026-09-15`. */
+  /** Server business date in Asia/Jakarta (YYYY-MM-DD, BE-026). */
   today: string;
   reservations: {
     total: number;
@@ -63,18 +63,18 @@ export interface DashboardOverview {
  * mock services.
  */
 export async function getDashboardOverview(db: AppDb): Promise<DashboardOverview> {
-  // UTC calendar day — ISO TEXT lexicographic comparison keeps all date
-  // predicates (`===`, `>`) valid for YYYY-MM-DD storage.
-  const today = nowIso().slice(0, 10);
+  // Asia/Jakarta calendar day (BE-026) — ISO TEXT lexicographic comparison
+  // keeps all date predicates (`===`, `>`) valid for YYYY-MM-DD storage.
+  const today = todayInJakarta();
 
-  const totalRows = await db.select({ count: sql<number>`count(*)` }).from(reservations);
-  const total = Number(totalRows[0]?.count ?? 0);
-
+  // One grouped read gives the status breakup AND the total; one conditional
+  // aggregate gives both date tiles (BE-027: 7 statements -> 3 + recent).
   const statusRows = await db
     .select({ status: reservations.status, count: sql<number>`count(*)` })
     .from(reservations)
     .groupBy(reservations.status);
   const statusCount = new Map(statusRows.map((r) => [r.status, Number(r.count)]));
+  const total = statusRows.reduce((sum, r) => sum + Number(r.count), 0);
   const byStatus = {
     reserved: statusCount.get('reserved') ?? 0,
     'checked-in': statusCount.get('checked-in') ?? 0,
@@ -82,26 +82,22 @@ export async function getDashboardOverview(db: AppDb): Promise<DashboardOverview
     cancelled: statusCount.get('cancelled') ?? 0,
   };
 
-  const todayRows = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(reservations)
-    .where(eq(reservations.checkInDate, today));
-  const todayCheckins = Number(todayRows[0]?.count ?? 0);
-
-  const upcomingRows = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(reservations)
-    .where(sql`${reservations.checkInDate} > ${today} AND ${reservations.status} != 'cancelled'`);
-  const upcoming = Number(upcomingRows[0]?.count ?? 0);
+  const dateRows = await db
+    .select({
+      todayCheckins: sql<number>`coalesce(sum(case when ${reservations.checkInDate} = ${today} then 1 else 0 end), 0)`,
+      upcoming: sql<number>`coalesce(sum(case when ${reservations.checkInDate} > ${today} and ${reservations.status} != 'cancelled' then 1 else 0 end), 0)`,
+    })
+    .from(reservations);
+  const todayCheckins = Number(dateRows[0]?.todayCheckins ?? 0);
+  const upcoming = Number(dateRows[0]?.upcoming ?? 0);
 
   const roomRows = await db
     .select({ status: rooms.status, count: sql<number>`count(*)` })
     .from(rooms)
     .groupBy(rooms.status);
   const roomCount = new Map(roomRows.map((r) => [r.status, Number(r.count)]));
-  const roomTotalRows = await db.select({ count: sql<number>`count(*)` }).from(rooms);
   const roomStats = {
-    total: Number(roomTotalRows[0]?.count ?? 0),
+    total: roomRows.reduce((sum, r) => sum + Number(r.count), 0),
     active: roomCount.get('active') ?? 0,
     maintenance: roomCount.get('maintenance') ?? 0,
     inactive: roomCount.get('inactive') ?? 0,

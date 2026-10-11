@@ -1,0 +1,152 @@
+/* Financial report print template — A4-friendly, PMS visual identity.
+ * Screen: print area hidden. Print: only the report document is visible.
+ */
+
+.report-print-area {
+  display: none;
+}
+
+.report-print {
+  font-family: var(--font-family-sans);
+  color: #232D36;
+  background: #FFFFFF;
+}
+
+.report-print__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 2px solid #232D36;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.report-print__brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #232D36;
+}
+
+.report-print__sub {
+  font-size: 12px;
+  color: #6B7881;
+  margin-top: 2px;
+}
+
+.report-print__titleblock {
+  text-align: right;
+}
+
+.report-print__title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #232D36;
+}
+
+.report-print__period {
+  font-size: 13px;
+  font-weight: 600;
+  color: #97764D;
+  margin-top: 2px;
+}
+
+.report-print__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #6B7881;
+  margin-bottom: 16px;
+}
+
+.report-print__section {
+  margin-bottom: 16px;
+  break-inside: avoid;
+}
+
+.report-print__sectiontitle {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #232D36;
+  border-bottom: 1px solid #C7BBAB;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.report-print__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.report-print__table th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6B7881;
+  border-bottom: 1px solid #232D36;
+  padding: 6px 8px;
+}
+
+.report-print__table td {
+  border-bottom: 1px solid #E3DED6;
+  padding: 7px 8px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.report-print__table tr {
+  break-inside: avoid;
+}
+
+.report-print__footer {
+  border-top: 1px solid #C7BBAB;
+  padding-top: 10px;
+  font-size: 12px;
+  color: #6B7881;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html, body {
+    background: #FFFFFF !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .report-print-area,
+  .report-print-area * {
+    visibility: visible;
+  }
+
+  .report-print-area {
+    display: block;
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .report-print {
+    width: 100%;
+  }
+
+  .report-print__table thead {
+    display: table-header-group;
+  }
+
+  .report-print__table tfoot {
+    display: table-footer-group;
+  }
+}

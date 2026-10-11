@@ -1,20 +1,20 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import authService from '../services/authService';
-import { apiErrorMessage } from '../services/api';
+import authService, { type ApiUser } from '../services/authService';
+import { apiErrorMessage, setUnauthorizedHandler } from '../services/api';
 
 interface AuthState {
-  user: any | null;
+  user: ApiUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string;
 }
 
 type AuthAction =
-  | { type: 'LOGIN_SUCCESS'; payload: any }
+  | { type: 'LOGIN_SUCCESS'; payload: { user: ApiUser } }
   | { type: 'LOGIN_FAILURE'; payload: string }
   | { type: 'LOGOUT' }
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'REGISTER_SUCCESS'; payload: any }
+  | { type: 'REGISTER_SUCCESS'; payload: ApiUser }
   | { type: 'SET_ERROR'; payload: string };
 
 interface AuthContextType extends AuthState {
@@ -70,8 +70,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // FE-003: an expired/invalidated token on an authenticated call ends the
+  // session in state too; ProtectedRoute then sends the user to /login with
+  // `returnTo`.
+  useEffect(() => {
+    setUnauthorizedHandler(() => dispatch({ type: 'LOGOUT' }));
+    return () => setUnauthorizedHandler(null);
+  }, []);
+
+  // FE-006: `isLoading` is only the initial session restore. Submitting a
+  // form must not flip it, otherwise PublicOnlyRoute unmounts the login form.
   const login = async (email: string, password: string): Promise<boolean> => {
-    dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const result = await authService.login(email, password);
       if (result) {
@@ -83,8 +92,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       dispatch({ type: 'LOGIN_FAILURE', payload: apiErrorMessage(err, 'An error occurred during login') });
       return false;
-    } finally {
-      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 
@@ -94,7 +101,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
-    dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const result = await authService.register({ name, email, password });
       if (result) {
@@ -106,8 +112,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       dispatch({ type: 'SET_ERROR', payload: apiErrorMessage(err, 'Registration failed') });
       return false;
-    } finally {
-      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 

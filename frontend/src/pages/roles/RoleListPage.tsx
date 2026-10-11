@@ -119,7 +119,7 @@ export default function RoleListPage() {
     )},
     { key: 'actions', header: 'Actions', render: (item: any) => (
       <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
-        <Button variant="ghost" size="sm" onClick={() => setModal({ mode: 'edit', id: item.id })} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#FFFFFF', color: '#000000', borderColor: '#000000' }}>Edit</Button>
+        <Button variant="ghost" size="sm" onClick={() => setModal({ mode: 'edit', id: item.id })} style={{ backgroundColor: 'transparent', color: '#232D36', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#232D36', color: '#FFFFFF', borderColor: '#232D36' }}>Edit</Button>
       </div>
     )},
   ];

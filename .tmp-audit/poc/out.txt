@@ -1,0 +1,248 @@
+[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (../.tmp-audit/poc/vitest.poc.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.[39m
+
+ RUN  v5.0.2 E:/Project/Web/pms-internal/backend
+
+stderr | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015b concurrent create same room/dates, 5ms per query
+Unexpected error: DrizzleQueryError: Failed query: insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+params: res-5147877d,RSV-2026-016,Guest B,direct,2027-06-10,2027-06-12,reserved,,200000,same,no_dp,percentage,,,2026-10-11T01:23:16.302Z,2026-10-11T01:23:16.302Z
+    at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:43:15)
+    at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+    ... 5 lines matching cause stack trace ...
+    at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3)
+    at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+    at cors (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/middleware/cors/index.js:103:3) {
+  query: 'insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  params: [
+    'res-5147877d',
+    'RSV-2026-016',
+    'Guest B',
+    'direct',
+    '2027-06-10',
+    '2027-06-12',
+    'reserved',
+    '',
+    200000,
+    'same',
+    'no_dp',
+    'percentage',
+    null,
+    null,
+    '2026-10-11T01:23:16.302Z',
+    '2026-10-11T01:23:16.302Z'
+  ],
+  cause: SqliteError: UNIQUE constraint failed: reservations.reservation_code
+      at Object.run (E:/Project/Web/pms-internal/backend/tests/helpers/fake-d1.ts:48:121)
+      at Object.run (E:/Project/Web/pms-internal/.tmp-audit/poc/verify.poc.test.ts:58:48)
+      at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:41:16)
+      at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+      at createReservation (E:/Project/Web/pms-internal/backend/src/services/reservationService.ts:292:3)
+      at E:/Project/Web/pms-internal/backend/src/routes/reservations.ts:82:19
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at E:/Project/Web/pms-internal/backend/src/middleware/rbac.ts:23:5
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3) {
+    code: 'SQLITE_CONSTRAINT_UNIQUE'
+  }
+}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015b concurrent create same room/dates, 5ms per query
+POC|BE-015b|{"statuses":[201,500],"rowsForRoom":[{"reservation_code":"RSV-2026-016","guest_name":"Guest A","status":"reserved","room_id":"room-01"}]}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015b concurrent create same room/dates, 5ms per query 371ms
+stderr | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015c staggered concurrent creates (offset sweep, 5ms per query)
+Unexpected error: DrizzleQueryError: Failed query: insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+params: res-7610a963,RSV-2026-016,Guest A,direct,2027-06-10,2027-06-12,reserved,,200000,same,no_dp,percentage,,,2026-10-11T01:23:16.606Z,2026-10-11T01:23:16.606Z
+    at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:43:15)
+    at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+    ... 5 lines matching cause stack trace ...
+    at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3)
+    at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+    at cors (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/middleware/cors/index.js:103:3) {
+  query: 'insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  params: [
+    'res-7610a963',
+    'RSV-2026-016',
+    'Guest A',
+    'direct',
+    '2027-06-10',
+    '2027-06-12',
+    'reserved',
+    '',
+    200000,
+    'same',
+    'no_dp',
+    'percentage',
+    null,
+    null,
+    '2026-10-11T01:23:16.606Z',
+    '2026-10-11T01:23:16.606Z'
+  ],
+  cause: SqliteError: UNIQUE constraint failed: reservations.reservation_code
+      at Object.run (E:/Project/Web/pms-internal/backend/tests/helpers/fake-d1.ts:48:121)
+      at Object.run (E:/Project/Web/pms-internal/.tmp-audit/poc/verify.poc.test.ts:58:48)
+      at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:41:16)
+      at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+      at createReservation (E:/Project/Web/pms-internal/backend/src/services/reservationService.ts:292:3)
+      at E:/Project/Web/pms-internal/backend/src/routes/reservations.ts:82:19
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at E:/Project/Web/pms-internal/backend/src/middleware/rbac.ts:23:5
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3) {
+    code: 'SQLITE_CONSTRAINT_UNIQUE'
+  }
+}
+
+stderr | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015c staggered concurrent creates (offset sweep, 5ms per query)
+Unexpected error: DrizzleQueryError: Failed query: insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+params: res-48d79348,RSV-2026-016,Guest B,direct,2027-06-10,2027-06-12,reserved,,200000,same,no_dp,percentage,,,2026-10-11T01:23:16.935Z,2026-10-11T01:23:16.935Z
+    at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:43:15)
+    at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+    ... 5 lines matching cause stack trace ...
+    at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3)
+    at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+    at cors (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/middleware/cors/index.js:103:3) {
+  query: 'insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  params: [
+    'res-48d79348',
+    'RSV-2026-016',
+    'Guest B',
+    'direct',
+    '2027-06-10',
+    '2027-06-12',
+    'reserved',
+    '',
+    200000,
+    'same',
+    'no_dp',
+    'percentage',
+    null,
+    null,
+    '2026-10-11T01:23:16.935Z',
+    '2026-10-11T01:23:16.935Z'
+  ],
+  cause: SqliteError: UNIQUE constraint failed: reservations.reservation_code
+      at Object.run (E:/Project/Web/pms-internal/backend/tests/helpers/fake-d1.ts:48:121)
+      at Object.run (E:/Project/Web/pms-internal/.tmp-audit/poc/verify.poc.test.ts:58:48)
+      at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:41:16)
+      at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+      at createReservation (E:/Project/Web/pms-internal/backend/src/services/reservationService.ts:292:3)
+      at E:/Project/Web/pms-internal/backend/src/routes/reservations.ts:82:19
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at E:/Project/Web/pms-internal/backend/src/middleware/rbac.ts:23:5
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3) {
+    code: 'SQLITE_CONSTRAINT_UNIQUE'
+  }
+}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015c staggered concurrent creates (offset sweep, 5ms per query)
+POC|BE-015c|{"+0ms":{"statuses":[500,201],"bookingsForSameRoomNights":1},"+3ms":{"statuses":[201,500],"bookingsForSameRoomNights":1},"+6ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+9ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+12ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+15ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+18ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+21ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+24ms":{"statuses":[201,201],"bookingsForSameRoomNights":2},"+30ms":{"statuses":[201,201],"bookingsForSameRoomNights":2}}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-015c staggered concurrent creates (offset sweep, 5ms per query) 3530ms
+stderr | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-029 concurrent create different rooms -> same reservation code
+Unexpected error: DrizzleQueryError: Failed query: insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+params: res-c49c1576,RSV-2026-016,Guest Two,direct,2027-11-10,2027-11-12,reserved,,200000,same,no_dp,percentage,,,2026-10-11T01:23:20.151Z,2026-10-11T01:23:20.151Z
+    at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:43:15)
+    at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+    ... 5 lines matching cause stack trace ...
+    at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3)
+    at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+    at cors (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/middleware/cors/index.js:103:3) {
+  query: 'insert into "reservations" ("id", "reservation_code", "guest_name", "source", "check_in_date", "check_out_date", "status", "notes", "total_amount", "pricing_mode", "payment_type", "dp_type", "dp_percentage", "dp_fixed_amount", "created_at", "updated_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  params: [
+    'res-c49c1576',
+    'RSV-2026-016',
+    'Guest Two',
+    'direct',
+    '2027-11-10',
+    '2027-11-12',
+    'reserved',
+    '',
+    200000,
+    'same',
+    'no_dp',
+    'percentage',
+    null,
+    null,
+    '2026-10-11T01:23:20.151Z',
+    '2026-10-11T01:23:20.151Z'
+  ],
+  cause: SqliteError: UNIQUE constraint failed: reservations.reservation_code
+      at Object.run (E:/Project/Web/pms-internal/backend/tests/helpers/fake-d1.ts:48:121)
+      at Object.run (E:/Project/Web/pms-internal/.tmp-audit/poc/verify.poc.test.ts:58:48)
+      at D1PreparedQuery.queryWithCache (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/sqlite-core/session.js:41:16)
+      at D1PreparedQuery.run (file:///E:/Project/Web/pms-internal/backend/node_modules/drizzle-orm/d1/session.js:119:12)
+      at createReservation (E:/Project/Web/pms-internal/backend/src/services/reservationService.ts:292:3)
+      at E:/Project/Web/pms-internal/backend/src/routes/reservations.ts:82:19
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at E:/Project/Web/pms-internal/backend/src/middleware/rbac.ts:23:5
+      at dispatch (file:///E:/Project/Web/pms-internal/backend/node_modules/hono/dist/compose.js:35:11)
+      at authenticate (E:/Project/Web/pms-internal/backend/src/middleware/auth.ts:58:3) {
+    code: 'SQLITE_CONSTRAINT_UNIQUE'
+  }
+}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-029 concurrent create different rooms -> same reservation code
+POC|BE-029|{"statuses":[201,500],"messages":["RSV-2026-016","Internal server error"]}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-029 concurrent create different rooms -> same reservation code 334ms
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-018 pay vs cancel race on a Sent invoice
+POC|BE-018|{"pay":200,"cancel":200,"finalRow":{"s":"Cancelled","p":"Paid"}}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-001 anonymous register -> operational access
+POC|BE-001|{"registerStatus":201,"perms":["room.view","reservation.view","reservation.create","reservation.update","reservation.checkin","reservation.checkout"],"listStatus":200,"listed":5,"createStatus":201}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs (with D1-like latency) > BE-018 pay vs cancel race on a Sent invoice 191ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-001 anonymous register -> operational access 97ms
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-002 manager demotes + deactivates Super Admin
+POC|BE-002|{"demoteStatus":200,"adminPermsAfterDemote":["room.view","reservation.view"],"deactStatus":200,"adminMeAfterDeact":401}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-003 role.create + user.update => escalate without permission.assign
+POC|BE-003|{"createRoleStatus":201,"grantStatus":200,"perms":["user.view","user.update","role.view","role.create","user.create","user.delete","role.delete","finance.invoice.delete","finance.expense.delete"],"createWithPermissionAssign":201,"assignRoleHavingPermissionAssign":403}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-007 inactive role keeps granting permissions
+POC|BE-007|{"patch":200,"permsBefore":24,"permsAfter":24}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-002 manager demotes + deactivates Super Admin 26ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-003 role.create + user.update => escalate without permission.assign 36ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-007 inactive role keeps granting permissions 24ms
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-015 concurrent create same room/dates
+POC|BE-015|{"statuses":[201,409],"rowsForRoom":[{"reservation_code":"RSV-2026-016","guest_name":"Guest A","status":"reserved","room_id":"room-01"}]}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-016 failed edit leaves rates replaced
+POC|BE-016|{"blocker":201,"editStatus":409,"before":{"ci":"2027-07-01","total":200000,"nights":["2027-07-01","2027-07-02"],"calcTotal":200000},"after":{"ci":"2027-07-01","co":"2027-07-03","total":200000,"nights":["2027-07-20","2027-07-21"],"calcTotal":300000}}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-017 edit checked-out / cancelled reservation
+POC|BE-017|{"checkedOut":{"patch":200,"totalBefore":1500000,"totalAfter":2,"statusAfter":"checked-out"},"cancelled":{"patch":200,"totalBefore":0,"totalAfter":2,"statusAfter":"cancelled"}}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-019 delete Paid invoice + number reuse
+POC|BE-019|{"deleted":{"id":"inv-009","n":"INV-2026-009","s":"Completed","p":"Paid"},"deleteStatus":204,"newNumber":"INV-2026-009","reusedSameNumber":true}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-015 concurrent create same room/dates 26ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-016 failed edit leaves rates replaced 30ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-017 edit checked-out / cancelled reservation 26ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-019 delete Paid invoice + number reuse 24ms
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-020/BE-022 create Completed/Paid directly; drafts counted as sales
+POC|BE-020/022|{"draftStatus":"Draft","salesBefore":0,"salesAfterDraft":5000000,"netAfter":5000000,"directCreate":[201,"Completed","Paid"],"sentThenPatchBackToDraftPaid":[200,200,"Draft","Paid"]}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-023 role/user changes leave no audit rows
+POC|BE-023|{"before":11,"after":11,"rowsAdded":0}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-025 impossible date + >60 nights
+POC|BE-025|{"impossibleDate":[201,"2027-02-31",null],"nightsInRange":90,"longStay":[201,6000000,60,null]}
+
+stdout | ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-024 maintenance room bookable + client room snapshot
+POC|BE-024|{"status":201,"snapshotRoomNumber":"999","realRoomNumber":"01"}
+
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-020/BE-022 create Completed/Paid directly; drafts counted as sales 32ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-023 role/user changes leave no audit rows 30ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-025 impossible date + >60 nights 26ms
+ ✓ ../.tmp-audit/poc/verify.poc.test.ts > verification PoCs > BE-024 maintenance room bookable + client room snapshot 23ms
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  08:23:14
+   Duration  5.96s (tests 83%, import 10%, transform 7%)
+

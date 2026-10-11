@@ -1,0 +1,38 @@
+[
+  {
+    "viewport": "375x812",
+    "page": "home",
+    "overflow": 0,
+    "wide": 44,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 7195,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "768x1024",
+    "page": "home",
+    "overflow": 0,
+    "wide": 0,
+    "small": 4,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 6902,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "1440x900",
+    "page": "home",
+    "overflow": 0,
+    "wide": 0,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 7619,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  }
+]

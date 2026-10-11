@@ -1,0 +1,544 @@
+/* Dashboard (TailwindAdmin Modern concepts) — flat tone only.
+ * Tokens: canvas #EEEDE9, surface #FFFFFF, muted #F2F0EB, line #C7BBAB,
+ * ink #232D36, slate #6B7881, bronze #97764D / dark #7D6240.
+ * Sans-only, 8px radius, 1px borders, no shadows.
+ * Animations: marquee, fade-up stagger, bar grow, donut draw, sparkline draw.
+ * All motion disabled under prefers-reduced-motion.
+ */
+
+.dm {
+  font-family: var(--font-family-sans);
+  color: #232D36;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dm-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.dm-card {
+  background-color: #FFFFFF;
+  border: 1px solid #C7BBAB;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 0;
+}
+
+.dm-card__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #232D36;
+  margin: 0;
+}
+
+.dm-card__sub {
+  font-size: 14px;
+  color: #6B7881;
+  margin: 4px 0 0;
+}
+
+.dm-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* Reveal on mount */
+@keyframes dm-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dm-reveal {
+  animation: dm-fade-up 500ms ease both;
+}
+
+/* ---------- Welcome banner (ProfileWelcome) — removed; styles retired ---------- */
+
+.dm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+  white-space: nowrap;
+}
+
+.dm-btn--primary {
+  background-color: #232D36;
+  border-color: #232D36;
+  color: #FFFFFF;
+}
+
+.dm-btn--primary:hover {
+  background-color: #97764D;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.dm-btn--secondary {
+  background-color: #FFFFFF;
+  border-color: #C7BBAB;
+  color: #232D36;
+}
+
+.dm-btn--secondary:hover {
+  background-color: #97764D;
+  border-color: #97764D;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.dm-btn:active {
+  opacity: 0.85;
+}
+
+/* ---------- TopCards marquee ---------- */
+.dm-marquee {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.dm-marquee__track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: dm-marquee 36s linear infinite;
+}
+
+@keyframes dm-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 8px)); }
+}
+
+.dm-marquee:hover .dm-marquee__track,
+.dm-marquee:focus-within .dm-marquee__track {
+  animation-play-state: paused;
+}
+
+.dm-stat {
+  flex: 0 0 230px;
+  width: 230px;
+  background-color: #FFFFFF;
+  border: 1px solid #C7BBAB;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+
+.dm-stat:hover {
+  border-color: #97764D;
+  text-decoration: none;
+}
+
+.dm-stat__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background-color: #EEEDE9;
+  border: 1px solid #C7BBAB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #97764D;
+  flex-shrink: 0;
+}
+
+.dm-stat__value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #232D36;
+  line-height: 1.2;
+}
+
+.dm-stat__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #232D36;
+}
+
+.dm-stat__sub {
+  font-size: 12px;
+  color: #6B7881;
+}
+
+/* ---------- Revenue bars (RevenueUpdate) ---------- */
+.dm-select {
+  height: 44px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-family: var(--font-family-sans);
+  color: #232D36;
+  background-color: #FFFFFF;
+  border: 1px solid #C7BBAB;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dm-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.dm-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6B7881;
+}
+
+.dm-legend__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.dm-chart-scroll {
+  overflow-x: auto;
+}
+
+.dm-chart-inner {
+  min-width: 100%;
+}
+
+.dm-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 220px;
+  padding-top: 8px;
+  border-bottom: 1px solid #C7BBAB;
+}
+
+.dm-bar-group {
+  flex: 1 0 56px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  height: 100%;
+  min-width: 56px;
+}
+
+.dm-bar {
+  width: 22px;
+  border-radius: 4px 4px 0 0;
+  min-height: 3px;
+  transition: height 700ms ease;
+}
+
+.dm-bar--earn { background-color: #97764D; }
+.dm-bar--exp { background-color: #6B7881; }
+
+.dm-bar-labels {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.dm-bar-label {
+  flex: 1 0 56px;
+  min-width: 56px;
+  text-align: center;
+  font-size: 12px;
+  color: #6B7881;
+}
+
+.dm-chart-sum {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: #6B7881;
+}
+
+.dm-chart-sum strong { color: #232D36; }
+
+/* ---------- Donut (YearlyBreakup) ---------- */
+.dm-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dm-donut-total {
+  font-size: 22px;
+  font-weight: 700;
+  color: #232D36;
+  margin: 0;
+}
+
+.dm-donut-delta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #6B7881;
+  margin: 6px 0 0;
+}
+
+.dm-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.dm-donut-svg circle.dm-donut-seg {
+  transition: stroke-dashoffset 800ms ease;
+}
+
+/* ---------- Sparkline KPI (MonthlyEarning) — removed; styles retired ---------- */
+
+/* ---------- Timeline (RecentTransaction) — removed; styles retired ---------- */
+
+/* ---------- Meters ---------- */
+.dm-meter {
+  height: 8px;
+  background-color: #EEEDE9;
+  border: 1px solid #C7BBAB;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dm-meter__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 700ms ease;
+}
+
+/* ---------- Invoice tiles ---------- */
+.dm-tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  text-align: center;
+}
+
+.dm-tile {
+  padding: 16px 12px;
+  border-radius: 8px;
+  border: 1px solid #C7BBAB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dm-tile--success { background-color: #E3EDE4; }
+.dm-tile--warning { background-color: #F0E7D3; }
+.dm-tile--danger { background-color: #F3DEDE; }
+
+.dm-tile__value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.dm-tile--success .dm-tile__value { color: #2F5D37; }
+.dm-tile--warning .dm-tile__value { color: #7A5A1E; }
+.dm-tile--danger .dm-tile__value { color: #962222; }
+
+.dm-tile__label {
+  font-size: 12px;
+  color: #232D36;
+  font-weight: 600;
+}
+
+.dm-tiles--compact {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.dm-tiles--compact .dm-tile {
+  padding: 10px 6px;
+}
+
+.dm-tiles--compact .dm-tile__value {
+  font-size: 22px;
+}
+
+.dm-tiles--compact .dm-tile__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dm-tiles--stack {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.dm-tiles--stack .dm-tile {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.dm-tiles--stack .dm-tile__value {
+  font-size: 20px;
+}
+
+.dm-tiles--stack .dm-tile__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ---------- Quick actions ---------- */
+.dm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dm-actions--row {
+  flex-direction: row;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.dm-actions--row .dm-btn {
+  flex: 1 1 0;
+  min-width: 150px;
+}
+
+.dm-card--sm {
+  padding: 16px;
+}
+
+.dm-card--tight {
+  padding: 12px;
+}
+
+.dm-card--tight .dm-card__head {
+  margin-bottom: 12px;
+}
+
+.dm-card--equal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dm-card--equal > :last-child {
+  flex: 1;
+}
+
+/* Bottom tables match chart height on desktop; natural height on mobile */
+@media (min-width: 1024px) {
+  .dm-card--match {
+    min-height: 430px;
+  }
+}
+
+.dm-actions .dm-btn {
+  width: 100%;
+}
+
+.dm-donut-legend--grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+
+/* ---------- Occupancy ---------- */
+.dm-occupancy-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.dm-occupancy-hero__pct--sm {
+  font-size: 36px;
+  font-weight: 700;
+  color: #232D36;
+  line-height: 1;
+}
+
+.dm-occupancy-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6B7881;
+  flex-wrap: wrap;
+}
+
+/* ---------- Breakpoints ---------- */
+@media (min-width: 640px) {
+  .dm-tiles {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Narrow laptops / tablet landscape: the invoice card is only ~4/12 wide, so
+   keep the stacked tiles stacked instead of the 3-column override above. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .dm-tiles--stack {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dm-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  .dm-span-12 { grid-column: span 12; }
+  .dm-span-8 { grid-column: span 8; }
+  .dm-span-6 { grid-column: span 6; }
+  .dm-span-4 { grid-column: span 4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dm-reveal {
+    animation: none;
+  }
+
+  .dm-marquee__track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+
+  .dm-stat {
+    flex: 1 1 200px;
+    width: auto;
+  }
+
+  .dm-bar,
+  .dm-meter__fill,
+  .dm-donut-svg circle.dm-donut-seg {
+    transition: none;
+  }
+}

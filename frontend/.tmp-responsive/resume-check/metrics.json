@@ -1,0 +1,66 @@
+{
+  "375x812/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 0,
+    "mainWidth": 375,
+    "sideWidth": 240,
+    "sideVisibility": "hidden",
+    "htmlFont": "13px"
+  },
+  "375x812/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 0,
+    "mainWidth": 375,
+    "sideWidth": 240,
+    "sideVisibility": "hidden",
+    "htmlFont": "13px"
+  },
+  "768x1024/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 60,
+    "mainWidth": 708,
+    "sideWidth": 60,
+    "sideVisibility": "visible",
+    "htmlFont": "14px"
+  },
+  "768x1024/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 60,
+    "mainWidth": 708,
+    "sideWidth": 60,
+    "sideVisibility": "visible",
+    "htmlFont": "14px"
+  },
+  "1024x768/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 784,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  },
+  "1024x768/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 784,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  },
+  "1440x900/dashboard": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 1200,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  },
+  "1440x900/reservation-calendar": {
+    "pageOverflow": false,
+    "mainLeft": 240,
+    "mainWidth": 1200,
+    "sideWidth": 240,
+    "sideVisibility": "visible",
+    "htmlFont": "16px"
+  }
+}

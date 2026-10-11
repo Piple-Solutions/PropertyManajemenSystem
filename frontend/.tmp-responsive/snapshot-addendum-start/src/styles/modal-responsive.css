@@ -1,0 +1,37 @@
+/* Shared Modal responsive behavior — mobile-first enhancement.
+ * Desktop/tablet: centered dialog (inline styles carry the design).
+ * Mobile (<=640px): bottom-sheet dialog, full width, top radius only.
+ * Touch: close control meets the 44px minimum target.
+ */
+
+.pms-modal-close {
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .pms-modal-overlay {
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  .pms-modal-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    border-radius: 12px 12px 0 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pms-modal-overlay,
+  .pms-modal-dialog {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "user-001",
+    "name": "Admin User",
+    "email": "admin@hotel.com",
+    "password": "admin123",
+    "roles": ["role-001"],
+    "status": "active",
+    "createdAt": "2026-01-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z",
+    "lastLoginAt": "2026-09-14T08:00:00Z"
+  },
+  {
+    "id": "user-002",
+    "name": "Manager User",
+    "email": "manager@hotel.com",
+    "password": "manager123",
+    "roles": ["role-002"],
+    "status": "active",
+    "createdAt": "2026-01-15T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z",
+    "lastLoginAt": "2026-09-14T09:00:00Z"
+  },
+  {
+    "id": "user-003",
+    "name": "Staff User",
+    "email": "staff@hotel.com",
+    "password": "staff123",
+    "roles": ["role-003"],
+    "status": "active",
+    "createdAt": "2026-02-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "user-004",
+    "name": "Inactive User",
+    "email": "inactive@hotel.com",
+    "password": "inactive123",
+    "roles": ["role-004"],
+    "status": "inactive",
+    "createdAt": "2026-03-01T00:00:00Z",
+    "updatedAt": "2026-06-01T00:00:00Z"
+  },
+  {
+    "id": "user-005",
+    "name": "Another Staff",
+    "email": "another@hotel.com",
+    "password": "another123",
+    "roles": ["role-003"],
+    "status": "active",
+    "createdAt": "2026-04-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  }
+]

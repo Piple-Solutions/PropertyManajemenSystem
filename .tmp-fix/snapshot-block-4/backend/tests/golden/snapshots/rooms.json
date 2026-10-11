@@ -1,0 +1,388 @@
+[
+  {
+    "step": "list rooms",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "room-01",
+          "roomNumber": "01",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-01-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-02",
+          "roomNumber": "02",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-01-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-03",
+          "roomNumber": "03",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-01-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-04",
+          "roomNumber": "04",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-01-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-05",
+          "roomNumber": "05",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-01-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-06",
+          "roomNumber": "06",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-07",
+          "roomNumber": "07",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-08",
+          "roomNumber": "08",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-02-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-09",
+          "roomNumber": "09",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-02-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-10",
+          "roomNumber": "10",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-02-20T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-11",
+          "roomNumber": "11",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-03-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-12",
+          "roomNumber": "12",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-03-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-13",
+          "roomNumber": "13",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-03-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-14",
+          "roomNumber": "14",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-03-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-15",
+          "roomNumber": "15",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-03-20T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-16",
+          "roomNumber": "16",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-04-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-17",
+          "roomNumber": "17",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-04-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-18",
+          "roomNumber": "18",
+          "roomTypeId": "room-type-005",
+          "status": "active",
+          "createdAt": "2026-04-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-19",
+          "roomNumber": "19",
+          "roomTypeId": "room-type-002",
+          "status": "active",
+          "createdAt": "2026-04-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-20",
+          "roomNumber": "20",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-04-20T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-joglo",
+          "roomNumber": "SEWA JOGLO",
+          "roomTypeId": "room-type-006",
+          "status": "active",
+          "createdAt": "2026-04-25T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 21
+      }
+    }
+  },
+  {
+    "step": "filter rooms by type",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "room-04",
+          "roomNumber": "04",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-01-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-05",
+          "roomNumber": "05",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-01-15T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-06",
+          "roomNumber": "06",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-02-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-17",
+          "roomNumber": "17",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-04-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-20",
+          "roomNumber": "20",
+          "roomTypeId": "room-type-004",
+          "status": "active",
+          "createdAt": "2026-04-20T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 5
+      }
+    }
+  },
+  {
+    "step": "search rooms",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "room-01",
+          "roomNumber": "01",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-01-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-10",
+          "roomNumber": "10",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-02-20T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-11",
+          "roomNumber": "11",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-03-01T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-12",
+          "roomNumber": "12",
+          "roomTypeId": "room-type-003",
+          "status": "active",
+          "createdAt": "2026-03-05T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        },
+        {
+          "id": "room-13",
+          "roomNumber": "13",
+          "roomTypeId": "room-type-001",
+          "status": "active",
+          "createdAt": "2026-03-10T00:00:00Z",
+          "updatedAt": "2026-09-14T00:00:00Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 5,
+        "total": 11
+      }
+    }
+  },
+  {
+    "step": "get room",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "room-04",
+        "roomNumber": "04",
+        "roomTypeId": "room-type-004",
+        "status": "active",
+        "createdAt": "2026-01-10T00:00:00Z",
+        "updatedAt": "2026-09-14T00:00:00Z"
+      }
+    }
+  },
+  {
+    "step": "get room 404",
+    "status": 404,
+    "body": {
+      "message": "Room not found"
+    }
+  },
+  {
+    "step": "create room",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "room-<id-1>",
+        "roomNumber": "G-1",
+        "roomTypeId": "room-type-001",
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:07.000Z",
+        "updatedAt": "2026-09-20T03:00:07.000Z"
+      }
+    }
+  },
+  {
+    "step": "duplicate room number",
+    "status": 409,
+    "body": {
+      "message": "Room number already exists",
+      "errors": {
+        "roomNumber": [
+          "Room number already exists"
+        ]
+      }
+    }
+  },
+  {
+    "step": "unknown room type",
+    "status": 409,
+    "body": {
+      "message": "Room type not found: nope",
+      "errors": {
+        "roomTypeId": [
+          "Room type not found: nope"
+        ]
+      }
+    }
+  },
+  {
+    "step": "patch room",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "room-<id-1>",
+        "roomNumber": "G-1B",
+        "roomTypeId": "room-type-001",
+        "status": "maintenance",
+        "createdAt": "2026-09-20T03:00:07.000Z",
+        "updatedAt": "2026-09-20T03:00:10.000Z"
+      }
+    }
+  },
+  {
+    "step": "toggle room status",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "room-<id-1>",
+        "roomNumber": "G-1B",
+        "roomTypeId": "room-type-001",
+        "status": "active",
+        "createdAt": "2026-09-20T03:00:07.000Z",
+        "updatedAt": "2026-09-20T03:00:11.000Z"
+      }
+    }
+  },
+  {
+    "step": "delete room",
+    "status": 204,
+    "body": null
+  },
+  {
+    "step": "staff cannot create room (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): room.create"
+    }
+  }
+]

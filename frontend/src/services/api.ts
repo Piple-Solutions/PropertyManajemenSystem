@@ -28,6 +28,7 @@ export function getToken(): string | null {
 }
 
 export function setToken(token: string): void {
+  unauthorizedFired = false; // a new session may be expired again later
   try {
     localStorage.setItem(TOKEN_KEY, token);
   } catch {
@@ -46,6 +47,33 @@ export function clearToken(): void {
     localStorage.removeItem('pms_user');
   } catch {
     /* ignore */
+  }
+}
+
+/**
+ * FE-003: one global 401 policy for AUTHENTICATED calls. When a request that
+ * carried a Bearer token comes back 401 (expired / invalidated token) the
+ * stored token is cleared and the registered handler (AuthProvider) flips the
+ * session to logged-out, which sends protected pages to the login screen with
+ * `returnTo`. It fires at most once per session, so several in-flight
+ * requests cannot loop. The login call itself is never affected (it is sent
+ * without a token) and network/5xx errors never reach this path.
+ */
+let unauthorizedFired = false;
+let unauthorizedHandler: (() => void) | null = null;
+
+export function setUnauthorizedHandler(handler: (() => void) | null): void {
+  unauthorizedHandler = handler;
+}
+
+function handleUnauthorized(): void {
+  if (unauthorizedFired) return;
+  unauthorizedFired = true;
+  clearToken();
+  try {
+    unauthorizedHandler?.();
+  } catch {
+    /* a failing handler must not mask the original API error */
   }
 }
 
@@ -74,6 +102,7 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
     const token = getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
   }
+  const sentToken = Boolean(headers.Authorization);
   let res: Response;
   try {
     res = await fetch(`${API_BASE_URL}${path}`, {
@@ -91,6 +120,7 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   } catch {
     /* non-JSON body */
   }
+  if (res.status === 401 && sentToken) handleUnauthorized();
   if (!res.ok) {
     const message =
       (json?.message as string | undefined) || `Request failed with status ${res.status}`;
@@ -109,4 +139,33 @@ export function apiErrorMessage(err: unknown, fallback: string): string {
     return err.message || fallback;
   }
   return fallback;
+}
+
+/**
+ * FE-002: list endpoints cap `pageSize` at 100, so a single request silently
+ * truncates the table. This follows `pagination.total` and concatenates the
+ * pages (same row shape as one big page). Bounded by `maxPages` so a very
+ * large table cannot trigger an unbounded request storm; the backend orders
+ * rows deterministically (BE-035), so pages do not overlap or skip.
+ * With <= 100 rows it issues exactly the single request it always did.
+ */
+export async function fetchAllPages<T>(
+  path: string,
+  options: { pageSize?: number; maxPages?: number } = {},
+): Promise<T[]> {
+  const pageSize = options.pageSize ?? 100;
+  const maxPages = options.maxPages ?? 20;
+  const joiner = path.includes('?') ? '&' : '?';
+  const rows: T[] = [];
+  for (let page = 1; page <= maxPages; page += 1) {
+    const json = await apiFetch<{
+      data: T[];
+      pagination?: { page: number; pageSize: number; total: number };
+    }>(`${path}${joiner}page=${page}&pageSize=${pageSize}`);
+    const batch = json.data ?? [];
+    rows.push(...batch);
+    const total = json.pagination?.total ?? rows.length;
+    if (batch.length < pageSize || rows.length >= total) break;
+  }
+  return rows;
 }

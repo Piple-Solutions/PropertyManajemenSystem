@@ -65,7 +65,7 @@ export function Pagination({
   });
 
   return (
-    <div style={containerStyles}>
+    <div className="pg" style={containerStyles}>
       <button
         style={pageButtonStyles(false, currentPage === 1)}
         onClick={() => onPageChange(currentPage - 1)}

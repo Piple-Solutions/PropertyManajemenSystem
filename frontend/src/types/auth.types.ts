@@ -89,6 +89,12 @@ export interface Invoice {
   total: number;
   paymentStatus: 'Pending' | 'Paid' | 'Overdue' | 'Partial';
   invoiceStatus: 'Draft' | 'Sent' | 'Completed' | 'Cancelled';
+  /**
+   * Amount settled so far, in whole rupiah. Optional: absent means "not
+   * tracked", in which case settlement falls back to `paymentStatus`. When
+   * present it is authoritative (see `utils/invoicePayment.ts`).
+   */
+  totalPaid?: number;
   createdAt: string;
   updatedAt: string;
 }

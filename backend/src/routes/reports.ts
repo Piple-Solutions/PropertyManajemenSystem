@@ -2,10 +2,10 @@ import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import type { AppDb } from '../db/client';
 import { badRequest, ok } from '../lib/errors';
-import { parseOr422, reportSummaryQuerySchema } from '../lib/validation';
+import { parseCategoryList, parseOr422, reportSummaryQuerySchema } from '../lib/validation';
 import { authenticate, type AuthContext } from '../middleware/auth';
 import { requirePermissions } from '../middleware/rbac';
-import { getReportSummary, getTopInvoices } from '../services/reportService';
+import { getReportSummary, getRevenueSummary, getTopInvoices } from '../services/reportService';
 
 type Vars = { db: AppDb; auth: AuthContext };
 
@@ -21,10 +21,20 @@ reports.get('/summary', requirePermissions('finance.report.view'), async (c) => 
     categories: c.req.query('categories'),
   });
   if (query.end < query.start) throw badRequest('`end` must be on or after `start`.');
-  const categories = query.categories
-    ? query.categories.split(',').map((s) => s.trim()).filter(Boolean)
-    : [];
+  const categories = parseCategoryList(query.categories);
   return ok(c, await getReportSummary(c.get('db'), query.start, query.end, categories));
+});
+
+/** BE-022: billed vs paid (the legacy /summary keeps counting Drafts as sales). */
+reports.get('/revenue', requirePermissions('finance.report.view'), async (c) => {
+  const query = parseOr422(reportSummaryQuerySchema, {
+    start: c.req.query('start'),
+    end: c.req.query('end'),
+    categories: c.req.query('categories'),
+  });
+  if (query.end < query.start) throw badRequest('`end` must be on or after `start`.');
+  const categories = parseCategoryList(query.categories);
+  return ok(c, await getRevenueSummary(c.get('db'), query.start, query.end, categories));
 });
 
 reports.get('/top-invoices', requirePermissions('finance.report.view'), async (c) => {

@@ -16,7 +16,7 @@ export function ReportPrintDocument({ dataset }: { dataset: ReportDataset }) {
     <div className="report-print">
       <header className="report-print__header">
         <div>
-          <div className="report-print__brand">Joglo Seruni</div>
+          <div className="report-print__brand">Homestay Joglo Seruni Syariah</div>
           <div className="report-print__sub">Hotel Property Management System</div>
         </div>
         <div className="report-print__titleblock">
@@ -115,7 +115,7 @@ export function ReportPrintDocument({ dataset }: { dataset: ReportDataset }) {
       </section>
 
       <footer className="report-print__footer">
-        <div>Generated on {ds.generatedAt} · Joglo Seruni</div>
+        <div>Generated on {ds.generatedAt} · Homestay Joglo Seruni Syariah</div>
       </footer>
     </div>
   );

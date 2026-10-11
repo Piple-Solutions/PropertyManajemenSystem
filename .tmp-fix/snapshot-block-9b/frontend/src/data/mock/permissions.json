@@ -1,0 +1,210 @@
+[
+  {
+    "id": "perm-001",
+    "name": "user.view",
+    "description": "View users",
+    "resource": "user",
+    "action": "view",
+    "group": "Users"
+  },
+  {
+    "id": "perm-002",
+    "name": "user.create",
+    "description": "Create new user",
+    "resource": "user",
+    "action": "create",
+    "group": "Users"
+  },
+  {
+    "id": "perm-003",
+    "name": "user.update",
+    "description": "Update user",
+    "resource": "user",
+    "action": "update",
+    "group": "Users"
+  },
+  {
+    "id": "perm-004",
+    "name": "user.delete",
+    "description": "Delete user",
+    "resource": "user",
+    "action": "delete",
+    "group": "Users"
+  },
+  {
+    "id": "perm-005",
+    "name": "role.view",
+    "description": "View roles",
+    "resource": "role",
+    "action": "view",
+    "group": "Roles"
+  },
+  {
+    "id": "perm-006",
+    "name": "role.create",
+    "description": "Create role",
+    "resource": "role",
+    "action": "create",
+    "group": "Roles"
+  },
+  {
+    "id": "perm-007",
+    "name": "role.update",
+    "description": "Update role",
+    "resource": "role",
+    "action": "update",
+    "group": "Roles"
+  },
+  {
+    "id": "perm-008",
+    "name": "role.delete",
+    "description": "Delete role",
+    "resource": "role",
+    "action": "delete",
+    "group": "Roles"
+  },
+  {
+    "id": "perm-009",
+    "name": "permission.view",
+    "description": "View permissions",
+    "resource": "permission",
+    "action": "view",
+    "group": "Permissions"
+  },
+  {
+    "id": "perm-010",
+    "name": "permission.assign",
+    "description": "Assign permissions to roles",
+    "resource": "permission",
+    "action": "assign",
+    "group": "Permissions"
+  },
+  {
+    "id": "perm-011",
+    "name": "room.view",
+    "description": "View rooms",
+    "resource": "room",
+    "action": "view",
+    "group": "Rooms"
+  },
+  {
+    "id": "perm-012",
+    "name": "room.create",
+    "description": "Create room",
+    "resource": "room",
+    "action": "create",
+    "group": "Rooms"
+  },
+  {
+    "id": "perm-013",
+    "name": "room.update",
+    "description": "Update room",
+    "resource": "room",
+    "action": "update",
+    "group": "Rooms"
+  },
+  {
+    "id": "perm-014",
+    "name": "room.delete",
+    "description": "Delete room",
+    "resource": "room",
+    "action": "delete",
+    "group": "Rooms"
+  },
+  {
+    "id": "perm-015",
+    "name": "reservation.view",
+    "description": "View reservations",
+    "resource": "reservation",
+    "action": "view",
+    "group": "Reservations"
+  },
+  {
+    "id": "perm-016",
+    "name": "reservation.create",
+    "description": "Create reservation",
+    "resource": "reservation",
+    "action": "create",
+    "group": "Reservations"
+  },
+  {
+    "id": "perm-017",
+    "name": "reservation.update",
+    "description": "Update reservation",
+    "resource": "reservation",
+    "action": "update",
+    "group": "Reservations"
+  },
+  {
+    "id": "perm-018",
+    "name": "reservation.delete",
+    "description": "Cancel reservation",
+    "resource": "reservation",
+    "action": "delete",
+    "group": "Reservations"
+  },
+  {
+    "id": "perm-019",
+    "name": "reservation.checkin",
+    "description": "Check in reservation",
+    "resource": "reservation",
+    "action": "checkin",
+    "group": "Reservations"
+  },
+  {
+    "id": "perm-020",
+    "name": "reservation.checkout",
+    "description": "Check out reservation",
+    "resource": "reservation",
+    "action": "checkout",
+    "group": "Reservations"
+  },
+  {
+    "id": "perm-021",
+    "name": "finance.sales.view",
+    "description": "View sales reports",
+    "resource": "finance",
+    "action": "sales.view",
+    "group": "Finance"
+  },
+  {
+    "id": "perm-022",
+    "name": "finance.invoice.view",
+    "description": "View invoices",
+    "resource": "finance",
+    "action": "invoice.view",
+    "group": "Finance"
+  },
+  {
+    "id": "perm-023",
+    "name": "finance.invoice.create",
+    "description": "Create invoice",
+    "resource": "finance",
+    "action": "invoice.create",
+    "group": "Finance"
+  },
+  {
+    "id": "perm-024",
+    "name": "finance.invoice.update",
+    "description": "Update invoice",
+    "resource": "finance",
+    "action": "invoice.update",
+    "group": "Finance"
+  },
+  {
+    "id": "perm-025",
+    "name": "finance.report.view",
+    "description": "View financial reports",
+    "resource": "finance",
+    "action": "report.view",
+    "group": "Finance"
+  },
+  {
+    "id": "perm-026",
+    "name": "activity.view",
+    "description": "View activity log",
+    "resource": "activity",
+    "action": "view",
+    "group": "Activity"
+  }
+]

@@ -1,0 +1,235 @@
+{
+  "gallery": {
+    "initial": {
+      "tiles": 12,
+      "count": "Menampilkan 12 dari 12 foto",
+      "pressed": [
+        "true",
+        "false",
+        "false",
+        "false",
+        "false"
+      ],
+      "uniform": false
+    },
+    "filtered": {
+      "tiles": 3,
+      "count": "Menampilkan 3 dari 12 foto",
+      "uniform": true,
+      "labels": [
+        "Kamar keluarga",
+        "Kamar twin",
+        "Tempat tidur"
+      ]
+    },
+    "openState": {
+      "tile": "Buka foto: Teras depan",
+      "open": true,
+      "role": "dialog",
+      "modal": "true",
+      "focusInside": true,
+      "focusLabel": "Tutup pratinjau",
+      "caption": "Teras depanEksterior · Foto 3 dari 12",
+      "bodyOverflow": "hidden",
+      "mainInert": true,
+      "headerInert": true,
+      "parentIsRoot": true,
+      "frame": 338
+    },
+    "afterRight": "HalamanHalaman · Foto 4 dari 12",
+    "afterLeftLeft": "Kamar keluargaKamar · Foto 2 dari 12",
+    "tabEscaped": false,
+    "swipe": {
+      "before": "Kamar keluargaKamar · Foto 2 dari 12",
+      "after": "Teras depanEksterior · Foto 3 dari 12"
+    },
+    "afterEscape": {
+      "open": false,
+      "focusInside": false,
+      "focusLabel": "Buka foto: Teras depan",
+      "caption": null,
+      "bodyOverflow": "unset",
+      "mainInert": false,
+      "headerInert": false,
+      "parentIsRoot": false,
+      "frame": null
+    },
+    "focusReturnedToTile": true,
+    "afterCloseButton": {
+      "open": false,
+      "bodyOverflow": "unset",
+      "mainInert": false
+    }
+  },
+  "rooms": {
+    "initialCards": 6,
+    "status": "Menampilkan 6 dari 22 tipe kamar",
+    "afterAllCards": 22,
+    "clicks": 3,
+    "finalStatus": "Menampilkan 22 dari 22 tipe kamar",
+    "focusOnStatus": true,
+    "waLinks": 22,
+    "firstWaText": {
+      "href": "https://wa.me/6200000000000?text=Halo, saya ingin menanyakan ketersediaan E2E Type 04946.",
+      "name": "Tanya ketersediaanE2E Type 04946"
+    },
+    "apiDown": {
+      "cards": 3,
+      "names": [
+        "Kamar keluarga",
+        "Kamar twin",
+        "Kamar rombongan"
+      ],
+      "note": null
+    }
+  },
+  "contactAnd404": {
+    "h1": 1,
+    "waLinks": 7,
+    "title": "Kontak | Homestay Joglo Seruni Syariah",
+    "tones": {
+      "about": {
+        "solidAtTop": "false",
+        "solidScrolled": "true",
+        "navCurrent": "Tentang",
+        "h1": "Tentang Joglo Seruni",
+        "title": "Tentang | Homestay Joglo Seruni Syariah"
+      },
+      "rooms": {
+        "solidAtTop": "false",
+        "solidScrolled": "true",
+        "navCurrent": "Kamar",
+        "h1": "Kamar untuk keluarga Anda",
+        "title": "Kamar | Homestay Joglo Seruni Syariah"
+      },
+      "gallery": {
+        "solidAtTop": "false",
+        "solidScrolled": "true",
+        "navCurrent": "Galeri",
+        "h1": "Galeri Joglo Seruni",
+        "title": "Galeri | Homestay Joglo Seruni Syariah"
+      },
+      "contact": {
+        "solidAtTop": "false",
+        "solidScrolled": "true",
+        "navCurrent": "Kontak",
+        "h1": "Hubungi Kami",
+        "title": "Kontak | Homestay Joglo Seruni Syariah"
+      },
+      "notfound": {
+        "solidAtTop": "true",
+        "solidScrolled": "true",
+        "navCurrent": null,
+        "h1": "Halaman tidak ditemukan",
+        "title": "Halaman tidak ditemukan | Homestay Joglo Seruni Syariah"
+      }
+    },
+    "notFound": {
+      "header": true,
+      "footer": true,
+      "links": [
+        "Kembali ke Beranda->/",
+        "Lihat Kamar->/rooms",
+        "Tentang->/about",
+        "Kamar->/rooms",
+        "Galeri->/gallery",
+        "Kontak->/contact"
+      ],
+      "body404": true
+    },
+    "backHome": "http://localhost:5173/",
+    "pmsUnknown": {
+      "url": "http://localhost:5173/dashboard/xyz-tidak-ada",
+      "has404": true
+    }
+  },
+  "motion": {
+    "about": {
+      "hiddenReducedMotion": 0,
+      "hiddenNoIO": 0,
+      "hidden": 0,
+      "reveals": 16,
+      "cls": 0
+    },
+    "rooms": {
+      "hiddenReducedMotion": 0,
+      "hiddenNoIO": 0,
+      "hidden": 0,
+      "reveals": 10,
+      "cls": 0
+    },
+    "gallery": {
+      "hiddenReducedMotion": 0,
+      "hiddenNoIO": 0,
+      "hidden": 0,
+      "reveals": 1,
+      "cls": 0
+    },
+    "contact": {
+      "hiddenReducedMotion": 0,
+      "hiddenNoIO": 0,
+      "hidden": 0,
+      "reveals": 9,
+      "cls": 0
+    },
+    "notfound": {
+      "hiddenReducedMotion": 0,
+      "hiddenNoIO": 0,
+      "hidden": 0,
+      "reveals": 0,
+      "cls": 0
+    }
+  },
+  "overflow": {
+    "about": {
+      "320x568": 0,
+      "375x812": 0,
+      "430x932": 0,
+      "768x1024": 0,
+      "1024x768": 0,
+      "1280x800": 0,
+      "1440x900": 0,
+      "812x375": 0
+    },
+    "rooms": {
+      "320x568": 0,
+      "375x812": 0,
+      "430x932": 0,
+      "768x1024": 0,
+      "1024x768": 0,
+      "1280x800": 0,
+      "1440x900": 0,
+      "812x375": 0
+    },
+    "gallery": {
+      "320x568": 0,
+      "375x812": 0,
+      "430x932": 0,
+      "768x1024": 0,
+      "1024x768": 0,
+      "1280x800": 0,
+      "1440x900": 0,
+      "812x375": 0
+    },
+    "contact": {
+      "320x568": 0,
+      "375x812": 0,
+      "430x932": 0,
+      "768x1024": 0,
+      "1024x768": 0,
+      "1280x800": 0,
+      "1440x900": 0,
+      "812x375": 0
+    },
+    "notfound": {
+      "320x568": 0,
+      "375x812": 0,
+      "430x932": 0,
+      "768x1024": 0,
+      "1024x768": 0,
+      "1280x800": 0,
+      "1440x900": 0,
+      "812x375": 0
+    }
+  }
+}

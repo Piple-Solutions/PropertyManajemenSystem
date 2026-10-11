@@ -1,0 +1,183 @@
+[
+  {
+    "reservationId": "res-001",
+    "rateSource": "direct",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-15", "rate": 750000 },
+      { "date": "2026-09-16", "rate": 750000 }
+    ],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-002",
+    "rateSource": "phone",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-16", "rate": 800000 },
+      { "date": "2026-09-17", "rate": 800000 },
+      { "date": "2026-09-18", "rate": 800000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-003",
+    "rateSource": "whatsapp",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-10", "rate": 750000 },
+      { "date": "2026-09-11", "rate": 750000 }
+    ],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-004",
+    "rateSource": "website",
+    "mode": "different",
+    "nightlyRates": [
+      { "date": "2026-09-20", "rate": 1100000 },
+      { "date": "2026-09-21", "rate": 1300000 },
+      { "date": "2026-09-22", "rate": 1200000 }
+    ],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-005",
+    "rateSource": "ota",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-18", "rate": 0 },
+      { "date": "2026-09-19", "rate": 0 }
+    ],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-006",
+    "rateSource": "direct",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-21", "rate": 750000 },
+      { "date": "2026-09-22", "rate": 750000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "fixed",
+    "dpFixedAmount": 500000
+  },
+  {
+    "reservationId": "res-007",
+    "rateSource": "whatsapp",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-22", "rate": 950000 },
+      { "date": "2026-09-23", "rate": 950000 },
+      { "date": "2026-09-24", "rate": 950000 }
+    ],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-008",
+    "rateSource": "ota",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-12", "rate": 1200000 },
+      { "date": "2026-09-13", "rate": 1200000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-009",
+    "rateSource": "phone",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-24", "rate": 1800000 },
+      { "date": "2026-09-25", "rate": 1800000 },
+      { "date": "2026-09-26", "rate": 1800000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "fixed",
+    "dpFixedAmount": 500000
+  },
+  {
+    "reservationId": "res-010",
+    "rateSource": "website",
+    "mode": "same",
+    "nightlyRates": [{ "date": "2026-09-25", "rate": 1100000 }],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-011",
+    "rateSource": "direct",
+    "mode": "same",
+    "nightlyRates": [
+      { "date": "2026-09-05", "rate": 1400000 },
+      { "date": "2026-09-06", "rate": 1400000 },
+      { "date": "2026-09-07", "rate": 1400000 }
+    ],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-012",
+    "rateSource": "whatsapp",
+    "mode": "different",
+    "nightlyRates": [
+      { "date": "2026-09-28", "rate": 1150000 },
+      { "date": "2026-09-29", "rate": 1150000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-013",
+    "rateSource": "ota",
+    "mode": "different",
+    "nightlyRates": [
+      { "date": "2026-09-29", "rate": 900000 },
+      { "date": "2026-09-30", "rate": 950000 },
+      { "date": "2026-10-01", "rate": 1000000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-014",
+    "rateSource": "phone",
+    "mode": "same",
+    "nightlyRates": [{ "date": "2026-09-26", "rate": 0 }],
+    "paymentType": "no_dp",
+    "dpType": "percentage",
+    "dpPercentage": 30
+  },
+  {
+    "reservationId": "res-015",
+    "rateSource": "website",
+    "mode": "different",
+    "nightlyRates": [
+      { "date": "2026-10-02", "rate": 1700000 },
+      { "date": "2026-10-03", "rate": 1750000 },
+      { "date": "2026-10-04", "rate": 1800000 }
+    ],
+    "paymentType": "dp",
+    "dpType": "fixed",
+    "dpFixedAmount": 500000
+  }
+]

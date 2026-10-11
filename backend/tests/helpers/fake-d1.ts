@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -31,46 +32,154 @@ function toD1All(rows: unknown[]) {
   return { results: rows, success: true, meta: {} };
 }
 
+/**
+ * Per-database statement log. Every statement executed through the shim
+ * (`run`, `all`, `first`, `raw`, and each statement inside `batch`) is
+ * counted, which is what Cloudflare bills against the per-invocation D1
+ * query limit (50 Free / 1000 Paid). Used by the query-budget tests.
+ */
+export interface QueryLog {
+  count: number;
+  batches: number;
+  sql: string[];
+  reset(): void;
+}
+
+const queryLogs = new WeakMap<Database.Database, QueryLog>();
+
+export function queryLogFor(sqlite: Database.Database): QueryLog {
+  let log = queryLogs.get(sqlite);
+  if (!log) {
+    log = {
+      count: 0,
+      batches: 0,
+      sql: [],
+      reset() {
+        this.count = 0;
+        this.batches = 0;
+        this.sql = [];
+      },
+    };
+    queryLogs.set(sqlite, log);
+  }
+  return log;
+}
+
+/**
+ * Artificial per-statement latency (ms) so concurrency tests can interleave
+ * requests the way real D1 round-trips do. A `batch` waits once and then runs
+ * all of its statements atomically, exactly like a single D1 batch call.
+ * Default 0 = fully synchronous (no behavior change for other tests).
+ */
+const latencies = new WeakMap<Database.Database, number>();
+
+export function setShimLatency(sqlite: Database.Database, ms: number): void {
+  latencies.set(sqlite, ms);
+}
+
+type Stmt = {
+  reader: boolean;
+  all: (...p: unknown[]) => unknown[];
+  get: (...p: unknown[]) => Record<string, unknown> | undefined;
+  run: (...p: unknown[]) => { changes: number; lastInsertRowid: unknown };
+  raw: (on: boolean) => { all: (...p: unknown[]) => unknown[][] };
+};
+
+/**
+ * A caller may wrap `prepare()` (e.g. to add latency) and hand `batch` plain
+ * objects that only forward to the shim's own statements. Such a statement is
+ * resolved by invoking it inside this context: the shim statement underneath
+ * then registers its synchronous executor instead of running.
+ */
+const batchCapture = new AsyncLocalStorage<{ exec?: () => unknown }>();
+
 export function fakeD1(sqlite: Database.Database) {
+  const log = queryLogFor(sqlite);
+  const count = (sql: string) => {
+    log.count += 1;
+    log.sql.push(sql);
+  };
+  const pause = async () => {
+    const ms = latencies.get(sqlite) ?? 0;
+    if (ms > 0) await new Promise((r) => setTimeout(r, ms));
+  };
   return {
     prepare(sql: string) {
-      const stmt = sqlite.prepare(sql);
-      const bound = (...params: unknown[]) => ({
-        all: async () => toD1All((stmt as unknown as { all: (...p: unknown[]) => unknown[] }).all(...params)),
+      const stmt = sqlite.prepare(sql) as unknown as Stmt;
+      const bound = (...params: unknown[]) => {
+        const self = {
+        all: async () => {
+          await pause();
+          count(sql);
+          return toD1All(stmt.all(...params));
+        },
         first: async (col?: string) => {
-          const row = (stmt as unknown as { get: (...p: unknown[]) => Record<string, unknown> | undefined }).get(
-            ...params,
-          );
+          await pause();
+          count(sql);
+          const row = stmt.get(...params);
           if (row == null) return null;
           return col !== undefined ? (row[col] ?? null) : row;
         },
         run: async () => {
-          const info = (stmt as unknown as { run: (...p: unknown[]) => { changes: number; lastInsertRowid: unknown } }).run(
-            ...params,
-          );
+          const slot = batchCapture.getStore();
+          if (slot) {
+            slot.exec = () => self.__execSync();
+            return { success: true, meta: {} };
+          }
+          await pause();
+          count(sql);
+          const info = stmt.run(...params);
           return { success: true, meta: { changes: info.changes, last_row_id: info.lastInsertRowid } };
         },
-        raw: async () =>
-          (stmt as unknown as { raw: (on: boolean) => { all: (...p: unknown[]) => unknown[][] } }).raw(true).all(
-            ...params,
-          ),
-      });
+        raw: async () => {
+          await pause();
+          count(sql);
+          return stmt.raw(true).all(...params);
+        },
+        /**
+         * Synchronous execution used by `batch` so every statement of a batch
+         * runs inside ONE sqlite transaction (D1 semantics: all or nothing).
+         */
+        __execSync: () => {
+          count(sql);
+          if (stmt.reader) return toD1All(stmt.all(...params));
+          const info = stmt.run(...params);
+          return { results: [], success: true, meta: { changes: info.changes, last_row_id: info.lastInsertRowid } };
+        },
+        };
+        return self;
+      };
       return {
         bind: (...params: unknown[]) => bound(...params),
-        all: async () => toD1All((stmt as unknown as { all: () => unknown[] }).all()),
+        all: async () => bound().all(),
         first: async (col?: string) => bound().first(col),
         run: async () => bound().run(),
         raw: async () => bound().raw(),
+        __execSync: () => bound().__execSync(),
       };
     },
-    batch: async (statements: Array<{ all?: () => Promise<unknown>; run?: () => Promise<unknown> }>) => {
-      const out = [];
+    /**
+     * D1 `batch` is a transaction: if any statement fails, none of the
+     * statements take effect and the call rejects. Emulated with a sqlite
+     * transaction over synchronous execution (so concurrent requests cannot
+     * interleave inside it, exactly like a single D1 batch).
+     */
+    batch: async (statements: Array<{ __execSync?: () => unknown; run?: () => Promise<unknown> }>) => {
+      await pause();
+      const execs: Array<() => unknown> = [];
       for (const s of statements) {
-        if (typeof s.all === 'function') out.push(await s.all());
-        else if (typeof s.run === 'function') out.push(await s.run());
-        else out.push({ results: [], success: true, meta: {} });
+        if (typeof s.__execSync === 'function') {
+          execs.push(s.__execSync);
+          continue;
+        }
+        const slot: { exec?: () => unknown } = {};
+        if (typeof s.run === 'function') await batchCapture.run(slot, () => s.run!());
+        if (!slot.exec) throw new Error('fake D1 batch: unsupported statement');
+        execs.push(slot.exec);
       }
-      return out;
+      log.batches += 1;
+      const run = sqlite.transaction(() => execs.map((exec) => exec()));
+      return run();
     },
     exec: async (sql: string) => {
       sqlite.exec(sql);

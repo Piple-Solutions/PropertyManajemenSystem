@@ -9,6 +9,11 @@ import { Badge } from '@/components/shared/Badge';
 import { InvoiceStatusBadge } from '@/components/shared/InvoiceStatusBadge';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { InvoicePrintDocument } from '@/components/shared/InvoicePrintDocument';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { Loading } from '@/components/shared/Loading';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import { apiErrorMessage } from '@/services/api';
+import type { Invoice } from '@/types/auth.types';
 import '../../styles/finance-responsive.css';
 import '../../styles/invoice-print.css';
 
@@ -16,7 +21,32 @@ export default function InvoiceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [confirmCancel, setConfirmCancel] = useState(false);
-  const invoice = id ? invoiceService.getById(id) : undefined;
+  // FE-001: the invoice comes from the API (async).
+  const { data: invoice, isLoading, error: loadError, reload } = useAsyncData<Invoice | undefined>(
+    () => (id ? invoiceService.getById(id) : Promise.resolve(undefined)),
+    undefined,
+  );
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  // A status action that the server refuses (e.g. already paid elsewhere) is
+  // shown instead of reloading silently; success keeps the old reload.
+  const runAction = async (action: (invoiceId: string) => Promise<boolean>, invoiceId: string) => {
+    setActionError(null);
+    try {
+      await action(invoiceId);
+      navigate(0);
+    } catch (err) {
+      setActionError(apiErrorMessage(err, ''));
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (loadError !== null) {
+    return <ErrorState description={loadError || undefined} onRetry={reload} />;
+  }
 
   if (!invoice) {
     return (
@@ -77,19 +107,20 @@ export default function InvoiceDetailPage() {
       <Card style={{ display: 'flex', justifyContent: 'flex-end', gap: '24px' }}>
         <div style={{ textAlign: 'right' }}>
           <p style={{ margin: '4px 0', color: '#6B7881' }}>Subtotal: Rp {invoice.subtotal.toLocaleString('id-ID')}</p>
-          <p style={{ margin: '4px 0', color: '#6B7881' }}>Discount: Rp {invoice.discount.toLocaleString('id-ID')}</p>
+          <p style={{ margin: '4px 0', color: '#6B7881' }}>Discount: {invoice.discount}%</p>
           <p style={{ margin: '4px 0', fontSize: '18px', fontWeight: 700, color: '#232D36' }}>Total: Rp {invoice.total.toLocaleString('id-ID')}</p>
         </div>
       </Card>
+      {actionError !== null && <ErrorState description={actionError || undefined} />}
       {(canSend || canMarkPaid || canCancel) && (
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px', flexWrap: 'wrap' }}>
           {canSend && (
-            <Button onClick={() => { invoiceService.send(invoice.id); navigate(0); }}>
+            <Button onClick={() => runAction((invoiceId) => invoiceService.send(invoiceId), invoice.id)}>
               Mark as Sent
             </Button>
           )}
           {canMarkPaid && (
-            <Button onClick={() => { invoiceService.markPaid(invoice.id); navigate(0); }}>
+            <Button onClick={() => runAction((invoiceId) => invoiceService.markPaid(invoiceId), invoice.id)}>
               Mark as Paid
             </Button>
           )}
@@ -103,7 +134,7 @@ export default function InvoiceDetailPage() {
       <ConfirmDialog
         open={confirmCancel}
         onClose={() => setConfirmCancel(false)}
-        onConfirm={() => { invoiceService.cancel(invoice.id); setConfirmCancel(false); navigate(0); }}
+        onConfirm={() => { setConfirmCancel(false); void runAction((invoiceId) => invoiceService.cancel(invoiceId), invoice.id); }}
         title="Cancel Invoice"
         message={`Are you sure you want to cancel ${invoice.invoiceNumber}? This action cannot be undone.`}
         confirmText="Yes, Cancel"

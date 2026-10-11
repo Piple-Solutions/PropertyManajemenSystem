@@ -117,3 +117,80 @@ export async function getTopInvoices(
     .limit(limit);
   return rows.map((r) => ({ ...r }));
 }
+
+/**
+ * BE-022: explicit billed vs paid figures. Billed = every non-Cancelled
+ * invoice dated in range (this is what the legacy `totalSales` has always
+ * counted, Drafts included); paid = those with `paymentStatus = 'Paid'`.
+ * Both date bounds are inclusive. The legacy `/summary` response is unchanged.
+ */
+export interface RevenueSummary {
+  start: string;
+  end: string;
+  billedTotal: number;
+  paidTotal: number;
+  unpaidTotal: number;
+  billedCount: number;
+  paidCount: number;
+  unpaidCount: number;
+  totalExpenses: number;
+  /** billed - expenses (same arithmetic as the legacy netRevenue). */
+  netBilled: number;
+  /** paid - expenses: cash actually received minus expenses. */
+  netPaid: number;
+}
+
+export async function getRevenueSummary(db: AppDb, start: string, end: string, categories: string[] = []): Promise<RevenueSummary> {
+  const rows = await db
+    .select({
+      payment: invoices.paymentStatus,
+      total: sql<number>`coalesce(sum(${invoices.total}), 0)`,
+      count: sql<number>`count(*)`,
+    })
+    .from(invoices)
+    .where(
+      and(
+        ne(invoices.invoiceStatus, 'Cancelled'),
+        sql`${invoices.invoiceDate} >= ${start}`,
+        sql`${invoices.invoiceDate} <= ${end}`,
+      ),
+    )
+    .groupBy(invoices.paymentStatus);
+
+  let billedTotal = 0;
+  let paidTotal = 0;
+  let billedCount = 0;
+  let paidCount = 0;
+  for (const r of rows) {
+    const total = Number(r.total ?? 0);
+    const count = Number(r.count ?? 0);
+    billedTotal += total;
+    billedCount += count;
+    if (r.payment === 'Paid') {
+      paidTotal += total;
+      paidCount += count;
+    }
+  }
+
+  const expenseConditions = [sql`${expenses.date} >= ${start}`, sql`${expenses.date} <= ${end}`];
+  if (categories.length > 0) expenseConditions.push(inArray(expenses.category, categories));
+  const expenseRows = await db
+    .select({ total: sql<number>`coalesce(sum(${expenses.amount}), 0)` })
+    .from(expenses)
+    .where(and(...expenseConditions));
+  const totalExpenses = Number(expenseRows[0]?.total ?? 0);
+
+  return {
+    start,
+    end,
+    billedTotal,
+    paidTotal,
+    unpaidTotal: billedTotal - paidTotal,
+    billedCount,
+    paidCount,
+    unpaidCount: billedCount - paidCount,
+    totalExpenses,
+    netBilled: billedTotal - totalExpenses,
+    netPaid: paidTotal - totalExpenses,
+  };
+}

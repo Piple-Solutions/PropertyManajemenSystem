@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { CalendarDays } from 'lucide-react';
-import { reservationService, type ApiReservation } from '@/services/reservationService';
+import { reservationService, type ApiCalendarEntry } from '@/services/reservationService';
+import { holidayService, type HolidayDay } from '@/services/holidayService';
 import { invoiceService } from '@/services/invoiceService';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import type { Invoice } from '@/types/auth.types';
 import { reservationStatusLabels } from '@/constants/reservationStatuses';
 import { Modal } from './Modal';
 import { Badge } from './Badge';
@@ -24,49 +28,52 @@ const statusVariantMap: Record<string, 'default' | 'success' | 'warning' | 'dang
   cancelled: 'danger',
 };
 
-function isSameDay(a: Date, b: Date): boolean {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-}
-
 export function formatPopupDate(date: Date): string {
-  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  return format(date, 'd MMMM yyyy');
 }
 
 export function DayReservationsPopup({ date, filterRoomId, filterStatus, onClose, onViewAll }: DayReservationsPopupProps) {
   const open = date !== null;
-  const [all, setAll] = useState<ApiReservation[]>([]);
+  const [entries, setEntries] = useState<ApiCalendarEntry[]>([]);
+  const [holiday, setHoliday] = useState<HolidayDay | null>(null);
 
+  // Single-DAY range query instead of pulling every reservation on each open.
+  // The backend rejects `to <= from`, so `to` is the following day.
   useEffect(() => {
-    if (!open) return;
+    if (!open || !date) return;
     let cancelled = false;
-    reservationService.getAll().then((rows) => {
-      if (!cancelled) setAll(rows);
-    }).catch(() => {
-      if (!cancelled) setAll([]);
+    const day = format(date, 'yyyy-MM-dd');
+    const next = new Date(date);
+    next.setDate(next.getDate() + 1);
+
+    reservationService
+      .getCalendar(day, format(next, 'yyyy-MM-dd'), { roomId: filterRoomId, status: filterStatus })
+      .then((rows) => {
+        if (!cancelled) setEntries(rows);
+      })
+      .catch(() => {
+        if (!cancelled) setEntries([]);
+      });
+
+    holidayService.getYear(date.getFullYear()).then((payload) => {
+      if (cancelled || !payload) return;
+      setHoliday(holidayService.toDateMap(payload.days).get(day) ?? null);
     });
+
     return () => {
       cancelled = true;
     };
-  }, [open, date]);
+  }, [open, date, filterRoomId, filterStatus]);
 
-  const dayReservations = (() => {
+  // Half-open overlap, matching the backend: checkout day is not occupied.
+  const dayReservations = useMemo(() => {
     if (!date) return [];
-    return all.filter((r) => {
-      if (filterStatus && r.status !== filterStatus) return false;
-      if (filterRoomId) {
-        const rooms = r.rooms ?? [];
-        if (!rooms.find((room) => room.roomId === filterRoomId)) return false;
-      }
-      const checkIn = new Date(r.checkInDate);
-      const checkOut = new Date(r.checkOutDate);
-      const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      const ci = new Date(checkIn.getFullYear(), checkIn.getMonth(), checkIn.getDate());
-      const co = new Date(checkOut.getFullYear(), checkOut.getMonth(), checkOut.getDate());
-      return isSameDay(ci, day) || (day > ci && day < co) || isSameDay(co, day);
-    });
-  })();
+    const key = format(date, 'yyyy-MM-dd');
+    return entries.filter((r) => r.checkInDate <= key && key < r.checkOutDate);
+  }, [entries, date]);
 
-  const invoices = invoiceService.getAll();
+  // FE-001: real invoices (async); none for users without the invoice permission.
+  const { data: invoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
   const invoiceByReservationId = new Map(invoices.map((inv) => [inv.reservationId, inv]));
 
   return (
@@ -84,6 +91,30 @@ export function DayReservationsPopup({ date, filterRoomId, filterStatus, onClose
         ) : undefined
       }
     >
+      {date && holiday && (
+        <div
+          data-testid="popup-holiday"
+          style={{
+            border: '1px solid #C7BBAB',
+            borderRadius: '8px',
+            padding: '10px 12px',
+            marginBottom: '12px',
+            backgroundColor: '#FFFFFF',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <strong style={{ fontSize: '14px', color: '#232D36' }}>{holiday.name}</strong>
+            {holiday.kind === 'observance' ? (
+              <Badge variant="default" size="sm">Perayaan</Badge>
+            ) : (
+              <Badge variant="danger" size="sm">Libur Nasional</Badge>
+            )}
+            {holiday.isCutiBersama && <Badge variant="warning" size="sm">Cuti Bersama</Badge>}
+            {holiday.isTentative && <Badge variant="info" size="sm">Belum Pasti</Badge>}
+          </div>
+        </div>
+      )}
+
       {date && dayReservations.length === 0 && (
         <EmptyState
           icon={<CalendarDays size={32} aria-hidden="true" />}
@@ -122,7 +153,7 @@ export function DayReservationsPopup({ date, filterRoomId, filterStatus, onClose
                       {reservationStatusLabels[r.status] || r.status}
                     </Badge>
                     {invoice && (
-                      <Badge variant={invoice.paymentStatus === 'Paid' ? 'success' : invoice.paymentStatus === 'Overdue' ? 'danger' : 'info'}>
+                      <Badge variant={invoice.paymentStatus === 'Paid' ? 'success' : invoice.paymentStatus === 'Overdue' ? 'danger' : invoice.paymentStatus === 'Pending' ? 'warning' : 'info'}>
                         {invoice.paymentStatus}
                       </Badge>
                     )}

@@ -1,0 +1,86 @@
+[
+  {
+    "viewport": "320x568",
+    "page": "home",
+    "overflow": 0,
+    "wide": 46,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 7331,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "375x812",
+    "page": "home",
+    "overflow": 0,
+    "wide": 44,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 7172,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "430x932",
+    "page": "home",
+    "overflow": 0,
+    "wide": 43,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 7029,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "768x1024",
+    "page": "home",
+    "overflow": 0,
+    "wide": 0,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 6846,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "1024x768",
+    "page": "home",
+    "overflow": 0,
+    "wide": 0,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 6373,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "1440x900",
+    "page": "home",
+    "overflow": 0,
+    "wide": 0,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 6921,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  },
+  {
+    "viewport": "812x375",
+    "page": "home",
+    "overflow": 0,
+    "wide": 0,
+    "small": 3,
+    "h1": 1,
+    "imgNoAlt": 0,
+    "landmarks": "1/3/1/1",
+    "docH": 6646,
+    "title": "Beranda | Homestay Joglo Seruni Syariah"
+  }
+]

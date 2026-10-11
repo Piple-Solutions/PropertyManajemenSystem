@@ -34,7 +34,10 @@ class AuthService {
       setToken(json.data.token);
       return { user: json.data.user, token: json.data.token };
     } catch (err) {
-      if (err instanceof ApiError && err.status === 401) return null;
+      // X-005: bad credentials stay `null` (the store shows its usual text);
+      // any OTHER 401 message from the backend (e.g. "User is inactive") is
+      // passed through so the user learns why the login was refused.
+      if (err instanceof ApiError && err.status === 401 && err.message === 'Invalid email or password') return null;
       throw err;
     }
   }
@@ -71,20 +74,20 @@ class AuthService {
     try {
       const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
       return { user: json.data.user, token };
-    } catch {
-      clearToken();
+    } catch (err) {
+      // FE-003: only a 401 means the session is gone. A network blip or a 5xx
+      // must not wipe the stored token (the next load can retry).
+      if (err instanceof ApiError && err.status === 401) clearToken();
       return null;
     }
   }
 
   /** Fresh permission set for the current session (used by PermissionContext). */
   async getMyPermissions(): Promise<string[]> {
-    try {
-      const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
-      return json.data.permissions;
-    } catch {
-      return [];
-    }
+    // FE-003: errors propagate. The permission store keeps the last known set
+    // when this rejects, and a 401 is handled globally by `apiFetch`.
+    const json = await apiFetch<{ data: { user: ApiUser; permissions: string[] } }>('/api/auth/me');
+    return json.data.permissions;
   }
 
   async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<boolean> {

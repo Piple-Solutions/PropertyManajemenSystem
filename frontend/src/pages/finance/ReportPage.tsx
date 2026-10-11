@@ -12,9 +12,14 @@ import { ReportPrintDocument } from '@/components/shared/ReportPrintDocument';
 import { invoiceService } from '@/services/invoiceService';
 import { salesService } from '@/services/salesService';
 import { expenseService } from '@/services/expenseService';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { Loading } from '@/components/shared/Loading';
+import type { Expense, Invoice, Sale } from '@/types/auth.types';
 import { expenseCategoryLabels, expenseCategories } from '@/constants/expenseCategories';
 import { reservationSourceLabels } from '@/constants/reservationStatuses';
 import { exportReportExcel, exportReportPDF, type ReportDataset } from '@/utils/reportExport';
+import { toLocalISODate } from '@/utils/localDate';
 import '../../styles/finance-responsive.css';
 import '../../styles/report-print.css';
 
@@ -33,15 +38,17 @@ const periodOptions = [
 const FLAT_SERIES = ['#97764D', '#232D36', '#6B7881', '#7D6240', '#161D24', '#C7BBAB'];
 
 function getDateRange(period: string): { start: string; end: string } {
-  const today = new Date('2026-09-15');
-  const formatDate = (d: Date) => d.toISOString().split('T')[0];
+  // FE-005: the real local day (was hardcoded to 2026-09-15) and a local-time formatter (no UTC day shift).
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const formatDate = toLocalISODate;
   switch (period) {
     case 'today': { const s = formatDate(today); return { start: s, end: s }; }
     case 'week': { const start = new Date(today); start.setDate(start.getDate() - 7); return { start: formatDate(start), end: formatDate(today) }; }
     case 'month': { const start = new Date(today.getFullYear(), today.getMonth(), 1); const end = new Date(today.getFullYear(), today.getMonth(), today.getDate()); return { start: formatDate(start), end: formatDate(end) }; }
     case '6months': { const start = new Date(today); start.setMonth(start.getMonth() - 6); return { start: formatDate(start), end: formatDate(today) }; }
     case '1year': { const start = new Date(today); start.setFullYear(start.getFullYear() - 1); return { start: formatDate(start), end: formatDate(today) }; }
-    default: return { start: '2026-01-01', end: '2026-09-15' };
+    default: return { start: `${today.getFullYear()}-01-01`, end: formatDate(today) };
   }
 }
 
@@ -82,9 +89,20 @@ export default function ReportPage() {
   const end = endDate;
   const rangeError = start && end && start > end ? 'Start date must be on or before the end date.' : null;
 
-  const allSales = salesService.getAll();
-  const allExpenses = expenseService.getAll();
-  const allInvoices = invoiceService.getAll();
+  // FE-001: real data (async). Each list has its own permission; a list the user may not read is empty.
+  const salesData = useAsyncData<Sale[]>(() => salesService.getAllIfPermitted(), []);
+  const expensesData = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
+  const invoicesData = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
+  const allSales = salesData.data;
+  const allExpenses = expensesData.data;
+  const allInvoices = invoicesData.data;
+  const isLoading = salesData.isLoading || expensesData.isLoading || invoicesData.isLoading;
+  const loadError = salesData.error ?? expensesData.error ?? invoicesData.error;
+  const reloadAll = () => {
+    salesData.reload();
+    expensesData.reload();
+    invoicesData.reload();
+  };
 
   const filteredSales = useMemo(() => {
     if (rangeError) return [];
@@ -188,14 +206,16 @@ export default function ReportPage() {
           <Button variant="outline" onClick={() => window.print()} aria-label="Print report as PDF">
             <Printer size={14} aria-hidden="true" /> Print PDF
           </Button>
-          <Button variant="outline" onClick={() => exportReportExcel(dataset)} aria-label="Export report as Excel">
+          <Button variant="outline" onClick={() => exportReportExcel(dataset)} aria-label="Export report as Excel" disabled={isLoading}>
             <Download size={14} aria-hidden="true" /> Export Excel
           </Button>
-          <Button variant="outline" onClick={() => exportReportPDF(dataset)} aria-label="Export report as PDF">
+          <Button variant="outline" onClick={() => exportReportPDF(dataset)} aria-label="Export report as PDF" disabled={isLoading}>
             <FileText size={14} aria-hidden="true" /> Export PDF
           </Button>
         </div>
       </div>
+      {isLoading && <Loading />}
+      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reloadAll} />}
 
       <Card style={{ marginBottom: '20px' }}>
         <div className="fin-pills" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
@@ -307,7 +327,7 @@ export default function ReportPage() {
 
         <Card>
           <h3 className="fin-h3">Ringkasan Invoice</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '12px', textAlign: 'center', marginBottom: '16px' }}>
+          <div className="rep-tiles">
             <div style={{ padding: '12px', backgroundColor: '#E3EDE4', border: '1px solid #C7BBAB', borderRadius: '8px' }}>
               <div style={{ fontSize: '24px', fontWeight: 700, color: '#2F5D37' }}>{paidInvoices}</div>
               <div style={{ fontSize: '12px', color: '#6B7881' }}>Lunas</div>
@@ -326,7 +346,7 @@ export default function ReportPage() {
               columns={[
                 { key: 'invoiceNumber', header: 'Nomor', render: (item: any) => <span style={{ fontWeight: 600 }}>{item.invoiceNumber}</span> },
                 { key: 'guestName', header: 'Tamu', render: (item: any) => item.guestName },
-                { key: 'invoiceStatus', header: 'Status', render: (item: any) => <Badge variant={item.invoiceStatus === 'Completed' ? 'success' : item.invoiceStatus === 'Cancelled' ? 'danger' : item.invoiceStatus === 'Sent' ? 'info' : 'default'}>{item.invoiceStatus}</Badge> },
+                { key: 'invoiceStatus', header: 'Status', render: (item: any) => <Badge variant={item.invoiceStatus === 'Completed' ? 'success' : item.invoiceStatus === 'Cancelled' ? 'danger' : item.invoiceStatus === 'Sent' ? 'info' : item.invoiceStatus === 'Draft' ? 'warning' : 'default'}>{item.invoiceStatus}</Badge> },
                 { key: 'total', header: 'Total', render: (item: any) => formatCurrency(item.total) },
               ]}
               data={filteredInvoices.slice(0, 5)}

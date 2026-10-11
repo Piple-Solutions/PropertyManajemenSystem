@@ -1,0 +1,1 @@
+const e=t=>String(t).padStart(2,"0");function u(t){return`${t.getFullYear()}-${e(t.getMonth()+1)}-${e(t.getDate())}`}function c(){return u(new Date)}function g(t,n){const[o,r,s]=t.split("-").map(Number),a=new Date(Date.UTC(o,r-1,s+n));return`${a.getUTCFullYear()}-${e(a.getUTCMonth()+1)}-${e(a.getUTCDate())}`}export{u as a,g as s,c as t};

@@ -1,0 +1,635 @@
+:root {
+  /* Flat Design System — mirrors src/index.css canonical tokens */
+  --color-canvas: #EEEDE9;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F2F0EB;
+  --color-line: #C7BBAB;
+  --color-ink: #232D36;
+  --color-slate: #6B7881;
+  --color-bronze: #97764D;
+  --color-bronze-dark: #7D6240;
+
+  /* Legacy aliases (flat-mapped) */
+  --color-brand-500: #97764D;
+  --color-brand-700: #232D36;
+  --color-cream-50: #EEEDE9;
+  --color-cream-100: #F2F0EB;
+  --color-surface-default: #FFFFFF;
+  --color-surface-secondary: #F2F0EB;
+  --color-surface-input: #FFFFFF;
+  --color-taupe-light: #C7BBAB;
+  --color-taupe-dark: #C7BBAB;
+  --color-success: #2F5D37;
+  --color-warning: #7A5A1E;
+  --color-error: #962222;
+  --color-info: #2F4A5E;
+
+  /* Text */
+  --color-primary-text: #232D36;
+  --color-secondary-text: #6B7881;
+  --color-muted-text: #6B7881;
+  --color-text-on-primary: #FFFFFF;
+
+  /* Typography — sans only */
+  --font-family-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Display serif for the invoice masthead (matches appConfig design tokens). */
+  --font-family-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+  /* Font Sizes */
+  --font-size-display: 28px;
+  --font-size-h1: 24px;
+  --font-size-h2: 20px;
+  --font-size-h3: 18px;
+  --font-size-body-lg: 16px;
+  --font-size-body: 14px;
+  --font-size-body-md: 14px;
+  --font-size-caption: 12px;
+  --font-size-button: 14px;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+
+  /* Border Radius — flat */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  /* Shadows — flat */
+  --shadow-soft: none;
+  --shadow-card: none;
+  --shadow-subtle: none;
+  --shadow-pop: 0 1px 2px rgba(35, 45, 54, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 250ms ease;
+
+  /* Z-Index */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+}
+
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+  color: var(--color-ink);
+  background-color: var(--color-canvas);
+}
+
+/* Typography — sans only */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.25;
+  color: var(--color-ink);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+h4 { font-size: var(--font-size-body-lg); }
+h5 { font-size: var(--font-size-body); }
+h6 { font-size: var(--font-size-caption); }
+
+p {
+  margin-bottom: var(--space-lg);
+  color: var(--color-slate);
+}
+
+a {
+  color: var(--color-bronze);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-bronze-dark);
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--color-bronze);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fadeIn var(--transition-normal) ease; }
+.animate-slide-up { animation: slideUp var(--transition-normal) ease; }
+.animate-slide-down { animation: slideDown var(--transition-normal) ease; }
+.animate-scale-in { animation: scaleIn var(--transition-normal) ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile Responsive Base
+ *
+ * RWD-003: the former `html { font-size: 14px / 13px }` reductions were
+ * removed. Nothing in src/ uses `rem` (all sizes are px tokens), so they had
+ * no visual effect and only risked scaling future rem-based components.
+ *
+ * Text floor (phone, tablet and sub-1280 laptops): inline styles cannot use media queries, so
+ * anything hard-coded below 12px is lifted to 12px here. Desktop (>=1280px)
+ * is untouched.
+ */
+@media (max-width: 1279px) {
+  [style*='font-size: 8px'],
+  [style*='font-size: 9px'],
+  [style*='font-size: 10px'],
+  [style*='font-size: 11px'] {
+    font-size: 12px !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Responsive scale parameters — change them HERE only.
+ * They apply only at <=1023px (mobile <=767px, tablet 768-1023px);
+ * desktop is unaffected.
+ *   text   = max(floor, original * text scale)
+ *   rows   = original padding * row scale
+ *   floor map labels = same text rules (map box itself fits its container)
+ * Setting a floor to 0 gives the literal scale.
+ * ------------------------------------------------------------------ */
+:root {
+  --row-scale-mobile: 0.5;
+  --row-scale-tablet: 0.75;
+  --text-scale-mobile: 0.5;
+  --text-scale-tablet: 0.75;
+  --text-floor-mobile: 11px;
+  --text-floor-tablet: 11px;
+  --floormap-scale-mobile: 0.5;
+  --floormap-scale-tablet: 0.75;
+}
+
+/* Table density tokens + base rules. Values equal the former inline styles,
+   so desktop output is identical. Every table goes through components/shared/Table.tsx. */
+.tbl--comfortable {
+  --tbl-py: 12px;
+  --tbl-px: 16px;
+  --tbl-fs-head: 12px;
+  --tbl-fs-body: 14px;
+}
+
+.tbl--compact {
+  --tbl-py: 6px;
+  --tbl-px: 8px;
+  --tbl-fs-head: 11px;
+  --tbl-fs-body: 13px;
+}
+
+.tbl th {
+  padding: var(--tbl-py) var(--tbl-px);
+  font-size: var(--tbl-fs-head);
+}
+
+.tbl td {
+  padding: var(--tbl-py) var(--tbl-px);
+  font-size: var(--tbl-fs-body);
+}
+
+/* Sub-1280 screens keep the 12px text floor approved earlier; the scale
+   rules below take over at <=1023px. */
+@media (max-width: 1279px) {
+  .tbl th,
+  .tbl td {
+    font-size: max(12px, var(--tbl-fs-body));
+  }
+
+  .tbl th {
+    font-size: max(12px, var(--tbl-fs-head));
+  }
+}
+
+/* Floor map plan: the box is proportional (child rooms use %), so labels never
+   collide as long as it is at least --fmc-min-width wide (measured: below
+   ~460px the 'SPLIT LEVEL' / 'Swimming Pool' / 'Lobby' labels overlap at the
+   11px text floor). On narrower containers it scrolls horizontally instead of
+   shrinking further. No transform. */
+:root {
+  --fmc-min-width: 460px;
+}
+
+.fmc-map {
+  width: 100%;
+}
+
+.fmc-hint {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .fmc-scroll {
+    overflow-x: auto;
+  }
+
+  .fmc-map {
+    min-width: var(--fmc-min-width);
+  }
+}
+
+@media (max-width: 767px) {
+  .fmc-map {
+    width: var(--fmc-min-width);
+  }
+
+  .fmc-hint {
+    display: block;
+    margin: 0 0 8px;
+    font-size: 12px;
+    color: #6B7881;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .fmc-map {
+    width: min(100%, calc(670px * var(--floormap-scale-tablet)));
+    margin-inline: auto;
+  }
+}
+
+/* The occupancy popup is clipped by the (now short) map box; on mobile/tablet
+   it becomes a bottom-anchored fixed panel. Inline position props need
+   !important; scoped to this class inside the media query. */
+@media (max-width: 1023px) {
+  .fmc-popup {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    transform: translateX(-50%) !important;
+    width: min(92vw, 320px) !important;
+    max-width: none !important;
+    z-index: 120 !important;
+  }
+}
+
+/* Shared-component adaptations. */
+@media (max-width: 767px) {
+  /* Tables scroll inside their wrapper instead of squeezing every column;
+     the first column stays pinned. */
+  .tbl {
+    table-layout: auto !important;
+    min-width: calc(var(--tbl-cols, 1) * 56px);
+  }
+
+  .tbl th,
+  .tbl td {
+    padding: calc(var(--tbl-py) * var(--row-scale-mobile)) calc(var(--tbl-px) * var(--row-scale-mobile));
+    font-size: max(var(--text-floor-mobile), calc(var(--tbl-fs-body) * var(--text-scale-mobile)));
+  }
+
+  .tbl th {
+    font-size: max(var(--text-floor-mobile), calc(var(--tbl-fs-head) * var(--text-scale-mobile)));
+  }
+
+  .tbl th:first-child,
+  .tbl td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
+    background-color: inherit;
+    box-shadow: 1px 0 0 #E3DED6;
+  }
+
+  .res-toolbar__search.rooms-search {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Fixed layout squeezed 8-9 column tables letter-by-letter; let columns size
+     to content and scroll inside the wrapper when they still do not fit. */
+  .tbl {
+    table-layout: auto !important;
+    min-width: calc(var(--tbl-cols, 1) * 64px);
+  }
+
+  .tbl th,
+  .tbl td {
+    padding: calc(var(--tbl-py) * var(--row-scale-tablet)) calc(var(--tbl-px) * var(--row-scale-tablet));
+    font-size: max(var(--text-floor-tablet), calc(var(--tbl-fs-body) * var(--text-scale-tablet)));
+  }
+
+  .tbl th {
+    font-size: max(var(--text-floor-tablet), calc(var(--tbl-fs-head) * var(--text-scale-tablet)));
+  }
+}
+
+/* Controls inside table rows keep a >=44px hit area WITHOUT growing the row:
+   an invisible ::after extends the target (neighbouring rows' areas overlap
+   when rows are shorter than 44px — accepted, see report). */
+@media (max-width: 1023px), (max-width: 1279px) and (pointer: coarse) {
+  .tbl-wrap button,
+  .tbl-wrap a {
+    position: relative;
+  }
+
+  .tbl-wrap button::after,
+  .tbl-wrap a::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+
+  .pg button,
+  .pg select,
+  .fmc-btn,
+  .dm-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Global text scale for page content (<=1023px). Sidebar, drawer and top
+ * bar are excluded (every selector is scoped to .pms-main). Inputs keep
+ * >=16px on phones. GENERATED from the font-size declarations in
+ * src/styles/*.css (non-print, non-desktop-only) and the inline px values
+ * used in components; regenerate when new sizes are introduced.
+ * Inline styles beat class rules, hence !important on the attribute rules.
+ * ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+  /* class-defined sizes */
+  .pms-main .adm-backlink { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .adm-count { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .adm-h1 { font-size: max(var(--text-floor-mobile), calc(20px * var(--text-scale-mobile))); }
+  .pms-main .adm-sub { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .cal-chip { font-size: max(var(--text-floor-mobile), calc(10px * var(--text-scale-mobile))); }
+  .pms-main .cal-chip { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .cal-more { font-size: max(var(--text-floor-mobile), calc(10px * var(--text-scale-mobile))); }
+  .pms-main .cal-more { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-bar-label { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-btn { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .dm-card__sub { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .dm-card__title { font-size: max(var(--text-floor-mobile), calc(18px * var(--text-scale-mobile))); }
+  .pms-main .dm-chart-sum { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .dm-donut-delta { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .dm-donut-total { font-size: max(var(--text-floor-mobile), calc(22px * var(--text-scale-mobile))); }
+  .pms-main .dm-legend__item { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-occupancy-hero__pct--sm { font-size: max(var(--text-floor-mobile), calc(36px * var(--text-scale-mobile))); }
+  .pms-main .dm-occupancy-meta { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-stat__label { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-stat__sub { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-stat__value { font-size: max(var(--text-floor-mobile), calc(20px * var(--text-scale-mobile))); }
+  .pms-main .dm-tile__label { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .dm-tile__value { font-size: max(var(--text-floor-mobile), calc(28px * var(--text-scale-mobile))); }
+  .pms-main .dm-tiles--compact .dm-tile__value { font-size: max(var(--text-floor-mobile), calc(22px * var(--text-scale-mobile))); }
+  .pms-main .dm-tiles--stack .dm-tile__value { font-size: max(var(--text-floor-mobile), calc(20px * var(--text-scale-mobile))); }
+  .pms-main .fin-count { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .fin-h1 { font-size: max(var(--text-floor-mobile), calc(20px * var(--text-scale-mobile))); }
+  .pms-main .fin-h3 { font-size: max(var(--text-floor-mobile), calc(16px * var(--text-scale-mobile))); }
+  .pms-main .fin-pill { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .fin-pills__label { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .fin-sub { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .fin-total { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .pricing-error { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .pricing-hint { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .pricing-radio { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .pricing-summary__row { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-bar__label { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-bar__value { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-board__sub { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-board__title { font-size: max(var(--text-floor-mobile), calc(18px * var(--text-scale-mobile))); }
+  .pms-main .res-card__code { font-size: max(var(--text-floor-mobile), calc(15px * var(--text-scale-mobile))); }
+  .pms-main .res-card__code { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-card__dates { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .res-card__dates { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .res-card__guest { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-card__guest { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .res-card__room { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .res-card__room { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .res-cascade__back { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-cascade__catbtn { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-cascade__catsub { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .res-cascade__clearbtn { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-cascade__optbtn { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-cascade__title { font-size: max(var(--text-floor-mobile), calc(16px * var(--text-scale-mobile))); }
+  .pms-main .res-count { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-filterbtn-count { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .res-qmonth { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-qpill { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .res-toolbar__meta { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .wizard-compact { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .wizard-error-summary h3 { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .wizard-error-summary ul { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .wizard-notice { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))); }
+  .pms-main .wizard-review-row { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .wizard-step__dot { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))); }
+  .pms-main .wizard-step__dot { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  .pms-main .wizard-step__label { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))); }
+  /* inline sizes */
+  .pms-main [style*='font-size: 8px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(8px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 9px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(9px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 10px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(10px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 11px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(11px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 12px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(12px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 13px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(13px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 14px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(14px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 15px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(15px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 16px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(16px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 18px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(18px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 20px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(20px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 22px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(22px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 24px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(24px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 28px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(28px * var(--text-scale-mobile))) !important; }
+  .pms-main [style*='font-size: 32px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-mobile), calc(32px * var(--text-scale-mobile))) !important; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* class-defined sizes */
+  .pms-main .adm-backlink { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .adm-count { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .adm-h1 { font-size: max(var(--text-floor-tablet), calc(20px * var(--text-scale-tablet))); }
+  .pms-main .adm-sub { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .cal-chip { font-size: max(var(--text-floor-tablet), calc(10px * var(--text-scale-tablet))); }
+  .pms-main .cal-chip { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .cal-more { font-size: max(var(--text-floor-tablet), calc(10px * var(--text-scale-tablet))); }
+  .pms-main .cal-more { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-bar-label { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-btn { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .dm-card__sub { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .dm-card__title { font-size: max(var(--text-floor-tablet), calc(18px * var(--text-scale-tablet))); }
+  .pms-main .dm-chart-sum { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .dm-donut-delta { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .dm-donut-total { font-size: max(var(--text-floor-tablet), calc(22px * var(--text-scale-tablet))); }
+  .pms-main .dm-legend__item { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-occupancy-hero__pct--sm { font-size: max(var(--text-floor-tablet), calc(36px * var(--text-scale-tablet))); }
+  .pms-main .dm-occupancy-meta { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-stat__label { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-stat__sub { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-stat__value { font-size: max(var(--text-floor-tablet), calc(20px * var(--text-scale-tablet))); }
+  .pms-main .dm-tile__label { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .dm-tile__value { font-size: max(var(--text-floor-tablet), calc(28px * var(--text-scale-tablet))); }
+  .pms-main .dm-tiles--compact .dm-tile__value { font-size: max(var(--text-floor-tablet), calc(22px * var(--text-scale-tablet))); }
+  .pms-main .dm-tiles--stack .dm-tile__value { font-size: max(var(--text-floor-tablet), calc(20px * var(--text-scale-tablet))); }
+  .pms-main .fin-count { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .fin-h1 { font-size: max(var(--text-floor-tablet), calc(20px * var(--text-scale-tablet))); }
+  .pms-main .fin-h3 { font-size: max(var(--text-floor-tablet), calc(16px * var(--text-scale-tablet))); }
+  .pms-main .fin-pill { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .fin-pills__label { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .fin-sub { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .fin-total { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .pricing-error { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .pricing-hint { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .pricing-radio { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .pricing-summary__row { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-bar__label { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-bar__value { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-board__sub { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-board__title { font-size: max(var(--text-floor-tablet), calc(18px * var(--text-scale-tablet))); }
+  .pms-main .res-card__code { font-size: max(var(--text-floor-tablet), calc(15px * var(--text-scale-tablet))); }
+  .pms-main .res-card__code { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-card__dates { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .res-card__dates { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .res-card__guest { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-card__guest { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .res-card__room { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .res-card__room { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .res-cascade__back { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-cascade__catbtn { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-cascade__catsub { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .res-cascade__clearbtn { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-cascade__optbtn { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-cascade__title { font-size: max(var(--text-floor-tablet), calc(16px * var(--text-scale-tablet))); }
+  .pms-main .res-count { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-filterbtn-count { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .res-qmonth { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-qpill { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .res-toolbar__meta { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .wizard-compact { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .wizard-error-summary h3 { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .wizard-error-summary ul { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .wizard-notice { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))); }
+  .pms-main .wizard-review-row { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .wizard-step__dot { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))); }
+  .pms-main .wizard-step__dot { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  .pms-main .wizard-step__label { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))); }
+  /* inline sizes */
+  .pms-main [style*='font-size: 8px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(8px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 9px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(9px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 10px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(10px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 11px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(11px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 12px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(12px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 13px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(13px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 14px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(14px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 15px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(15px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 16px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(16px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 18px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(18px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 20px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(20px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 22px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(22px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 24px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(24px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 28px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(28px * var(--text-scale-tablet))) !important; }
+  .pms-main [style*='font-size: 32px']:not(input):not(select):not(textarea) { font-size: max(var(--text-floor-tablet), calc(32px * var(--text-scale-tablet))) !important; }
+}
+
+
+/* Inputs must be >=16px on phones so iOS Safari does not zoom on focus. */
+@media (max-width: 767px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='color']),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

@@ -1,4 +1,4 @@
-import { apiFetch } from './api';
+import { apiFetch, fetchAllPages } from './api';
 import type { Activity } from '@/types/auth.types';
 
 interface ListResponse {
@@ -13,10 +13,13 @@ interface ListResponse {
  * no `create` method (no write endpoint exists), so the frontend can never
  * fabricate audit records.
  */
+/** The audit log grows without bound; load at most the newest 10 pages (1000 rows). */
+const ACTIVITY_MAX_PAGES = 10;
+
 class ActivityService {
   async getAll(): Promise<Activity[]> {
-    const json = await apiFetch<ListResponse>('/api/activities?page=1&pageSize=100');
-    return json.data;
+    // FE-002: newest-first, so the 10-page cap keeps the most recent 1000 rows.
+    return fetchAllPages<Activity>('/api/activities', { maxPages: ACTIVITY_MAX_PAGES });
   }
 
   async getById(id: string): Promise<Activity | undefined> {
@@ -29,17 +32,15 @@ class ActivityService {
   }
 
   async getByCategory(category: string): Promise<Activity[]> {
-    const json = await apiFetch<ListResponse>(
-      `/api/activities?category=${encodeURIComponent(category)}&page=1&pageSize=100`,
-    );
-    return json.data;
+    return fetchAllPages<Activity>(`/api/activities?category=${encodeURIComponent(category)}`, {
+      maxPages: ACTIVITY_MAX_PAGES,
+    });
   }
 
   async getByUser(userId: string): Promise<Activity[]> {
-    const json = await apiFetch<ListResponse>(
-      `/api/activities?userId=${encodeURIComponent(userId)}&page=1&pageSize=100`,
-    );
-    return json.data;
+    return fetchAllPages<Activity>(`/api/activities?userId=${encodeURIComponent(userId)}`, {
+      maxPages: ACTIVITY_MAX_PAGES,
+    });
   }
 
   async getByDateRange(startDate: string, endDate: string): Promise<Activity[]> {

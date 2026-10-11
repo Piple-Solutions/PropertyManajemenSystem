@@ -1,0 +1,74 @@
+[
+  {
+    "id": "room-type-001",
+    "name": "Standard",
+    "description": "Comfortable standard room with modern amenities",
+    "capacity": 2,
+    "facilities": ["WiFi", "TV", "Air Conditioning", "Mini Fridge"],
+    "defaultRate": 750000,
+    "images": ["/images/room-type-001-1.jpg"],
+    "status": "active",
+    "createdAt": "2026-01-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "room-type-002",
+    "name": "Homy",
+    "description": "Cozy homy room with warm, home-like comfort",
+    "capacity": 2,
+    "facilities": ["WiFi", "TV", "Air Conditioning", "Mini Fridge", "Coffee Maker", "Safe"],
+    "defaultRate": 1200000,
+    "images": ["/images/room-type-002-1.jpg"],
+    "status": "active",
+    "createdAt": "2026-01-05T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "room-type-003",
+    "name": "Twin",
+    "description": "Two twin beds with elegant decor",
+    "capacity": 2,
+    "facilities": ["WiFi", "TV", "Air Conditioning", "Desk", "Wardrobe"],
+    "defaultRate": 950000,
+    "images": ["/images/room-type-003-1.jpg"],
+    "status": "active",
+    "createdAt": "2026-01-10T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "room-type-004",
+    "name": "Family",
+    "description": "Spacious family room ideal for families with children",
+    "capacity": 4,
+    "facilities": ["WiFi", "TV", "Air Conditioning", "Mini Fridge", "Kitchenette", "Sofa Bed"],
+    "defaultRate": 1800000,
+    "images": ["/images/room-type-004-1.jpg"],
+    "status": "active",
+    "createdAt": "2026-01-15T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "room-type-005",
+    "name": "Eco",
+    "description": "Eco-friendly room with sustainable amenities",
+    "capacity": 2,
+    "facilities": ["WiFi", "TV", "Air Conditioning", "Mini Bar", "Jacuzzi", "Butler Service", "Private Lounge"],
+    "defaultRate": 3500000,
+    "images": ["/images/room-type-005-1.jpg"],
+    "status": "active",
+    "createdAt": "2026-02-01T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "room-type-006",
+    "name": "Joglo",
+    "description": "Joglo rental venue for events and gatherings",
+    "capacity": 50,
+    "facilities": ["-"],
+    "defaultRate": 1000000,
+    "images": [],
+    "status": "active",
+    "createdAt": "2026-04-25T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
+  }
+]

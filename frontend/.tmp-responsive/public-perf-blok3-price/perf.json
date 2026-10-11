@@ -1,0 +1,182 @@
+[
+  {
+    "page": "/",
+    "lcpMs": 1288,
+    "cls": 0,
+    "longTasks": 2,
+    "longTaskMaxMs": 117,
+    "domNodes": 475,
+    "requests": 12,
+    "jsKbRaw": 94.6,
+    "cssKbRaw": 14.5,
+    "jsKbGzip": 91.6,
+    "cssKbGzip": 13.8,
+    "fontKb": 0,
+    "imgKb": 33.1,
+    "jsFiles": [
+      "/assets/index-D8tUvgIX.js",
+      "/assets/message-circle-CzRwPHXS.js",
+      "/assets/HomePage-Ba6xC2zb.js",
+      "/assets/public-M8PoxUFm.js",
+      "/assets/phone-BMvIzUDt.js",
+      "/assets/clock-CfrYmSMI.js",
+      "/assets/PublicChrome-CwE4zoMk.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-BeErbVuV.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1472,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 125,
+        "dom": 475,
+        "requests": 12,
+        "jsRaw": 96911,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1284,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 116,
+        "dom": 475,
+        "requests": 12,
+        "jsRaw": 96911,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1284,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 117,
+        "dom": 475,
+        "requests": 12,
+        "jsRaw": 96911,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1288,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 114,
+        "dom": 475,
+        "requests": 12,
+        "jsRaw": 96911,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1300,
+        "cls": 0,
+        "longCount": 2,
+        "longMax": 117,
+        "dom": 475,
+        "requests": 12,
+        "jsRaw": 96911,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      }
+    ]
+  },
+  {
+    "page": "/rooms",
+    "lcpMs": 1316,
+    "cls": 0,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 369,
+    "requests": 12,
+    "jsKbRaw": 92.9,
+    "cssKbRaw": 14.5,
+    "jsKbGzip": 89.8,
+    "cssKbGzip": 13.8,
+    "fontKb": 0,
+    "imgKb": 33.1,
+    "jsFiles": [
+      "/assets/index-D8tUvgIX.js",
+      "/assets/message-circle-CzRwPHXS.js",
+      "/assets/RoomTypesPage-BM30eFU1.js",
+      "/assets/public-M8PoxUFm.js",
+      "/assets/phone-BMvIzUDt.js",
+      "/assets/clock-CfrYmSMI.js",
+      "/assets/PublicChrome-CwE4zoMk.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/public-BeErbVuV.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1320,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 369,
+        "requests": 12,
+        "jsRaw": 95126,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1344,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 369,
+        "requests": 12,
+        "jsRaw": 95126,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1296,
+        "cls": 0,
+        "longCount": 1,
+        "longMax": 50,
+        "dom": 369,
+        "requests": 12,
+        "jsRaw": 95126,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1304,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 369,
+        "requests": 12,
+        "jsRaw": 95126,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      },
+      {
+        "lcp": 1316,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 369,
+        "requests": 12,
+        "jsRaw": 95126,
+        "cssRaw": 14847,
+        "fontRaw": 0,
+        "imgRaw": 33932
+      }
+    ]
+  }
+]

@@ -1,0 +1,260 @@
+[
+  {
+    "page": "/",
+    "lcpMs": 1212,
+    "cls": 0,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 194,
+    "requests": 8,
+    "jsKbRaw": 82.8,
+    "cssKbRaw": 9.3,
+    "jsKbGzip": 81.2,
+    "cssKbGzip": 8.6,
+    "fontKb": 0,
+    "imgKb": 124.4,
+    "jsFiles": [
+      "/assets/index-D0UKJVfR.js",
+      "/assets/message-circle-Xhd_CYYa.js",
+      "/assets/arrow-left-DEpasX5G.js",
+      "/assets/HomePage-CUKKmmjj.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css",
+      "/assets/HomePage-aLKGOFUi.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1500,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 194,
+        "requests": 8,
+        "jsRaw": 84745,
+        "cssRaw": 9501,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1196,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 194,
+        "requests": 8,
+        "jsRaw": 84745,
+        "cssRaw": 9501,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1228,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 194,
+        "requests": 8,
+        "jsRaw": 84745,
+        "cssRaw": 9501,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1200,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 194,
+        "requests": 8,
+        "jsRaw": 84745,
+        "cssRaw": 9501,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      },
+      {
+        "lcp": 1212,
+        "cls": 0,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 194,
+        "requests": 8,
+        "jsRaw": 84745,
+        "cssRaw": 9501,
+        "fontRaw": 0,
+        "imgRaw": 127421
+      }
+    ]
+  },
+  {
+    "page": "/rooms",
+    "lcpMs": 1068,
+    "cls": 0.0039,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 28,
+    "requests": 5,
+    "jsKbRaw": 79.1,
+    "cssKbRaw": 6.5,
+    "jsKbGzip": 78,
+    "cssKbGzip": 6.1,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D0UKJVfR.js",
+      "/assets/RoomTypesPage-DXtPbqIy.js",
+      "/assets/message-circle-Xhd_CYYa.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1068,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 28,
+        "requests": 5,
+        "jsRaw": 81020,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1064,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 28,
+        "requests": 5,
+        "jsRaw": 81020,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1044,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 28,
+        "requests": 5,
+        "jsRaw": 81020,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1084,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 28,
+        "requests": 5,
+        "jsRaw": 81020,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1072,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 28,
+        "requests": 5,
+        "jsRaw": 81020,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  },
+  {
+    "page": "/contact",
+    "lcpMs": 1064,
+    "cls": 0.0039,
+    "longTasks": 0,
+    "longTaskMaxMs": 0,
+    "domNodes": 42,
+    "requests": 6,
+    "jsKbRaw": 80.3,
+    "cssKbRaw": 6.5,
+    "jsKbGzip": 78.7,
+    "cssKbGzip": 6.1,
+    "fontKb": 0,
+    "imgKb": 0,
+    "jsFiles": [
+      "/assets/index-D0UKJVfR.js",
+      "/assets/message-circle-Xhd_CYYa.js",
+      "/assets/clock-ToS5pqBW.js",
+      "/assets/ContactPage-C9psbNJG.js"
+    ],
+    "cssFiles": [
+      "/assets/index-CUUO0x3h.css"
+    ],
+    "allRuns": [
+      {
+        "lcp": 1088,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 42,
+        "requests": 6,
+        "jsRaw": 82219,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1064,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 42,
+        "requests": 6,
+        "jsRaw": 82219,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1068,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 42,
+        "requests": 6,
+        "jsRaw": 82219,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1064,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 42,
+        "requests": 6,
+        "jsRaw": 82219,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      },
+      {
+        "lcp": 1044,
+        "cls": 0.003943313353879007,
+        "longCount": 0,
+        "longMax": 0,
+        "dom": 42,
+        "requests": 6,
+        "jsRaw": 82219,
+        "cssRaw": 6641,
+        "fontRaw": 0,
+        "imgRaw": 0
+      }
+    ]
+  }
+]

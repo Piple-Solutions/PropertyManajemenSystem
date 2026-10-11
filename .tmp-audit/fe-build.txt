@@ -1,0 +1,52 @@
+﻿../.tmp-audit/fe-dist/assets/SalesChart-B5PmDIvv.js                 2.93 kB │ gzip:   1.15 kB │ map:     7.15 kB
+../.tmp-audit/fe-dist/assets/AboutPage-0p2mzxf_.js                  2.97 kB │ gzip:   0.87 kB │ map:     7.26 kB
+../.tmp-audit/fe-dist/assets/ChangePasswordPage-B8FgHzDm.js         3.23 kB │ gzip:   1.23 kB │ map:     7.75 kB
+../.tmp-audit/fe-dist/assets/ContactPage-DZZV_Fh_.js                3.38 kB │ gzip:   1.20 kB │ map:     8.64 kB
+../.tmp-audit/fe-dist/assets/RoomTypesPage-BM30eFU1.js              3.44 kB │ gzip:   1.27 kB │ map:     9.78 kB
+../.tmp-audit/fe-dist/assets/RoomTypeForm-Daawf-7Z.js               3.55 kB │ gzip:   1.66 kB │ map:    11.14 kB
+../.tmp-audit/fe-dist/assets/RoleForm-CTH4xcQ9.js                   3.78 kB │ gzip:   1.55 kB │ map:    10.43 kB
+../.tmp-audit/fe-dist/assets/UserRoleForm-DZbAcQlJ.js               4.15 kB │ gzip:   1.72 kB │ map:    13.68 kB
+../.tmp-audit/fe-dist/assets/UserDetailPage-DukKWI4E.js             4.17 kB │ gzip:   1.74 kB │ map:    11.32 kB
+../.tmp-audit/fe-dist/assets/InvoiceFormPage-DUQ07LFk.js            4.59 kB │ gzip:   1.75 kB │ map:    12.86 kB
+../.tmp-audit/fe-dist/assets/GalleryPage-tvtEo998.js                4.64 kB │ gzip:   1.97 kB │ map:    14.63 kB
+../.tmp-audit/fe-dist/assets/InvoiceForm-D50tNg9P.js                4.89 kB │ gzip:   1.81 kB │ map:    12.51 kB
+../.tmp-audit/fe-dist/assets/SalesPage-DwWiyfRe.js                  4.92 kB │ gzip:   2.02 kB │ map:    14.47 kB
+../.tmp-audit/fe-dist/assets/UserForm-BhKcy3oS.js                   5.48 kB │ gzip:   2.17 kB │ map:    18.24 kB
+../.tmp-audit/fe-dist/assets/PublicChrome-CwE4zoMk.js               6.55 kB │ gzip:   2.48 kB │ map:    19.56 kB
+../.tmp-audit/fe-dist/assets/PermissionCheckboxGrid-C-qmh5jz.js     6.59 kB │ gzip:   2.01 kB │ map:    13.70 kB
+../.tmp-audit/fe-dist/assets/RoleListPage-B0Q9cP5X.js               6.99 kB │ gzip:   2.47 kB │ map:    21.73 kB
+../.tmp-audit/fe-dist/assets/invoiceService-CoC6Ml-Y.js             7.71 kB │ gzip:   1.84 kB │ map:     5.70 kB
+../.tmp-audit/fe-dist/assets/ReservationDetailPage-CDaI6fae.js      8.47 kB │ gzip:   2.67 kB │ map:    23.43 kB
+../.tmp-audit/fe-dist/assets/RoomTypeListPage-B9m72eln.js           9.06 kB │ gzip:   2.94 kB │ map:    25.97 kB
+../.tmp-audit/fe-dist/assets/ExpensesPage-CWSd-NCI.js               9.49 kB │ gzip:   3.04 kB │ map:    27.54 kB
+../.tmp-audit/fe-dist/assets/ActivityLogPage-rBaCh9qB.js           11.10 kB │ gzip:   3.55 kB │ map:    32.14 kB
+../.tmp-audit/fe-dist/assets/HomePage-Ba6xC2zb.js                  11.85 kB │ gzip:   3.06 kB │ map:    32.65 kB
+../.tmp-audit/fe-dist/assets/UserListPage-BlVlupo9.js              13.07 kB │ gzip:   4.05 kB │ map:    38.96 kB
+../.tmp-audit/fe-dist/assets/InvoiceDetailPage-DrsNvse_.js         13.35 kB │ gzip:   3.52 kB │ map:    38.13 kB
+../.tmp-audit/fe-dist/assets/ReservationListPage-Dqu5h0kB.js       14.41 kB │ gzip:   4.85 kB │ map:    49.14 kB
+../.tmp-audit/fe-dist/assets/InvoiceListPage-Cwd1L87c.js           17.80 kB │ gzip:   4.83 kB │ map:    49.45 kB
+../.tmp-audit/fe-dist/assets/DashboardPage-CzS7Essf.js             20.15 kB │ gzip:   5.99 kB │ map:    58.60 kB
+../.tmp-audit/fe-dist/assets/format-CnDOmWVK.js                    20.31 kB │ gzip:   5.78 kB │ map:   133.43 kB
+../.tmp-audit/fe-dist/assets/ReservationCalendarPage-CwE-23r1.js   20.74 kB │ gzip:   7.12 kB │ map:    87.80 kB
+../.tmp-audit/fe-dist/assets/RoomListPage-B9AkO0hs.js              22.87 kB │ gzip:   7.07 kB │ map:    73.34 kB
+../.tmp-audit/fe-dist/assets/public-M8PoxUFm.js                    23.61 kB │ gzip:   7.95 kB │ map:    57.27 kB
+../.tmp-audit/fe-dist/assets/purify.es-BYftNTi7.js                 29.45 kB │ gzip:  11.34 kB │ map:   132.61 kB
+../.tmp-audit/fe-dist/assets/ReservationWizard-BXS-R2kf.js         38.40 kB │ gzip:  10.44 kB │ map:   128.11 kB
+../.tmp-audit/fe-dist/assets/types-COrq1byn.js                     86.02 kB │ gzip:  23.97 kB │ map:   429.69 kB
+../.tmp-audit/fe-dist/assets/index.es-CVbrtArY.js                 151.36 kB │ gzip:  51.89 kB │ map:   640.22 kB
+../.tmp-audit/fe-dist/assets/html2canvas.esm-CBrSDip1.js          201.48 kB │ gzip:  48.08 kB │ map:   602.28 kB
+../.tmp-audit/fe-dist/assets/index-D8tUvgIX.js                    249.97 kB │ gzip:  79.18 kB │ map:   896.63 kB
+../.tmp-audit/fe-dist/assets/ReportPage-D4VDg71x.js               732.92 kB │ gzip: 240.27 kB │ map: 2,928.90 kB
+node.exe : 
+At C:\Program Files\nodejs\npx.ps1:29 char:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: 
+https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 18.53s

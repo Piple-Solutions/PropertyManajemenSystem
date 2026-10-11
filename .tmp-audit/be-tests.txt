@@ -1,0 +1,25 @@
+﻿ FAIL  tests/seed.test.ts > scripts/generate-seed-sql.mjs > is repeatable: applying twice creates no duplicates
+AssertionError: expected 6 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 6
+
+ ❯ tests/seed.test.ts:100:33
+     98|     expect(count('roles')).toBe(5);
+     99|     expect(count('users')).toBe(5);
+    100|     expect(count('room_types')).toBe(5);
+       |                                 ^
+    101|     expect(count('rooms')).toBe(8);
+    102|     expect(count('reservations')).toBe(15);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  5 failed | 8 passed (13)
+      Tests  13 failed | 177 passed (190)
+   Start at  07:45:25
+   Duration  5.09s (import 56%, tests 29%, transform 13%, worker 1%)
+

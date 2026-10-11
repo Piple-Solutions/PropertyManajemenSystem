@@ -1,0 +1,25 @@
+﻿react-router  6.0.0 - 7.17.0
+Severity: moderate
+React Router: Open redirect via backslash in <Link> and useNavigate (CVE-2025-68470 bypass) - https://github.com/advisories/GHSA-wrjc-x8rr-h8h6
+React Router: Arbitrary Constructor Injection via deserializeErrors() in React Router SSR Hydration - https://github.com/advisories/GHSA-337j-9hxr-rhxg
+fix available via `npm audit fix --force`
+Will install react-router-dom@7.18.4, which is a breaking change
+node_modules/react-router
+  react-router-dom  6.0.0-alpha.0 - 7.17.0
+  Depends on vulnerable versions of react-router
+  node_modules/react-router-dom
+
+xlsx  *
+Severity: high
+Prototype Pollution in sheetJS - https://github.com/advisories/GHSA-4r6h-8v6p-xvw6
+SheetJS Regular Expression Denial of Service (ReDoS) - https://github.com/advisories/GHSA-5pgg-2g8v-p4x9
+No fix available
+node_modules/xlsx
+
+3 vulnerabilities (2 moderate, 1 high)
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.

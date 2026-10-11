@@ -1,0 +1,71 @@
+## backend/src vs block-0: changed 27, added 5, removed 0
+  changed: index.ts, lib/audit.ts, lib/errors.ts, lib/pricing.ts, lib/validation.ts, middleware/auth.ts, routes/auth.ts, routes/expenses.ts, routes/invoices.ts, routes/public.ts, routes/reports.ts, routes/roles.ts, routes/sales.ts, routes/users.ts, services/activityService.ts, services/authService.ts, services/dashboardService.ts, services/expenseService.ts, services/identity.ts, services/invoiceService.ts, services/reportService.ts, services/reservationService.ts, services/roleService.ts, services/roomService.ts, services/roomTypeService.ts, services/salesService.ts, services/userService.ts
+  added: lib/atomic.ts, lib/security.ts, lib/sql.ts, lib/time.ts, services/authz.ts
+  removed: -
+## backend/tests vs block-0: changed 9, added 35, removed 0
+  changed: activities.test.ts, auth.test.ts, dashboard.test.ts, finance.test.ts, helpers/fake-d1.ts, rbac.test.ts, reservations.test.ts, rooms.test.ts, seed.test.ts
+  added: atomicity.test.ts, audit-trail.test.ts, authorization.test.ts, budgets/query-budget.test.ts, contract/finance-frontend-contract.test.ts, contract/frontend-contract.test.ts, final-reattack.test.ts, golden/auth.golden.test.ts, golden/dashboard-activities.golden.test.ts, golden/finance.golden.test.ts, golden/known-unsafe.test.ts, golden/reservations.golden.test.ts, golden/role-matrix.test.ts, golden/rooms.golden.test.ts, golden/snapshots/audit-rows.json, golden/snapshots/auth.json, golden/snapshots/dashboard-activities.json, golden/snapshots/expenses.json, golden/snapshots/invoices.json, golden/snapshots/reservations-read.json, golden/snapshots/reservations-write.json, golden/snapshots/role-matrix.block0.json, golden/snapshots/role-matrix.json, golden/snapshots/roles.json, golden/snapshots/room-types.json, golden/snapshots/rooms.json, golden/snapshots/sales-reports.json, golden/snapshots/users.json, golden/users-roles.golden.test.ts, hardening.test.ts, helpers/golden.ts, invoice-lifecycle.test.ts, performance-time-validation.test.ts, reservation-guards.test.ts, shim.test.ts
+  removed: -
+## backend/scripts vs block-0: changed 1, added 0, removed 0
+  changed: generate-seed-sql.mjs
+  added: -
+  removed: -
+## backend/README.md vs block-0: changed 1, added 0, removed 0
+  changed: 
+  added: -
+  removed: -
+## frontend/src vs block-8: changed 30, added 3, removed 0
+  changed: components/ProtectedRoute.tsx, components/PublicOnlyRoute.tsx, components/pms/CheckInButton.tsx, components/pms/CheckOutButton.tsx, components/shared/DayReservationsPopup.tsx, pages/DashboardPage.tsx, pages/LoginPage.tsx, pages/RegisterPage.tsx, pages/finance/ExpensesPage.tsx, pages/finance/InvoiceDetailPage.tsx, pages/finance/InvoiceFormPage.tsx, pages/finance/InvoiceListPage.tsx, pages/finance/ReportPage.tsx, pages/finance/SalesPage.tsx, pages/reservations/ReservationDetailPage.tsx, pages/reservations/ReservationListPage.tsx, services/activityService.ts, services/api.ts, services/authService.ts, services/expenseService.ts, services/invoiceService.ts, services/reportService.ts, services/reservationService.ts, services/roleService.ts, services/roomService.ts, services/roomTypeService.ts, services/salesService.ts, services/userService.ts, stores/authStore.tsx, utils/formatUtils.ts
+  added: hooks/useAsyncData.ts, utils/localDate.ts, utils/returnTo.ts
+  removed: -
+## frontend/vite.config.ts vs block-8: changed 1, added 0, removed 0
+  changed: 
+  added: -
+  removed: -
+## frontend/eslint.config.js vs block-8: changed 1, added 0, removed 0
+  changed: 
+  added: -
+  removed: -
+earliest golden copy: snapshot-block-2
+## golden vs earliest: changed 3, added 1, removed 0
+  changed: known-unsafe.test.ts, role-matrix.test.ts, snapshots/role-matrix.json
+  added: snapshots/role-matrix.block0.json
+  removed: -
+## contract vs earliest: changed 0, added 1, removed 0
+  changed: -
+  added: finance-frontend-contract.test.ts
+  removed: -
+block-0 snapshot time Sun Oct 11 08:53:30 2026
+ok agents_rules_fix.md 10-11 08:46
+ok backend/.dev.vars 10-01 23:57
+ok backend/.dev.vars.example 10-01 23:57
+ok backend/.env.example 10-01 21:39
+ok backend/drizzle.config.ts 10-01 21:39
+ok backend/migrations/0001_phase1_auth.sql 10-01 21:39
+ok backend/migrations/0002_phase2_reservations.sql 10-01 21:39
+ok backend/migrations/0003_phase3_rooms.sql 10-01 21:39
+ok backend/migrations/0004_phase4_activities.sql 10-01 21:39
+ok backend/migrations/0005_phase6_finance.sql 10-01 21:39
+ok backend/migrations/0006_staff_user_view.sql 10-03 23:19
+ok backend/package-lock.json 10-01 22:44
+ok backend/package.json 10-01 21:39
+ok backend/tsconfig.json 10-01 21:39
+ok backend/vitest.config.ts 10-01 21:39
+ok backend/wrangler.jsonc 10-01 21:39
+ok frontend/.env.example 10-01 21:39
+ok frontend/.gitignore 10-01 23:50
+ok frontend/index.html 10-03 22:20
+ok frontend/package-lock.json 10-01 23:48
+ok frontend/package.json 10-01 23:50
+ok frontend/playwright.config.ts 10-01 23:50
+ok frontend/tsconfig.json 09-15 10:39
+ok frontend/tsconfig.node.json 09-19 01:53
+ok frontend/vite.config.js 10-11 06:27
+--- .tmp-audit files newer than block 0
+.tmp-audit/poc/.cache/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json Sun Oct 11 15:20:00 2026
+--- frontend files outside src newer than block 0 (excluding node_modules/dist)
+frontend/eslint.config.js 10-11 14:44
+frontend/vite.config.ts 10-11 14:42
+--- backend files outside src/tests newer than block 0
+backend/README.md 10-11 09:40
+backend/scripts/generate-seed-sql.mjs 10-11 09:37

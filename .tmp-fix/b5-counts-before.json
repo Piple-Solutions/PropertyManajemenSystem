@@ -1,0 +1,18 @@
+{
+ "create1room": 19,
+ "create2rooms": 20,
+ "createConflict": 7,
+ "patchNotes": 14,
+ "patchFull": 23,
+ "patchRoom": 19,
+ "checkIn": 11,
+ "checkOut": 11,
+ "invoiceCreate": 13,
+ "invoiceUpdate": 14,
+ "invoiceSend": 10,
+ "invoicePay": 10,
+ "userCreate": 10,
+ "userRoles": 15,
+ "roleCreate": 17,
+ "rolePerms": 17
+}

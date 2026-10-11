@@ -1,0 +1,312 @@
+[
+  {
+    "step": "list expenses",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "exp-001",
+          "date": "2026-09-01",
+          "category": "Utilities",
+          "description": "Electricity bill - September",
+          "amount": 2500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-002",
+          "date": "2026-09-05",
+          "category": "Staff",
+          "description": "Salary - September",
+          "amount": 45000000,
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-05T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-003",
+          "date": "2026-09-10",
+          "category": "Maintenance",
+          "description": "AC repair - Room 102",
+          "amount": 1500000,
+          "createdAt": "2026-09-10T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "status": "Pending"
+        },
+        {
+          "id": "exp-004",
+          "date": "2026-09-15",
+          "category": "Supplies",
+          "description": "Cleaning supplies",
+          "amount": 800000,
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-005",
+          "date": "2026-09-20",
+          "category": "Marketing",
+          "description": "Online advertising campaign",
+          "amount": 3000000,
+          "createdAt": "2026-09-20T00:00:00Z",
+          "updatedAt": "2026-09-20T00:00:00Z",
+          "status": "Pending"
+        },
+        {
+          "id": "exp-006",
+          "date": "2026-08-15",
+          "category": "Food & Beverage",
+          "description": "Restaurant supplies restock",
+          "amount": 3200000,
+          "createdAt": "2026-08-15T00:00:00Z",
+          "updatedAt": "2026-08-15T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-007",
+          "date": "2026-08-20",
+          "category": "Laundry",
+          "description": "Linen laundry service - August",
+          "amount": 1200000,
+          "createdAt": "2026-08-20T00:00:00Z",
+          "updatedAt": "2026-08-20T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-008",
+          "date": "2026-09-12",
+          "category": "Utilities",
+          "description": "Water bill - September",
+          "amount": 900000,
+          "createdAt": "2026-09-12T00:00:00Z",
+          "updatedAt": "2026-09-12T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-009",
+          "date": "2026-09-25",
+          "category": "Other",
+          "description": "Miscellaneous operational",
+          "amount": 500000,
+          "createdAt": "2026-09-25T00:00:00Z",
+          "updatedAt": "2026-09-25T00:00:00Z",
+          "status": "Pending"
+        },
+        {
+          "id": "exp-010",
+          "date": "2026-10-03",
+          "category": "Maintenance",
+          "description": "Plumbing fix - Room 201",
+          "amount": 750000,
+          "createdAt": "2026-10-03T00:00:00Z",
+          "updatedAt": "2026-10-03T00:00:00Z",
+          "status": "Pending"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 10
+      }
+    }
+  },
+  {
+    "step": "filter category",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "exp-001",
+          "date": "2026-09-01",
+          "category": "Utilities",
+          "description": "Electricity bill - September",
+          "amount": 2500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-008",
+          "date": "2026-09-12",
+          "category": "Utilities",
+          "description": "Water bill - September",
+          "amount": 900000,
+          "createdAt": "2026-09-12T00:00:00Z",
+          "updatedAt": "2026-09-12T00:00:00Z",
+          "status": "Paid"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 2
+      }
+    }
+  },
+  {
+    "step": "filter status + range",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "exp-001",
+          "date": "2026-09-01",
+          "category": "Utilities",
+          "description": "Electricity bill - September",
+          "amount": 2500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-002",
+          "date": "2026-09-05",
+          "category": "Staff",
+          "description": "Salary - September",
+          "amount": 45000000,
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-05T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-004",
+          "date": "2026-09-15",
+          "category": "Supplies",
+          "description": "Cleaning supplies",
+          "amount": 800000,
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "status": "Paid"
+        },
+        {
+          "id": "exp-008",
+          "date": "2026-09-12",
+          "category": "Utilities",
+          "description": "Water bill - September",
+          "amount": 900000,
+          "createdAt": "2026-09-12T00:00:00Z",
+          "updatedAt": "2026-09-12T00:00:00Z",
+          "status": "Paid"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 4
+      }
+    }
+  },
+  {
+    "step": "search",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "exp-001",
+          "date": "2026-09-01",
+          "category": "Utilities",
+          "description": "Electricity bill - September",
+          "amount": 2500000,
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-09-01T00:00:00Z",
+          "status": "Paid"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 1
+      }
+    }
+  },
+  {
+    "step": "staff cannot list (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): finance.expense.view"
+    }
+  },
+  {
+    "step": "create expense",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "exp-<id-1>",
+        "date": "2026-09-19",
+        "category": "Supplies",
+        "description": "Golden supplies",
+        "amount": 150000,
+        "createdAt": "2026-09-20T03:00:07.000Z",
+        "updatedAt": "2026-09-20T03:00:07.000Z",
+        "status": "Pending"
+      }
+    }
+  },
+  {
+    "step": "create expense invalid",
+    "status": 422,
+    "body": {
+      "message": "Validation failed",
+      "errors": {
+        "date": [
+          "Date must be YYYY-MM-DD"
+        ],
+        "category": [
+          "Invalid enum value. Expected 'Utilities' | 'Staff' | 'Maintenance' | 'Supplies' | 'Marketing' | 'Food & Beverage' | 'Laundry' | 'Other', received 'Nope'"
+        ],
+        "description": [
+          "Description is required"
+        ],
+        "amount": [
+          "Amount must be a positive number"
+        ]
+      }
+    }
+  },
+  {
+    "step": "get expense",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "exp-<id-1>",
+        "date": "2026-09-19",
+        "category": "Supplies",
+        "description": "Golden supplies",
+        "amount": 150000,
+        "createdAt": "2026-09-20T03:00:07.000Z",
+        "updatedAt": "2026-09-20T03:00:07.000Z",
+        "status": "Pending"
+      }
+    }
+  },
+  {
+    "step": "patch expense",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "exp-<id-1>",
+        "date": "2026-09-19",
+        "category": "Supplies",
+        "description": "Golden supplies",
+        "amount": 175000,
+        "createdAt": "2026-09-20T03:00:07.000Z",
+        "updatedAt": "2026-09-20T03:00:10.000Z",
+        "status": "Paid"
+      }
+    }
+  },
+  {
+    "step": "delete expense",
+    "status": 204,
+    "body": null
+  },
+  {
+    "step": "delete expense again 404",
+    "status": 404,
+    "body": {
+      "message": "Expense not found"
+    }
+  }
+]

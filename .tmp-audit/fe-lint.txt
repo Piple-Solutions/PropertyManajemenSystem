@@ -1,0 +1,12 @@
+﻿  37:1   error  'console' is not defined  no-undef
+  43:3   error  'console' is not defined  no-undef
+  47:1   error  'console' is not defined  no-undef
+
+E:\Project\Web\pms-internal\frontend\vite.config.js
+  9:31  error  '__dirname' is not defined  no-undef
+
+E:\Project\Web\pms-internal\frontend\vite.config.ts
+  10:25  error  '__dirname' is not defined  no-undef
+
+✖ 516 problems (197 errors, 319 warnings)
+

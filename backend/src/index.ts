@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { createD1Db, type AppDb } from './db/client';
 import { getAllowedOrigins, type AppEnv } from './env';
 import { toErrorBody } from './lib/errors';
+import { jwtSecretGuard, securityHeaders } from './lib/security';
 import type { AuthContext } from './middleware/auth';
 import authRoutes from './routes/auth';
 import activitiesRoutes from './routes/activities';
@@ -34,6 +35,8 @@ export function createApp(dbProvider: (env: AppEnv) => AppDb = (env) => createD1
     await next();
   });
 
+  app.use('*', securityHeaders());
+
   app.use(
     '*',
     cors({
@@ -49,6 +52,14 @@ export function createApp(dbProvider: (env: AppEnv) => AppDb = (env) => createD1
       credentials: false,
     }),
   );
+
+  // BE-005: fail closed on a placeholder/empty JWT_SECRET (non-localhost only).
+  // Health and the public catalog never touch the secret and stay reachable.
+  const guard = jwtSecretGuard();
+  app.use('/api/*', async (c, next) => {
+    if (c.req.path === '/api/health' || c.req.path.startsWith('/api/public')) return next();
+    return guard(c, next);
+  });
 
   app.route('/api/health', healthRoutes);
   app.route('/api/auth', authRoutes);
@@ -68,7 +79,7 @@ export function createApp(dbProvider: (env: AppEnv) => AppDb = (env) => createD1
 
   app.notFound((c) => c.json({ message: 'Not found' }, 404));
   app.onError((err, c) => {
-    const { status, body } = toErrorBody(err);
+    const { status, body } = toErrorBody(err, { method: c.req.method, path: c.req.path });
     return c.json(body, status as 200);
   });
 

@@ -1,7 +1,8 @@
-import { and, desc, eq, like, or, sql } from 'drizzle-orm';
+import { and, desc, eq, or, sql } from 'drizzle-orm';
 import { activities } from '../db/schema';
 import type { AppDb } from '../db/client';
 import { notFound } from '../lib/errors';
+import { likeContains } from '../lib/sql';
 import { toPublicActivity, type PublicActivity } from '../lib/presenters';
 import { newId, nowIso } from '../lib/tokens';
 import type { ActivityListQuery } from '../lib/validation';
@@ -58,14 +59,37 @@ export async function recordActivity(db: AppDb, input: RecordActivityInput): Pro
   return toPublicActivity(rows[0]);
 }
 
+/**
+ * Lightweight append (1 statement, no read-back) used by the Block 3 audit
+ * hooks (users, roles, permissions, failed logins, finance before/after).
+ * Same table, same constraints, same never-store-secrets rule as
+ * `recordActivity`.
+ */
+export async function writeAudit(db: AppDb, input: RecordActivityInput): Promise<void> {
+  const action = input.action.trim();
+  if (!action) throw new Error('writeAudit requires a non-empty action');
+  await db.insert(activities).values({
+    id: newId('act'),
+    category: input.category,
+    action,
+    description: input.description ?? '',
+    userId: input.userId,
+    userName: input.userName ?? '',
+    entityType: input.entityType,
+    entityId: input.entityId,
+    metadata: toMetadataJson(input.metadata),
+    ipAddress: input.ipAddress,
+    createdAt: input.createdAt ?? nowIso(),
+  });
+}
+
 export async function listActivities(
   db: AppDb,
   query: ActivityListQuery,
 ): Promise<{ items: PublicActivity[]; total: number }> {
   const conditions = [];
   if (query.search) {
-    const pattern = `%${query.search}%`;
-    conditions.push(or(like(activities.description, pattern), like(activities.userName, pattern)));
+    conditions.push(or(likeContains(activities.description, query.search), likeContains(activities.userName, query.search)));
   }
   if (query.category !== 'all') conditions.push(eq(activities.category, query.category));
   if (query.userId) conditions.push(eq(activities.userId, query.userId));

@@ -1,0 +1,341 @@
+[
+  {
+    "step": "sales list",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "sale-inv-001",
+          "date": "2026-09-15",
+          "amount": 1500000,
+          "source": "direct",
+          "description": "Room charge - John Doe",
+          "invoiceId": "inv-001",
+          "reservationId": "res-001"
+        },
+        {
+          "id": "sale-inv-002",
+          "date": "2026-09-16",
+          "amount": 2160000,
+          "source": "whatsapp",
+          "description": "Room charge - Jane Smith",
+          "invoiceId": "inv-002",
+          "reservationId": "res-002"
+        },
+        {
+          "id": "sale-inv-003",
+          "date": "2026-09-10",
+          "amount": 1500000,
+          "source": "whatsapp",
+          "description": "Room charge - Robert Johnson",
+          "invoiceId": "inv-003",
+          "reservationId": "res-003"
+        },
+        {
+          "id": "sale-inv-004",
+          "date": "2026-09-20",
+          "amount": 3600000,
+          "source": "ota",
+          "description": "Room charge - Emily Wilson",
+          "invoiceId": "inv-004",
+          "reservationId": "res-004"
+        },
+        {
+          "id": "sale-inv-005",
+          "date": "2026-09-18",
+          "amount": 1800000,
+          "source": "ota",
+          "description": "Room charge - Michael Brown",
+          "invoiceId": "inv-005",
+          "reservationId": "res-005"
+        },
+        {
+          "id": "sale-inv-006",
+          "date": "2026-09-21",
+          "amount": 1500000,
+          "source": "direct",
+          "description": "Room charge - Sarah Connor",
+          "invoiceId": "inv-006",
+          "reservationId": "res-006"
+        },
+        {
+          "id": "sale-inv-007",
+          "date": "2026-09-05",
+          "amount": 3780000,
+          "source": "direct",
+          "description": "Room charge - Maria Garcia",
+          "invoiceId": "inv-007",
+          "reservationId": "res-011"
+        },
+        {
+          "id": "sale-inv-008",
+          "date": "2026-09-28",
+          "amount": 2300000,
+          "source": "whatsapp",
+          "description": "Room charge - Ahmad Hidayat",
+          "invoiceId": "inv-008",
+          "reservationId": "res-012"
+        },
+        {
+          "id": "sale-inv-009",
+          "date": "2026-09-25",
+          "amount": 22975750,
+          "source": "direct",
+          "description": "Room charge - Keluarga Santoso",
+          "invoiceId": "inv-009",
+          "reservationId": "res-013"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 9
+      }
+    }
+  },
+  {
+    "step": "sales range + source",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "sale-inv-007",
+          "date": "2026-09-05",
+          "amount": 3780000,
+          "source": "direct",
+          "description": "Room charge - Maria Garcia",
+          "invoiceId": "inv-007",
+          "reservationId": "res-011"
+        },
+        {
+          "id": "sale-inv-001",
+          "date": "2026-09-15",
+          "amount": 1500000,
+          "source": "direct",
+          "description": "Room charge - John Doe",
+          "invoiceId": "inv-001",
+          "reservationId": "res-001"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 2
+      }
+    }
+  },
+  {
+    "step": "sales breakdown",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "source": "direct",
+          "totalSales": 29755750,
+          "count": 4,
+          "percentage": 72
+        },
+        {
+          "source": "ota",
+          "totalSales": 5400000,
+          "count": 2,
+          "percentage": 13
+        },
+        {
+          "source": "whatsapp",
+          "totalSales": 5960000,
+          "count": 3,
+          "percentage": 14
+        }
+      ]
+    }
+  },
+  {
+    "step": "sales breakdown all",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "source": "direct",
+          "totalSales": 29755750,
+          "count": 4,
+          "percentage": 72
+        },
+        {
+          "source": "ota",
+          "totalSales": 5400000,
+          "count": 2,
+          "percentage": 13
+        },
+        {
+          "source": "whatsapp",
+          "totalSales": 5960000,
+          "count": 3,
+          "percentage": 14
+        }
+      ]
+    }
+  },
+  {
+    "step": "report summary",
+    "status": 200,
+    "body": {
+      "data": {
+        "totalSales": 41115750,
+        "totalIncome": 41115750,
+        "totalExpenses": 54200000,
+        "netRevenue": -13084250,
+        "totalInvoices": 9,
+        "paidInvoices": 4,
+        "pendingInvoices": 5,
+        "overdueInvoices": 0,
+        "expenseByCategory": [
+          {
+            "category": "Maintenance",
+            "amount": 1500000
+          },
+          {
+            "category": "Marketing",
+            "amount": 3000000
+          },
+          {
+            "category": "Other",
+            "amount": 500000
+          },
+          {
+            "category": "Staff",
+            "amount": 45000000
+          },
+          {
+            "category": "Supplies",
+            "amount": 800000
+          },
+          {
+            "category": "Utilities",
+            "amount": 3400000
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "report summary categories",
+    "status": 200,
+    "body": {
+      "data": {
+        "totalSales": 41115750,
+        "totalIncome": 41115750,
+        "totalExpenses": 48400000,
+        "netRevenue": -7284250,
+        "totalInvoices": 9,
+        "paidInvoices": 4,
+        "pendingInvoices": 5,
+        "overdueInvoices": 0,
+        "expenseByCategory": [
+          {
+            "category": "Staff",
+            "amount": 45000000
+          },
+          {
+            "category": "Utilities",
+            "amount": 3400000
+          }
+        ]
+      }
+    }
+  },
+  {
+    "step": "report bad range",
+    "status": 400,
+    "body": {
+      "message": "`end` must be on or after `start`."
+    }
+  },
+  {
+    "step": "top invoices",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-009",
+          "invoiceNumber": "INV-2026-009",
+          "guestName": "Keluarga Santoso",
+          "invoiceStatus": "Completed",
+          "paymentStatus": "Paid",
+          "total": 22975750
+        },
+        {
+          "id": "inv-007",
+          "invoiceNumber": "INV-2026-007",
+          "guestName": "Maria Garcia",
+          "invoiceStatus": "Completed",
+          "paymentStatus": "Paid",
+          "total": 3780000
+        },
+        {
+          "id": "inv-004",
+          "invoiceNumber": "INV-2026-004",
+          "guestName": "Emily Wilson",
+          "invoiceStatus": "Draft",
+          "paymentStatus": "Pending",
+          "total": 3600000
+        },
+        {
+          "id": "inv-008",
+          "invoiceNumber": "INV-2026-008",
+          "guestName": "Ahmad Hidayat",
+          "invoiceStatus": "Draft",
+          "paymentStatus": "Pending",
+          "total": 2300000
+        },
+        {
+          "id": "inv-002",
+          "invoiceNumber": "INV-2026-002",
+          "guestName": "Jane Smith",
+          "invoiceStatus": "Completed",
+          "paymentStatus": "Paid",
+          "total": 2160000
+        }
+      ]
+    }
+  },
+  {
+    "step": "top invoices limit 3",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-009",
+          "invoiceNumber": "INV-2026-009",
+          "guestName": "Keluarga Santoso",
+          "invoiceStatus": "Completed",
+          "paymentStatus": "Paid",
+          "total": 22975750
+        },
+        {
+          "id": "inv-007",
+          "invoiceNumber": "INV-2026-007",
+          "guestName": "Maria Garcia",
+          "invoiceStatus": "Completed",
+          "paymentStatus": "Paid",
+          "total": 3780000
+        },
+        {
+          "id": "inv-004",
+          "invoiceNumber": "INV-2026-004",
+          "guestName": "Emily Wilson",
+          "invoiceStatus": "Draft",
+          "paymentStatus": "Pending",
+          "total": 3600000
+        }
+      ]
+    }
+  },
+  {
+    "step": "staff cannot view sales (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): finance.sales.view"
+    }
+  }
+]

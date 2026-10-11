@@ -1,0 +1,315 @@
+:root {
+  /* Flat Design System — mirrors src/index.css canonical tokens */
+  --color-canvas: #EEEDE9;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F2F0EB;
+  --color-line: #C7BBAB;
+  --color-ink: #232D36;
+  --color-slate: #6B7881;
+  --color-bronze: #97764D;
+  --color-bronze-dark: #7D6240;
+
+  /* Legacy aliases (flat-mapped) */
+  --color-brand-500: #97764D;
+  --color-brand-700: #232D36;
+  --color-cream-50: #EEEDE9;
+  --color-cream-100: #F2F0EB;
+  --color-surface-default: #FFFFFF;
+  --color-surface-secondary: #F2F0EB;
+  --color-surface-input: #FFFFFF;
+  --color-taupe-light: #C7BBAB;
+  --color-taupe-dark: #C7BBAB;
+  --color-success: #2F5D37;
+  --color-warning: #7A5A1E;
+  --color-error: #962222;
+  --color-info: #2F4A5E;
+
+  /* Text */
+  --color-primary-text: #232D36;
+  --color-secondary-text: #6B7881;
+  --color-muted-text: #6B7881;
+  --color-text-on-primary: #FFFFFF;
+
+  /* Typography — sans only */
+  --font-family-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Display serif for the invoice masthead (matches appConfig design tokens). */
+  --font-family-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+  /* Font Sizes */
+  --font-size-display: 28px;
+  --font-size-h1: 24px;
+  --font-size-h2: 20px;
+  --font-size-h3: 18px;
+  --font-size-body-lg: 16px;
+  --font-size-body: 14px;
+  --font-size-body-md: 14px;
+  --font-size-caption: 12px;
+  --font-size-button: 14px;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+
+  /* Border Radius — flat */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  /* Shadows — flat */
+  --shadow-soft: none;
+  --shadow-card: none;
+  --shadow-subtle: none;
+  --shadow-pop: 0 1px 2px rgba(35, 45, 54, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 250ms ease;
+
+  /* Z-Index */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+}
+
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+  color: var(--color-ink);
+  background-color: var(--color-canvas);
+}
+
+/* Typography — sans only */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.25;
+  color: var(--color-ink);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+h4 { font-size: var(--font-size-body-lg); }
+h5 { font-size: var(--font-size-body); }
+h6 { font-size: var(--font-size-caption); }
+
+p {
+  margin-bottom: var(--space-lg);
+  color: var(--color-slate);
+}
+
+a {
+  color: var(--color-bronze);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-bronze-dark);
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--color-bronze);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fadeIn var(--transition-normal) ease; }
+.animate-slide-up { animation: slideUp var(--transition-normal) ease; }
+.animate-slide-down { animation: slideDown var(--transition-normal) ease; }
+.animate-scale-in { animation: scaleIn var(--transition-normal) ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile Responsive Base
+ *
+ * RWD-003: the former `html { font-size: 14px / 13px }` reductions were
+ * removed. Nothing in src/ uses `rem` (all sizes are px tokens), so they had
+ * no visual effect and only risked scaling future rem-based components.
+ *
+ * Text floor (phone, tablet and sub-1280 laptops): inline styles cannot use media queries, so
+ * anything hard-coded below 12px is lifted to 12px here. Desktop (>=1280px)
+ * is untouched.
+ */
+@media (max-width: 1279px) {
+  [style*='font-size: 8px'],
+  [style*='font-size: 9px'],
+  [style*='font-size: 10px'],
+  [style*='font-size: 11px'] {
+    font-size: 12px !important;
+  }
+}
+
+/* Shared-component adaptations (phones). Desktop/tablet rules live inline. */
+.fmc-hint {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* Tables scroll inside their wrapper instead of squeezing every column;
+     the first column stays pinned. Width floor = columns x 72px, so tables
+     with few columns still fit without scrolling. */
+  .tbl {
+    table-layout: auto !important;
+    min-width: calc(var(--tbl-cols, 1) * 72px);
+  }
+
+  .tbl th,
+  .tbl td {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .tbl th:first-child,
+  .tbl td:first-child {
+    white-space: nowrap;
+  }
+
+  .tbl th:first-child,
+  .tbl td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: inherit;
+    box-shadow: 1px 0 0 #E3DED6;
+  }
+
+  /* Floor map: keep rooms tappable (>=44px) by scrolling a ~600px plan. */
+  .fmc-hint {
+    display: block;
+    margin: 0 0 8px;
+    font-size: 12px;
+    color: #6B7881;
+  }
+
+  .fmc-scroll {
+    overflow-x: auto;
+  }
+
+  .fmc-map {
+    min-width: 600px;
+  }
+
+  .res-toolbar__search.rooms-search {
+    flex: 1 1 100%;
+  }
+}
+
+/* Touch targets >=44px on tablets (and coarse-pointer sub-1280 screens). */
+@media (max-width: 1023px), (max-width: 1279px) and (pointer: coarse) {
+  .tbl-wrap button,
+  .tbl-wrap a,
+  .pg button,
+  .pg select,
+  .fmc-btn,
+  .dm-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Inputs must be >=16px on phones so iOS Safari does not zoom on focus. */
+@media (max-width: 767px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='color']),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

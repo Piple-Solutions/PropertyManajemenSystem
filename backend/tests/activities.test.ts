@@ -38,7 +38,7 @@ function newStay(overrides: Record<string, unknown> = {}) {
     checkInDate: '2026-11-01',
     checkOutDate: '2026-11-03',
     notes: '',
-    rooms: [{ roomId: 'room-008', roomNumber: '401', roomTypeName: 'Family' }],
+    rooms: [{ roomId: 'room-04', roomNumber: '04', roomTypeName: 'Family' }],
     pricing: {
       mode: 'same',
       nightlyRates: [
@@ -179,17 +179,18 @@ describe('audit hooks: authentication', () => {
     expect(mine?.metadata?.email).toBe('admin@hotel.com');
   });
 
-  it('logs register, logout, and password change', async () => {
-    const reg = await ctx.app.request('/api/auth/register', {
+  it('logs logout and password change', async () => {
+    // Public registration is closed (BE-001, Block 1): get a second actor by
+    // having the administrator create the account, then sign in as them.
+    const made = await ctx.app.request('/api/users', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Audit New', email: 'audit-new@hotel.com', password: 'audit123' }),
+      headers: jsonHeaders(adminToken),
+      body: JSON.stringify({ name: 'Audit New', email: 'audit-new@hotel.com', password: 'audit123', roles: ['role-003'] }),
     }, ctx.env);
-    expect(reg.status).toBe(201);
-    const regJson = (await reg.json()) as { data: { token: string; user: { id: string } } };
-
-    const registered = await listActivities('?search=registered%20a%20new%20account&page=1&pageSize=100', adminToken);
-    expect(registered.data.map((a) => a.userId)).toContain(regJson.data.user.id);
+    expect(made.status).toBe(201);
+    const userId = ((await made.json()) as { data: { id: string } }).data.id;
+    const newToken = await loginAs(ctx.app, ctx.env, 'audit-new@hotel.com', 'audit123');
+    const regJson = { data: { token: newToken, user: { id: userId } } };
 
     const out = await ctx.app.request('/api/auth/logout', {
       method: 'POST',
@@ -218,7 +219,7 @@ describe('audit hooks: authentication', () => {
     expect(pw.data[0].category).toBe('authentication');
   });
 
-  it('does not log failed logins or forgot-password (no trustworthy actor)', async () => {
+  it('logs a failed login as a masked login_failed row (BE-023) but still not forgot-password', async () => {
     const before = (await listActivities('?page=1&pageSize=100', adminToken)).pagination.total;
     const bad = await ctx.app.request('/api/auth/login', {
       method: 'POST',
@@ -231,8 +232,13 @@ describe('audit hooks: authentication', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: ADMIN.email }),
     }, ctx.env);
-    const after = (await listActivities('?page=1&pageSize=100', adminToken)).pagination.total;
-    expect(after).toBe(before);
+    const after = await listActivities('?page=1&pageSize=100', adminToken);
+    // Exactly one new row: the failed login. Forgot-password has no trustworthy actor.
+    expect(after.pagination.total).toBe(before + 1);
+    const row = after.data.find((a) => a.action === 'login_failed');
+    expect(row?.category).toBe('authentication');
+    expect(row?.metadata?.email).toBe('a***@hotel.com');
+    expect(JSON.stringify(row)).not.toContain('wrong-password');
   });
 });
 
@@ -358,7 +364,7 @@ describe('audit hooks: rooms and room types', () => {
     const dup = await ctx.app.request('/api/rooms', {
       method: 'POST',
       headers: jsonHeaders(adminToken),
-      body: JSON.stringify({ roomNumber: '101', roomTypeId: 'room-type-001' }),
+      body: JSON.stringify({ roomNumber: '01', roomTypeId: 'room-type-001' }),
     }, ctx.env);
     expect(dup.status).toBe(409);
     const after = (await listActivities('?category=system&page=1&pageSize=100', adminToken)).pagination.total;

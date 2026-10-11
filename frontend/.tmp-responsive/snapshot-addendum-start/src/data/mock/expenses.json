@@ -1,0 +1,102 @@
+[
+  {
+    "id": "exp-001",
+    "date": "2026-09-01",
+    "category": "Utilities",
+    "description": "Electricity bill - September",
+    "amount": 2500000,
+    "status": "Paid",
+    "createdAt": "2026-09-01T00:00:00Z",
+    "updatedAt": "2026-09-01T00:00:00Z"
+  },
+  {
+    "id": "exp-002",
+    "date": "2026-09-05",
+    "category": "Staff",
+    "description": "Salary - September",
+    "amount": 45000000,
+    "status": "Paid",
+    "createdAt": "2026-09-05T00:00:00Z",
+    "updatedAt": "2026-09-05T00:00:00Z"
+  },
+  {
+    "id": "exp-003",
+    "date": "2026-09-10",
+    "category": "Maintenance",
+    "description": "AC repair - Room 102",
+    "amount": 1500000,
+    "status": "Pending",
+    "createdAt": "2026-09-10T00:00:00Z",
+    "updatedAt": "2026-09-10T00:00:00Z"
+  },
+  {
+    "id": "exp-004",
+    "date": "2026-09-15",
+    "category": "Supplies",
+    "description": "Cleaning supplies",
+    "amount": 800000,
+    "status": "Paid",
+    "createdAt": "2026-09-15T00:00:00Z",
+    "updatedAt": "2026-09-15T00:00:00Z"
+  },
+  {
+    "id": "exp-005",
+    "date": "2026-09-20",
+    "category": "Marketing",
+    "description": "Online advertising campaign",
+    "amount": 3000000,
+    "status": "Pending",
+    "createdAt": "2026-09-20T00:00:00Z",
+    "updatedAt": "2026-09-20T00:00:00Z"
+  },
+  {
+    "id": "exp-006",
+    "date": "2026-08-15",
+    "category": "Food & Beverage",
+    "description": "Restaurant supplies restock",
+    "amount": 3200000,
+    "status": "Paid",
+    "createdAt": "2026-08-15T00:00:00Z",
+    "updatedAt": "2026-08-15T00:00:00Z"
+  },
+  {
+    "id": "exp-007",
+    "date": "2026-08-20",
+    "category": "Laundry",
+    "description": "Linen laundry service - August",
+    "amount": 1200000,
+    "status": "Paid",
+    "createdAt": "2026-08-20T00:00:00Z",
+    "updatedAt": "2026-08-20T00:00:00Z"
+  },
+  {
+    "id": "exp-008",
+    "date": "2026-09-12",
+    "category": "Utilities",
+    "description": "Water bill - September",
+    "amount": 900000,
+    "status": "Paid",
+    "createdAt": "2026-09-12T00:00:00Z",
+    "updatedAt": "2026-09-12T00:00:00Z"
+  },
+  {
+    "id": "exp-009",
+    "date": "2026-09-25",
+    "category": "Other",
+    "description": "Miscellaneous operational",
+    "amount": 500000,
+    "status": "Pending",
+    "createdAt": "2026-09-25T00:00:00Z",
+    "updatedAt": "2026-09-25T00:00:00Z"
+  },
+  {
+    "id": "exp-010",
+    "date": "2026-10-03",
+    "category": "Maintenance",
+    "description": "Plumbing fix - Room 201",
+    "amount": 750000,
+    "status": "Pending",
+    "createdAt": "2026-10-03T00:00:00Z",
+    "updatedAt": "2026-10-03T00:00:00Z"
+  }
+]
