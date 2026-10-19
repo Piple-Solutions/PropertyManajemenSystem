@@ -1,0 +1,48 @@
+/**
+ * STAGING-ONLY configuration — isolated from production (Approach B).
+ *
+ * Every staging command must pass --config with this file:
+ *   npx wrangler deploy --config wrangler.staging.jsonc
+ *   npx wrangler d1 migrations apply pms-internal-staging --remote --config wrangler.staging.jsonc
+ *   npx wrangler secret put JWT_SECRET --config wrangler.staging.jsonc
+ *
+ * Production lives exclusively in `wrangler.jsonc`; the two files must never
+ * share values. Keep `compatibility_date`, `main`, and the non-secret default
+ * vars below in sync with `wrangler.jsonc` when they change.
+ *
+ * NO SECRET VALUES BELONG IN THIS FILE. `JWT_SECRET` is provisioned per-Worker
+ * via `wrangler secret put` (see npm script `staging:secret:jwt`), never here.
+ *
+ * STATUS: UNRESOLVED OWNER VALUES — do not run `wrangler deploy` with this
+ * config until these placeholders are replaced:
+ *   1. d1_databases[0].database_id — create the dedicated staging database
+ *      with `npx wrangler d1 create pms-internal-staging`, then paste the
+ *      returned id. It must be the STAGING database id, never the production
+ *      one and never a placeholder.
+ *   2. vars.FRONTEND_ORIGIN — the staging frontend origin (scheme + host [+
+ *      port]), exactly matching the deployed staging frontend. A value here
+ *      that does not match makes every browser call fail CORS.
+ *
+ * Local validation without any remote access:
+ *   npx wrangler deploy --dry-run --config wrangler.staging.jsonc
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pms-internal-backend-staging",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-01",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pms-internal-staging",
+      "database_id": "STAGING_DATABASE_ID_NOT_SET",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "JWT_EXPIRES_IN": "3600",
+    "RESET_TOKEN_TTL_MIN": "15",
+    "FRONTEND_ORIGIN": "STAGING_FRONTEND_ORIGIN_NOT_SET"
+  }
+}
