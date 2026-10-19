@@ -198,40 +198,28 @@ describe('POST /api/auth/change-password', () => {
 });
 
 describe('POST /api/auth/register', () => {
-  it('registers with the default Staff role only (never admin)', async () => {
+  // BE-001 (Block 1): public self-registration is closed. Service-level
+  // behavior (default Staff role, email normalization) is covered in
+  // tests/hardening.test.ts; accounts are created by an administrator.
+  it('is closed: 403 with an Indonesian message and no account is created', async () => {
     const res = await ctx.app.request('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'New Hire', email: 'hire@hotel.com', password: 'hire1234' }),
     }, ctx.env);
-    expect(res.status).toBe(201);
-    const json = (await res.json()) as { data: { user: { roles: string[] }; permissions: string[] } };
-    expect(json.data.user.roles).toEqual(['role-003']);
-    expect(json.data.permissions).not.toContain('permission.assign');
+    expect(res.status).toBe(403);
+    expect(((await res.json()) as { message: string }).message).toMatch(/dinonaktifkan/);
+    const row = ctx.sqlite.prepare("SELECT id FROM users WHERE email = 'hire@hotel.com'").get();
+    expect(row).toBeUndefined();
   });
 
-  it('rejects duplicate email with 409', async () => {
+  it('does not reveal whether an email already exists (no 409)', async () => {
     const res = await ctx.app.request('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Dup', email: ADMIN.email, password: 'dup12345' }),
     }, ctx.env);
-    expect(res.status).toBe(409);
-  });
-
-  it('normalizes email case', async () => {
-    const res = await ctx.app.request('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Case', email: 'CASED@hotel.com', password: 'case1234' }),
-    }, ctx.env);
-    expect(res.status).toBe(201);
-    const dup = await ctx.app.request('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Case2', email: 'cased@hotel.com', password: 'case1234' }),
-    }, ctx.env);
-    expect(dup.status).toBe(409);
+    expect(res.status).toBe(403);
   });
 });
 

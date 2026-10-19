@@ -15,6 +15,13 @@ export interface AppEnv {
   RESET_TOKEN_TTL_MIN?: string;
   FRONTEND_ORIGIN?: string;
   /**
+   * Upstream Indonesian-holiday feed used by `GET /api/public/holidays`.
+   * Defaults to the community calendar.json dataset (see
+   * `services/holidayService.ts`). Override to point at a mirror or the
+   * richer SKB-3-Menteri feed.
+   */
+  HOLIDAY_SOURCE_URL?: string;
+  /**
    * Local-dev / test only. When `'true'`, `POST /api/auth/forgot-password`
    * returns the raw reset token so the flow is testable without an email
    * provider. NEVER set in production.

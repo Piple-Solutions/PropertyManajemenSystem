@@ -21,7 +21,7 @@
     "id": "role-003",
     "name": "Staff",
     "description": "Staff with limited access to reservations and rooms",
-    "permissions": ["user.view", "room.view", "reservation.view", "reservation.create", "reservation.update", "reservation.checkin", "reservation.checkout"],
+    "permissions": ["room.view", "reservation.view", "reservation.create", "reservation.update", "reservation.checkin", "reservation.checkout"],
     "status": "active",
     "createdAt": "2026-02-01T00:00:00Z",
     "updatedAt": "2026-09-14T00:00:00Z"

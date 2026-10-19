@@ -23,9 +23,9 @@ export function SalesChart({ data, formatCurrency, emptyMessage = 'Tidak ada dat
   return (
     <div role="img" aria-label={summary} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {data.map((d) => (
-        <div key={d.month} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '70px', fontSize: '12px', color: '#6B7881', fontWeight: 600 }}>{d.month}</span>
-          <div style={{ flex: 1, display: 'flex', gap: '4px' }}>
+        <div key={d.month} className="sc-row">
+          <span className="sc-label" style={{ fontSize: '12px', color: '#6B7881', fontWeight: 600 }}>{d.month}</span>
+          <div className="sc-bars">
 <div style={{ flex: d.sales / maxValue, height: '20px', backgroundColor: '#97764D', borderRadius: '4px', minWidth: d.sales > 0 ? '4px' : '0px' }}
                title={`Sales: ${formatCurrency(d.sales)}`}
              />
@@ -34,12 +34,12 @@ export function SalesChart({ data, formatCurrency, emptyMessage = 'Tidak ada dat
               title={`Expenses: ${formatCurrency(d.expenses)}`}
             />
           </div>
-<span style={{ fontSize: '11px', color: '#232D36', width: '120px', textAlign: 'right' }}>
+<span className="sc-value" style={{ fontSize: '11px', color: '#232D36' }}>
              {d.net !== undefined ? `Net: ${formatCurrency(d.net)}` : formatCurrency(d.sales)}
            </span>
         </div>
       ))}
-       <div style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: '12px', color: '#232D36' }}>
+       <div className="sc-legend" style={{ fontSize: '12px', color: '#232D36' }}>
          <span><span style={{ display: 'inline-block', width: '12px', height: '12px', backgroundColor: '#97764D', borderRadius: '4px', marginRight: '4px', verticalAlign: 'middle' }} /> Penjualan</span>
          <span><span style={{ display: 'inline-block', width: '12px', height: '12px', backgroundColor: '#6B7881', borderRadius: '4px', marginRight: '4px', verticalAlign: 'middle' }} /> Pengeluaran</span>
       </div>

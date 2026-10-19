@@ -540,3 +540,134 @@
     transition: none;
   }
 }
+
+/* ------------------------------------------------------------------
+ * Month calendar (components/shared/CalendarView.tsx).
+ * Base rules reproduce the former inline styles exactly (desktop is
+ * pixel-identical); the media queries below adapt it for tablet/phone.
+ * ------------------------------------------------------------------ */
+.cal-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cal-scroll {
+  overflow-x: auto;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-width: 700px;
+  gap: 2px;
+}
+
+.cal-dayname {
+  padding: 8px;
+}
+
+.cal-cell {
+  min-height: 80px;
+}
+
+.cal-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+  border: 1px solid #C7BBAB;
+  margin-bottom: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-more {
+  font-size: 10px;
+  color: #6B7881;
+}
+
+/* Tablet: the 700px floor made the grid scroll inside a ~636px card. */
+@media (max-width: 1023px) {
+  .cal-grid {
+    min-width: 0;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 1279px) {
+  .cal-chip,
+  .cal-more {
+    font-size: 12px;
+  }
+}
+
+/* Phone: compact month grid. Same buttons and handlers; reservation chips
+ * collapse to status dots (full detail is one tap away in the day popup). */
+@media (max-width: 767px) {
+  .cal-card {
+    /* Cancel the page gutter so seven columns reach ~44px each. */
+    margin-left: calc(-1 * var(--space-xl, 20px));
+    margin-right: calc(-1 * var(--space-xl, 20px));
+    padding: 8px !important;
+  }
+
+  .cal-nav {
+    flex-wrap: nowrap;
+    margin-bottom: 12px;
+  }
+
+  .cal-nav h3 {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .cal-legend__toggle {
+    min-height: 44px;
+  }
+
+  .cal-scroll {
+    overflow-x: visible;
+  }
+
+  .cal-dayname {
+    padding: 6px 0;
+  }
+
+  .cal-cell {
+    min-height: 56px;
+  }
+
+  .cal-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .cal-chip {
+    box-sizing: border-box;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    border-color: currentColor;
+    background-color: currentColor !important;
+    /* Push the code text out of the (overflow:hidden) dot. */
+    text-indent: 100%;
+  }
+
+  .cal-more {
+    margin-top: 2px;
+  }
+
+  .cal-more__sfx {
+    display: none;
+  }
+}

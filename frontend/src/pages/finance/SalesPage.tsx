@@ -8,7 +8,12 @@ import { Badge } from '@/components/shared/Badge';
 import { SalesChart } from '@/components/shared/SalesChart';
 import { salesService } from '@/services/salesService';
 import { expenseService } from '@/services/expenseService';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { Loading } from '@/components/shared/Loading';
+import type { Expense, Sale } from '@/types/auth.types';
 import { reservationSourceLabels } from '@/constants/reservationStatuses';
+import { toLocalISODate } from '@/utils/localDate';
 import '../../styles/finance-responsive.css';
 
 function formatCurrency(val: number): string {
@@ -26,8 +31,10 @@ const periodOptions = [
 const FLAT_SERIES = ['#97764D', '#232D36', '#6B7881', '#7D6240', '#161D24', '#C7BBAB'];
 
 function getDateRange(period: string): { start: string; end: string } {
-  const today = new Date('2026-09-15');
-  const formatDate = (d: Date) => d.toISOString().split('T')[0];
+  // FE-005: the real local day (was hardcoded to 2026-09-15) and a local-time formatter (no UTC day shift).
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const formatDate = toLocalISODate;
   switch (period) {
     case 'today': {
       const s = formatDate(today);
@@ -54,14 +61,23 @@ function getDateRange(period: string): { start: string; end: string } {
       return { start: formatDate(start), end: formatDate(today) };
     }
     default:
-      return { start: '2026-01-01', end: '2026-09-15' };
+      return { start: `${today.getFullYear()}-01-01`, end: formatDate(today) };
   }
 }
 
 export default function SalesPage() {
   const [period, setPeriod] = useState('month');
-  const allSales = salesService.getAll();
-  const allExpenses = expenseService.getAll();
+  // FE-001: real data (async). Expenses need their own permission; without it the page still shows sales.
+  const salesData = useAsyncData<Sale[]>(() => salesService.getAll(), []);
+  const expensesData = useAsyncData<Expense[]>(() => expenseService.getAllIfPermitted(), []);
+  const allSales = salesData.data;
+  const allExpenses = expensesData.data;
+  const isLoading = salesData.isLoading || expensesData.isLoading;
+  const loadError = salesData.error ?? expensesData.error;
+  const reloadAll = () => {
+    salesData.reload();
+    expensesData.reload();
+  };
 
   const { start, end } = getDateRange(period);
 
@@ -143,6 +159,8 @@ export default function SalesPage() {
   return (
     <div className="fin-page">
       <h1 className="fin-h1">Sales & Revenue</h1>
+      {isLoading && <Loading />}
+      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reloadAll} />}
 
       <Card style={{ marginBottom: '20px' }}>
         <div className="fin-pills">

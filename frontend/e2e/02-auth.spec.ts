@@ -52,7 +52,7 @@ test.describe('SCN-02 Authentication', () => {
     await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
   });
 
-  test('SCN-02-07 register auto-login, duplicate stays unauthenticated with error', async ({ page }) => {
+  test('SCN-02-07 register closed, 403 stays unauthenticated with error', async ({ page }) => {
     attachErrorCollectors(page);
     const stamp = Date.now();
     const email = `e2e${stamp}@hotel.com`;
@@ -63,29 +63,16 @@ test.describe('SCN-02 Authentication', () => {
     await page.getByPlaceholder('Min 6 characters').first().fill('password123');
     await page.getByPlaceholder('Confirm password').fill('password123');
     await page.getByRole('button', { name: /sign up/i }).click();
-    // Current contract: register persists the session (auto-login) and lands on /dashboard.
-    await expect(page).toHaveURL(/\/dashboard/, { timeout: 15000 });
-    expect(await page.evaluate(() => localStorage.getItem('pms_token'))).not.toBeNull();
-
-    // Duplicate email: log out first, re-register the same address — no session
-    // is created and the store error surfaces on the login page.
-    await page.getByRole('button', { name: /logout/i }).first().click();
+    // Approved closed-registration contract (BE-001): POST /register answers
+    // 403, the rejection surfaces visibly, and no session is created. The
+    // form navigates to /login without authenticating.
     await expect(page).toHaveURL(/\/login/, { timeout: 15000 });
-    await page.goto('/register');
-    await page.getByPlaceholder('John Doe').fill('Dup');
-    await page.getByPlaceholder('john@hotel.com').fill(email);
-    await page.getByPlaceholder('Min 6 characters').first().fill('password123');
-    await page.getByPlaceholder('Confirm password').fill('password123');
-    await page.getByRole('button', { name: /sign up/i }).click();
-    await expect(page).toHaveURL(/\/login/, { timeout: 15000 });
+    await expect(page.getByRole('alert')).toContainText(/dinonaktifkan/i, { timeout: 10000 });
     expect(await page.evaluate(() => localStorage.getItem('pms_token'))).toBeNull();
-    await expect(page.getByRole('alert')).toContainText(/already registered/i, { timeout: 10000 });
 
-    // New account can actually log in again (same context, no reload needed).
-    await page.getByPlaceholder('john@hotel.com').fill(email);
-    await page.getByPlaceholder('Enter your password').fill('password123');
-    await page.getByRole('button', { name: /^Login$/ }).click();
-    await expect(page).toHaveURL(/\/dashboard/, { timeout: 15000 });
+    // Still unauthenticated: protected routes bounce back to /login.
+    await page.goto('/dashboard');
+    await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
   });
 
   test('SCN-02-08/09 forgot password resets for real, generic message for unknown [FIXED]', async ({ page }) => {

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { AUTH_HERO_IMAGE, AUTH_HERO_ALT } from '../config/authVisual';
+import logoWhite from '../../assets/LogoWhite.png';
 
 interface AuthSplitLayoutProps {
   heading: string;
@@ -15,15 +16,15 @@ export function AuthSplitLayout({
   heading,
   description,
   children,
-  visualTitle = 'Joglo Seruni',
+  visualTitle = 'Homestay Joglo Seruni Syariah',
   visualSubtitle = 'Kelola properti, reservasi, dan keuangan dalam satu tempat.',
 }: AuthSplitLayoutProps) {
   return (
     <div className="auth-split">
       <div className="auth-panel">
         <div className="auth-panel-inner">
-          <Link to="/" className="auth-brand" aria-label="Joglo Seruni — home">
-            Joglo Seruni
+          <Link to="/" className="auth-brand" aria-label="Homestay Joglo Seruni Syariah — home">
+            Homestay Joglo Seruni Syariah
           </Link>
           <h1 className="auth-heading">{heading}</h1>
           <p className="auth-description">{description}</p>
@@ -35,6 +36,10 @@ export function AuthSplitLayout({
           <img src={AUTH_HERO_IMAGE} alt={AUTH_HERO_ALT} />
         ) : (
           <div className="auth-visual-placeholder">
+            {/* Decorative badge: only shown <=1023px (hidden by CSS on desktop). */}
+            <div className="auth-badge" aria-hidden="true">
+              <img src={logoWhite} alt="" />
+            </div>
             <div className="auth-visual-caption">
               <strong>{visualTitle}</strong>
               <span>{visualSubtitle}</span>

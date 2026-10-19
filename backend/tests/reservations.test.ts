@@ -18,7 +18,7 @@ function newStay(overrides: Record<string, unknown> = {}) {
     checkInDate: '2026-11-01',
     checkOutDate: '2026-11-03',
     notes: '',
-    rooms: [{ roomId: 'room-008', roomNumber: '401', roomTypeName: 'Family' }],
+    rooms: [{ roomId: 'room-04', roomNumber: '04', roomTypeName: 'Family' }],
     pricing: {
       mode: 'same',
       nightlyRates: [
@@ -31,6 +31,20 @@ function newStay(overrides: Record<string, unknown> = {}) {
     },
     ...overrides,
   };
+}
+
+/** Stay on one real seeded room over [checkIn, checkOut) with a flat nightly rate. */
+function stayOnRoom(roomId: string, roomNumber: string, checkIn: string, checkOut: string, rate = 750000) {
+  const nightlyRates: Array<{ date: string; rate: number }> = [];
+  for (let d = new Date(`${checkIn}T00:00:00Z`); d < new Date(`${checkOut}T00:00:00Z`); d.setUTCDate(d.getUTCDate() + 1)) {
+    nightlyRates.push({ date: d.toISOString().slice(0, 10), rate });
+  }
+  return newStay({
+    checkInDate: checkIn,
+    checkOutDate: checkOut,
+    rooms: [{ roomId, roomNumber, roomTypeName: 'Standard' }],
+    pricing: { mode: 'same', nightlyRates, paymentType: 'no_dp', dpType: 'percentage' },
+  });
 }
 
 describe('GET /api/reservations', () => {
@@ -93,8 +107,8 @@ describe('POST /api/reservations', () => {
       body: JSON.stringify(
         newStay({
           rooms: [
-            { roomId: 'room-006', roomNumber: '301', roomTypeName: 'Homy' },
-            { roomId: 'room-008', roomNumber: '401', roomTypeName: 'Family' },
+            { roomId: 'room-19', roomNumber: '19', roomTypeName: 'Homy' },
+            { roomId: 'room-04', roomNumber: '04', roomTypeName: 'Family' },
           ],
         }),
       ),
@@ -117,7 +131,23 @@ describe('POST /api/reservations', () => {
   });
 
   it('rejects overlapping rooms with 409 but allows boundary touches', async () => {
-    // room-001 is booked by res-001 over [2026-09-15, 2026-09-17).
+    // Seeded reservations reference legacy room ids that no longer exist in the
+    // rooms table, so create real blockers on seeded rooms first.
+    // room-01 is booked over [2026-09-15, 2026-09-17).
+    const blockA = await ctx.app.request('/api/reservations', {
+      method: 'POST',
+      headers: jsonHeaders(staffToken),
+      body: JSON.stringify(stayOnRoom('room-01', '01', '2026-09-15', '2026-09-17')),
+    }, ctx.env);
+    expect(blockA.status).toBe(201);
+    // room-02 is booked over [2026-09-21, 2026-09-23).
+    const blockB = await ctx.app.request('/api/reservations', {
+      method: 'POST',
+      headers: jsonHeaders(staffToken),
+      body: JSON.stringify(stayOnRoom('room-02', '02', '2026-09-21', '2026-09-23')),
+    }, ctx.env);
+    expect(blockB.status).toBe(201);
+
     const clash = await ctx.app.request('/api/reservations', {
       method: 'POST',
       headers: jsonHeaders(staffToken),
@@ -125,7 +155,7 @@ describe('POST /api/reservations', () => {
         newStay({
           checkInDate: '2026-09-16',
           checkOutDate: '2026-09-18',
-          rooms: [{ roomId: 'room-001', roomNumber: '101', roomTypeName: 'Standard' }],
+          rooms: [{ roomId: 'room-01', roomNumber: '01', roomTypeName: 'Standard' }],
           pricing: {
             mode: 'same',
             nightlyRates: [
@@ -140,7 +170,7 @@ describe('POST /api/reservations', () => {
     }, ctx.env);
     expect(clash.status).toBe(409);
 
-    // room-002 is free until res-006 checks in on 2026-09-21: touch is fine.
+    // room-02 is free until the blocker checks in on 2026-09-21: touch is fine.
     const touch = await ctx.app.request('/api/reservations', {
       method: 'POST',
       headers: jsonHeaders(staffToken),
@@ -148,7 +178,7 @@ describe('POST /api/reservations', () => {
         newStay({
           checkInDate: '2026-09-19',
           checkOutDate: '2026-09-21',
-          rooms: [{ roomId: 'room-002', roomNumber: '102', roomTypeName: 'Standard' }],
+          rooms: [{ roomId: 'room-02', roomNumber: '02', roomTypeName: 'Standard' }],
           pricing: {
             mode: 'same',
             nightlyRates: [
@@ -169,7 +199,7 @@ describe('POST /api/reservations', () => {
       ['short guest', newStay({ guestName: 'A' })],
       ['reversed dates', newStay({ checkInDate: '2026-11-03', checkOutDate: '2026-11-01' })],
       ['no rooms', newStay({ rooms: [] })],
-      ['duplicate rooms', newStay({ rooms: [{ roomId: 'room-008', roomNumber: '401' }, { roomId: 'room-008', roomNumber: '401' }] })],
+      ['duplicate rooms', newStay({ rooms: [{ roomId: 'room-04', roomNumber: '04' }, { roomId: 'room-04', roomNumber: '04' }] })],
       ['unknown room', newStay({ rooms: [{ roomId: 'room-999', roomNumber: '999', roomTypeName: 'Ghost' }] })],
       [
         'nightly mismatch',
@@ -259,11 +289,17 @@ describe('PATCH /api/reservations/:id', () => {
   });
 
   it('rejects moving into another reservation’s rooms', async () => {
-    // res-006 room-002 [2026-09-21, 2026-09-23); move res-007 room-004 onto room-002 same range.
+    // res-007 spans [2026-09-22, 2026-09-25); block real room-02 over the same range, then move res-007 onto it.
+    const blocker = await ctx.app.request('/api/reservations', {
+      method: 'POST',
+      headers: jsonHeaders(staffToken),
+      body: JSON.stringify(stayOnRoom('room-02', '02', '2026-09-22', '2026-09-25')),
+    }, ctx.env);
+    expect(blocker.status).toBe(201);
     const res = await ctx.app.request('/api/reservations/res-007', {
       method: 'PATCH',
       headers: jsonHeaders(staffToken),
-      body: JSON.stringify({ rooms: [{ roomId: 'room-002', roomNumber: '102', roomTypeName: 'Standard' }] }),
+      body: JSON.stringify({ rooms: [{ roomId: 'room-02', roomNumber: '02', roomTypeName: 'Standard' }] }),
     }, ctx.env);
     expect(res.status).toBe(409);
   });
@@ -391,10 +427,19 @@ describe('availability + calendar', () => {
 
 describe('reservation RBAC matrix', () => {
   it('a view-only user gets 403 on create/update/transition', async () => {
+    // The seeded Viewer role (role-004) is INACTIVE and therefore grants
+    // nothing (BE-007, Block 2): use an active role with the same permissions.
+    const viewerRole = await ctx.app.request('/api/roles', {
+      method: 'POST',
+      headers: jsonHeaders(adminToken),
+      body: JSON.stringify({ name: 'Active Viewer', permissions: ['room.view', 'reservation.view'] }),
+    }, ctx.env);
+    expect(viewerRole.status).toBe(201);
+    const viewerRoleId = ((await viewerRole.json()) as { data: { id: string } }).data.id;
     const created = await ctx.app.request('/api/users', {
       method: 'POST',
       headers: jsonHeaders(adminToken),
-      body: JSON.stringify({ name: 'Viewer', email: 'viewer@hotel.com', password: 'viewer123', roles: ['role-004'] }),
+      body: JSON.stringify({ name: 'Viewer', email: 'viewer@hotel.com', password: 'viewer123', roles: [viewerRoleId] }),
     }, ctx.env);
     expect(created.status).toBe(201);
     const viewerToken = await loginAs(ctx.app, ctx.env, 'viewer@hotel.com', 'viewer123');

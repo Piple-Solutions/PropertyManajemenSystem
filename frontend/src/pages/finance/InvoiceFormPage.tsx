@@ -5,6 +5,11 @@ import { reservationService } from '@/services/reservationService';
 import { reservationSourceLabels } from '@/constants/reservationStatuses';
 import { Card } from '@/components/shared/Card';
 import { InvoiceForm } from '@/components/shared/InvoiceForm';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { Loading } from '@/components/shared/Loading';
+import { apiErrorMessage } from '@/services/api';
+import type { Invoice } from '@/types/auth.types';
+import { todayLocalISO } from '@/utils/localDate';
 import '../../styles/finance-responsive.css';
 
 export default function InvoiceFormPage() {
@@ -17,17 +22,54 @@ export default function InvoiceFormPage() {
   const [initialGuest, setInitialGuest] = useState('');
   const [initialItems, setInitialItems] = useState<any[]>([]);
   const [initialTotal, setInitialTotal] = useState(0);
+  // FE-001: the invoice (edit) and the next free number (create) now come from
+  // the API. The form reads its default values once, so it is rendered only
+  // after they have arrived.
+  const [editInvoice, setEditInvoice] = useState<Invoice | undefined>(undefined);
+  const [nextNumber, setNextNumber] = useState('');
+  const [ready, setReady] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (isEdit && id) {
-      const invoice = invoiceService.getById(id);
-      if (invoice) {
-        setReservationId(invoice.reservationId || '');
-        setInitialSource(invoice.source);
-        setInitialGuest(invoice.guestName);
-        setInitialItems(invoice.items.map((item: any) => ({ description: item.description, quantity: item.quantity, unitPrice: item.unitPrice, subtotal: item.subtotal })));
-        setInitialTotal(invoice.total);
-      }
+      let cancelled = false;
+      setReady(false);
+      setLoadError(null);
+      invoiceService.getById(id).then((invoice) => {
+        if (cancelled) return;
+        setEditInvoice(invoice);
+        if (invoice) {
+          setReservationId(invoice.reservationId || '');
+          setInitialSource(invoice.source);
+          setInitialGuest(invoice.guestName);
+          setInitialItems(invoice.items.map((item: any) => ({ description: item.description, quantity: item.quantity, unitPrice: item.unitPrice, subtotal: item.subtotal })));
+          setInitialTotal(invoice.total);
+        }
+        setReady(true);
+      }).catch((err: unknown) => {
+        if (cancelled) return;
+        setLoadError(apiErrorMessage(err, ''));
+      });
+      return () => {
+        cancelled = true;
+      };
+    } else if (!isEdit && !id) {
+      let cancelled = false;
+      setReady(false);
+      // The server allocates the number; a failed preview (e.g. no permission)
+      // falls back to a placeholder the server replaces if it is taken.
+      invoiceService.getNextNumber(todayLocalISO()).then((n) => {
+        if (!cancelled) setNextNumber(n);
+      }).catch(() => {
+        if (!cancelled) setNextNumber(`INV-${new Date().getFullYear()}-001`);
+      }).finally(() => {
+        if (!cancelled) setReady(true);
+      });
+      return () => {
+        cancelled = true;
+      };
     } else if (!isEdit && id) {
       let cancelled = false;
       reservationService.getFullById(id).then((reservation) => {
@@ -50,24 +92,24 @@ export default function InvoiceFormPage() {
         cancelled = true;
       };
     }
-  }, [isEdit, id]);
+  }, [isEdit, id, reloadKey]);
 
   const defaultValues = (isEdit && id) ? {
-    invoiceNumber: invoiceService.getById(id)?.invoiceNumber || '',
+    invoiceNumber: editInvoice?.invoiceNumber || '',
     reservationId,
     guestName: initialGuest,
     source: initialSource,
-    invoiceDate: invoiceService.getById(id)?.invoiceDate || new Date().toISOString().split('T')[0],
+    invoiceDate: editInvoice?.invoiceDate || todayLocalISO(),
     items: initialItems.length > 0 ? initialItems : [{ description: '', quantity: 1, unitPrice: 0 }],
-    discount: invoiceService.getById(id)?.discount || 0,
-    invoiceStatus: (invoiceService.getById(id)?.invoiceStatus || 'Draft') as 'Draft' | 'Completed',
-    paymentStatus: (invoiceService.getById(id)?.paymentStatus || 'Pending') as 'Pending' | 'Paid' | 'Overdue' | 'Partial',
+    discount: editInvoice?.discount || 0,
+    invoiceStatus: (editInvoice?.invoiceStatus || 'Draft') as 'Draft' | 'Completed',
+    paymentStatus: (editInvoice?.paymentStatus || 'Pending') as 'Pending' | 'Paid' | 'Overdue' | 'Partial',
   } : {
-    invoiceNumber: `INV-2026-${String(invoiceService.getAll().length + 1).padStart(3, '0')}`,
+    invoiceNumber: nextNumber,
     reservationId,
     guestName: initialGuest,
     source: initialSource,
-    invoiceDate: new Date().toISOString().split('T')[0],
+    invoiceDate: todayLocalISO(),
     items: initialItems.length > 0 ? initialItems : [{ description: '', quantity: 1, unitPrice: 0 }],
     discount: 0,
     invoiceStatus: 'Draft' as const,
@@ -99,58 +141,45 @@ export default function InvoiceFormPage() {
           </div>
         </Card>
       )}
+      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={() => setReloadKey((k) => k + 1)} />}
+      {saveError !== null && <ErrorState description={saveError || undefined} />}
+      {loadError === null && !ready && <Loading />}
+      {loadError === null && ready && (
       <InvoiceForm
-        onSubmit={(data) => {
-          const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-          if (isEdit && id) {
-            const existing = invoiceService.getById(id);
-            invoiceService.update(id, {
-              invoiceNumber: data.invoiceNumber,
-              reservationId: data.reservationId || undefined,
-              guestName: data.guestName,
-              source: data.source,
-              invoiceDate: data.invoiceDate,
-              items: data.items.map((item, index) => ({
-                id: existing?.items[index]?.id || `inv-item-${Date.now()}-${index}`,
-                invoiceId: id,
-                description: item.description,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-                subtotal: item.quantity * item.unitPrice,
-              })),
-              subtotal,
-              discount: data.discount,
-              total: subtotal - (subtotal * data.discount / 100),
-              paymentStatus: data.paymentStatus,
-              invoiceStatus: data.invoiceStatus,
-            });
-          } else {
-            invoiceService.create({
-              invoiceNumber: data.invoiceNumber,
-              reservationId: data.reservationId || reservationId || undefined,
-              guestName: data.guestName,
-              source: data.source,
-              invoiceDate: data.invoiceDate,
-              items: data.items.map((item, index) => ({
-                id: `inv-item-${Date.now()}-${index}`,
-                invoiceId: '',
-                description: item.description,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-                subtotal: item.quantity * item.unitPrice,
-              })),
-              subtotal,
-              discount: data.discount,
-              total: subtotal - (subtotal * data.discount / 100),
-              paymentStatus: data.paymentStatus,
-              invoiceStatus: data.invoiceStatus,
-            });
+        onSubmit={async (data) => {
+          // Totals are computed by the server; only the editable fields are sent.
+          const payload = {
+            invoiceNumber: data.invoiceNumber,
+            reservationId: data.reservationId || (isEdit ? undefined : reservationId || undefined),
+            guestName: data.guestName,
+            source: data.source,
+            invoiceDate: data.invoiceDate,
+            items: data.items.map((item) => ({
+              description: item.description,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+            })),
+            discount: data.discount,
+            paymentStatus: data.paymentStatus,
+            invoiceStatus: data.invoiceStatus,
+          };
+          setSaveError(null);
+          try {
+            if (isEdit && id) {
+              await invoiceService.update(id, payload);
+            } else {
+              await invoiceService.create(payload);
+            }
+          } catch (err) {
+            setSaveError(apiErrorMessage(err, ''));
+            return;
           }
           navigate('/dashboard/finance/invoices');
         }}
         onCancel={() => navigate('/dashboard/finance/invoices')}
         initialData={defaultValues}
       />
+      )}
     </div>
   );
 }

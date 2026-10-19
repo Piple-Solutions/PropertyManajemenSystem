@@ -117,7 +117,7 @@ export function exportReportPDF(ds: ReportDataset): void {
       doc.setPage(i);
       doc.setFontSize(9);
       doc.setTextColor(107, 120, 129);
-      doc.text(`Joglo Seruni · Financial Report · ${ds.periodLabel}`, margin, doc.internal.pageSize.getHeight() - 8);
+      doc.text(`Homestay Joglo Seruni Syariah · Financial Report · ${ds.periodLabel}`, margin, doc.internal.pageSize.getHeight() - 8);
       doc.text(`Page ${i} of ${pageCount}`, pageWidth - margin, doc.internal.pageSize.getHeight() - 8, { align: 'right' });
     }
   };
@@ -125,7 +125,7 @@ export function exportReportPDF(ds: ReportDataset): void {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(13);
   doc.setTextColor(35, 45, 54);
-  doc.text('Joglo Seruni', margin, cursorY);
+  doc.text('Homestay Joglo Seruni Syariah', margin, cursorY);
   doc.setFontSize(18);
   doc.text('Financial Report', margin, cursorY + 8);
   doc.setFont('helvetica', 'normal');

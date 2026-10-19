@@ -126,7 +126,7 @@ export function RoomSelector({ selectedRooms, onRoomToggle, disabled = false, un
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(160px, 100%), 1fr))', gap: '12px' }}>
               {group.rooms.map((room) => {
                 const isSelected = selectedRooms.includes(room.id);
                 const isBooked = unavailableRoomIds.includes(room.id);

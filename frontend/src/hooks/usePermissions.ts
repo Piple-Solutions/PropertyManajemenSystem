@@ -1,7 +1,7 @@
 import { usePermissionContext } from '../stores/permissionStore';
 
 export function usePermissions() {
-  const { permissions, hasPermission } = usePermissionContext();
+  const { permissions, hasPermission, refreshPermissions } = usePermissionContext();
 
-  return { permissions, hasPermission };
+  return { permissions, hasPermission, refreshPermissions };
 }

@@ -58,7 +58,12 @@ describe('RBAC matrix', () => {
     const role = await ctx.app.request('/api/roles', {
       method: 'POST',
       headers: jsonHeaders(adminToken),
-      body: JSON.stringify({ name: 'UserManager', permissions: ['user.view', 'user.update'] }),
+      // Block 2 (BE-003): a role can only be handed out by someone who holds
+      // its permissions, so this user manager also carries the Staff set.
+      body: JSON.stringify({
+        name: 'UserManager',
+        permissions: ['user.view', 'user.update', 'room.view', 'reservation.view', 'reservation.create', 'reservation.update', 'reservation.checkin', 'reservation.checkout'],
+      }),
     }, ctx.env);
     const { id: mgrRole } = ((await role.json()) as { data: { id: string } }).data;
 

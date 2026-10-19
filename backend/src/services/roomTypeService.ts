@@ -1,7 +1,8 @@
-import { and, eq, like, or, sql } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 import { rooms, roomTypes } from '../db/schema';
 import type { AppDb } from '../db/client';
 import { conflict, notFound } from '../lib/errors';
+import { likeContains } from '../lib/sql';
 import { toPublicRoomType, type PublicRoomType } from '../lib/presenters';
 import { newId, nowIso } from '../lib/tokens';
 import type { RoomTypeListQuery } from '../lib/validation';
@@ -37,8 +38,7 @@ export async function listRoomTypes(
 ): Promise<{ items: PublicRoomType[]; total: number }> {
   const conditions = [];
   if (query.search) {
-    const pattern = `%${query.search}%`;
-    conditions.push(or(like(roomTypes.name, pattern), like(roomTypes.description, pattern)));
+    conditions.push(or(likeContains(roomTypes.name, query.search), likeContains(roomTypes.description, query.search)));
   }
   if (query.status !== 'all') conditions.push(eq(roomTypes.status, query.status));
   const where = conditions.length > 0 ? and(...conditions) : undefined;
@@ -50,7 +50,8 @@ export async function listRoomTypes(
   const total = Number(totalRows[0]?.count ?? 0);
 
   const offset = (query.page - 1) * query.pageSize;
-  const rows = await db.select().from(roomTypes).where(where).limit(query.pageSize).offset(offset);
+  // BE-035: insertion order (scan or status-equality index), made explicit.
+  const rows = await db.select().from(roomTypes).where(where).orderBy(sql`rowid`).limit(query.pageSize).offset(offset);
 
   return { items: rows.map(toPublicRoomType), total };
 }

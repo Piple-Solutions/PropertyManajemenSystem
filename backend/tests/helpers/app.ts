@@ -173,6 +173,7 @@ export function setupTestApp(): TestContext {
   applyMigrationFile(sqlite, '0003_phase3_rooms.sql');
   applyMigrationFile(sqlite, '0004_phase4_activities.sql');
   applyMigrationFile(sqlite, '0005_phase6_finance.sql');
+  applyMigrationFile(sqlite, '0007_idempotency_keys.sql');
 
   const permissions = loadMock('permissions.json') as MockPermission[];
   const roles = loadMock('roles.json') as MockRole[];

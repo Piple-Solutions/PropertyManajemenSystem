@@ -1,11 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Pencil } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { Modal } from '@/components/shared/Modal';
 import { UserForm } from '@/components/shared/UserForm';
 import userService from '@/services/userService';
+import roleService from '@/services/roleService';
 import { Card } from '@/components/shared/Card';
+import { Badge } from '@/components/shared/Badge';
+import { PAGE_PERMISSIONS } from '@/config/permissions';
+import {
+  computeEffectivePermissions,
+  getUserPermissionOverride,
+  type UserPermissionOverride,
+} from '@/services/userPermissionService';
 import '../../styles/admin-responsive.css';
 
 export default function UserDetailPage() {
@@ -13,6 +21,8 @@ export default function UserDetailPage() {
   const [showEdit, setShowEdit] = useState(false);
   const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [allRoles, setAllRoles] = useState<any[]>([]);
+  const [override, setOverride] = useState<UserPermissionOverride>({ grants: [], denies: [], updatedAt: '' });
 
   useEffect(() => {
     if (!id) return;
@@ -33,6 +43,40 @@ export default function UserDetailPage() {
       cancelled = true;
     };
   }, [id, showEdit]);
+
+  useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+    Promise.all([
+      roleService.getAll().catch(() => [] as any[]),
+      getUserPermissionOverride(id),
+    ]).then(([roles, o]) => {
+      if (cancelled) return;
+      setAllRoles(roles);
+      setOverride(o);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [id, showEdit]);
+
+  const rolePerms = useMemo(() => {
+    const set = new Set<string>();
+    const userRoleIds: string[] = Array.isArray(user?.roles) ? user.roles : [];
+    for (const r of allRoles) {
+      if (userRoleIds.includes(r.id) && Array.isArray(r.permissions)) {
+        for (const p of r.permissions) {
+          if (typeof p === 'string') set.add(p);
+        }
+      }
+    }
+    return set;
+  }, [allRoles, user]);
+
+  const effective = useMemo(
+    () => new Set(computeEffectivePermissions([...rolePerms], override)),
+    [rolePerms, override],
+  );
 
   if (isLoading) {
     return (
@@ -72,6 +116,30 @@ export default function UserDetailPage() {
               <span style={{ fontWeight: 600, color: '#232D36' }}>{item.value}</span>
             </div>
           ))}
+        </div>
+      </Card>
+      <Card title="Permissions">
+        <p style={{ fontSize: '12px', color: '#6B7881', margin: '0 0 12px' }}>
+          Effective page access for this user: role permissions plus user-specific grants, minus revocations.
+        </p>
+        <div style={{ display: 'grid', gap: 'var(--space-sm, 8px)' }}>
+          {PAGE_PERMISSIONS.map((perm) => {
+            const granted = effective.has(perm.name);
+            const userSpecific = override.grants.includes(perm.name) || override.denies.includes(perm.name);
+            return (
+              <div key={perm.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: 'var(--space-sm, 8px) 0', borderBottom: '1px solid #C7BBAB' }}>
+                <span>
+                  <span style={{ fontWeight: 600, color: '#232D36', fontSize: '13px' }}>{perm.label}</span>
+                  <span style={{ color: '#6B7881', fontSize: '12px' }}> · {perm.name}</span>
+                </span>
+                {granted ? (
+                  <Badge variant="success">{userSpecific ? 'Granted (user)' : 'Granted (role)'}</Badge>
+                ) : (
+                  <Badge variant="default">{userSpecific ? 'Revoked (user)' : 'No access'}</Badge>
+                )}
+              </div>
+            );
+          })}
         </div>
       </Card>
       <div style={{ marginTop: 'var(--space-lg, 16px)' }}>

@@ -1,4 +1,5 @@
 import type { Context } from 'hono';
+import { maskPii } from './audit';
 
 export interface ApiErrorBody {
   message: string;
@@ -30,13 +31,38 @@ export const conflict = (message = 'Conflict', errors?: Record<string, string[]>
 export const unprocessable = (message = 'Validation failed', errors?: Record<string, string[]>) =>
   new ApiError(422, message, errors);
 
-export function toErrorBody(err: unknown): { status: number; body: ApiErrorBody } {
+/**
+ * BE-033: unexpected errors are logged as ONE structured JSON line with PII
+ * masked (emails, tokens, hashes) and a bounded stack. Never the raw error
+ * object, request body, headers or query string.
+ */
+export function logUnexpectedError(err: unknown, meta: { method?: string; path?: string } = {}): void {
+  const e = err as { name?: unknown; message?: unknown; stack?: unknown } | null;
+  const entry = {
+    level: 'error',
+    event: 'unhandled_error',
+    method: meta.method,
+    path: meta.path,
+    name: typeof e?.name === 'string' ? e.name : typeof err,
+    message: maskPii(typeof e?.message === 'string' ? e.message : String(err)).slice(0, 500),
+    stack:
+      typeof e?.stack === 'string'
+        ? maskPii(e.stack).split(/\r?\n/).slice(0, 6).join(' | ').slice(0, 1000)
+        : undefined,
+  };
+  console.error(JSON.stringify(entry));
+}
+
+export function toErrorBody(
+  err: unknown,
+  meta?: { method?: string; path?: string },
+): { status: number; body: ApiErrorBody } {
   if (err instanceof ApiError) {
     const body: ApiErrorBody = { message: err.message };
     if (err.errors) body.errors = err.errors;
     return { status: err.status, body };
   }
-  console.error('Unexpected error:', err);
+  logUnexpectedError(err, meta);
   return { status: 500, body: { message: 'Internal server error' } };
 }
 

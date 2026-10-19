@@ -54,7 +54,7 @@ describe('migration 0003_phase3_rooms.sql', () => {
     expect(() =>
       ctx.sqlite
         .prepare(
-          "INSERT INTO rooms (id, room_number, room_type_id, status, created_at, updated_at) VALUES ('r1','101','room-type-001','active','t','t')",
+          "INSERT INTO rooms (id, room_number, room_type_id, status, created_at, updated_at) VALUES ('r1','01','room-type-001','active','t','t')",
         )
         .run(),
     ).toThrow();
@@ -83,11 +83,11 @@ describe('migration 0003_phase3_rooms.sql', () => {
 });
 
 describe('seed Phase 3', () => {
-  it('seeds 5 room types and 8 rooms with parsed arrays', async () => {
+  it('seeds 6 room types and 21 rooms with parsed arrays', async () => {
     const types = await ctx.app.request('/api/room-types?page=1&pageSize=20', { headers: jsonHeaders(adminToken) }, ctx.env);
     expect(types.status).toBe(200);
     const tJson = (await types.json()) as { data: Array<Record<string, unknown>>; pagination: { total: number } };
-    expect(tJson.pagination.total).toBe(5);
+    expect(tJson.pagination.total).toBe(6);
     const std = tJson.data.find((t) => t.id === 'room-type-001') as Record<string, unknown>;
     expect(std.name).toBe('Standard');
     expect(std.facilities).toEqual(['WiFi', 'TV', 'Air Conditioning', 'Mini Fridge']);
@@ -95,7 +95,7 @@ describe('seed Phase 3', () => {
 
     const rooms = await ctx.app.request('/api/rooms?page=1&pageSize=20', { headers: jsonHeaders(adminToken) }, ctx.env);
     const rJson = (await rooms.json()) as { pagination: { total: number } };
-    expect(rJson.pagination.total).toBe(8);
+    expect(rJson.pagination.total).toBe(21);
   });
 });
 
@@ -107,7 +107,7 @@ describe('GET /api/room-types', () => {
 
   it('lists with search + status filters', async () => {
     const all = await ctx.app.request('/api/room-types?page=1&pageSize=20', { headers: jsonHeaders(staffToken) }, ctx.env);
-    expect(((await all.json()) as { pagination: { total: number } }).pagination.total).toBe(5);
+    expect(((await all.json()) as { pagination: { total: number } }).pagination.total).toBe(6);
 
     const search = await ctx.app.request('/api/room-types?search=standard', { headers: jsonHeaders(staffToken) }, ctx.env);
     expect(((await search.json()) as { pagination: { total: number } }).pagination.total).toBe(1);
@@ -199,10 +199,19 @@ describe('POST/PATCH/DELETE /api/room-types', () => {
     }, ctx.env);
     expect(denied.status).toBe(403);
 
+    // The seeded Viewer role (role-004) is INACTIVE and therefore grants
+    // nothing (BE-007, Block 2): use an active role with the same permissions.
+    const viewerRole = await ctx.app.request('/api/roles', {
+      method: 'POST',
+      headers: jsonHeaders(adminToken),
+      body: JSON.stringify({ name: 'Active Viewer', permissions: ['room.view', 'reservation.view'] }),
+    }, ctx.env);
+    expect(viewerRole.status).toBe(201);
+    const viewerRoleId = ((await viewerRole.json()) as { data: { id: string } }).data.id;
     const created = await ctx.app.request('/api/users', {
       method: 'POST',
       headers: jsonHeaders(adminToken),
-      body: JSON.stringify({ name: 'Viewer', email: 'viewer@hotel.com', password: 'viewer123', roles: ['role-004'] }),
+      body: JSON.stringify({ name: 'Viewer', email: 'viewer@hotel.com', password: 'viewer123', roles: [viewerRoleId] }),
     }, ctx.env);
     expect(created.status).toBe(201);
     const viewerToken = await loginAs(ctx.app, ctx.env, 'viewer@hotel.com', 'viewer123');
@@ -220,16 +229,25 @@ describe('POST/PATCH/DELETE /api/room-types', () => {
 describe('GET /api/rooms', () => {
   it('lists with search, status, and roomTypeId filters', async () => {
     const all = await ctx.app.request('/api/rooms?page=1&pageSize=20', { headers: jsonHeaders(staffToken) }, ctx.env);
-    expect(((await all.json()) as { pagination: { total: number } }).pagination.total).toBe(8);
+    expect(((await all.json()) as { pagination: { total: number } }).pagination.total).toBe(21);
 
-    const search = await ctx.app.request('/api/rooms?search=101', { headers: jsonHeaders(staffToken) }, ctx.env);
+    const search = await ctx.app.request('/api/rooms?search=15', { headers: jsonHeaders(staffToken) }, ctx.env);
     expect(((await search.json()) as { pagination: { total: number } }).pagination.total).toBe(1);
 
+    // The seed has no maintenance rooms; put one in maintenance so the filter is exercised.
+    const before = await ctx.app.request('/api/rooms?status=maintenance', { headers: jsonHeaders(staffToken) }, ctx.env);
+    expect(((await before.json()) as { pagination: { total: number } }).pagination.total).toBe(0);
+    const toggled = await ctx.app.request('/api/rooms/room-05', {
+      method: 'PATCH',
+      headers: jsonHeaders(adminToken),
+      body: JSON.stringify({ status: 'maintenance' }),
+    }, ctx.env);
+    expect(toggled.status).toBe(200);
     const maint = await ctx.app.request('/api/rooms?status=maintenance', { headers: jsonHeaders(staffToken) }, ctx.env);
     expect(((await maint.json()) as { pagination: { total: number } }).pagination.total).toBe(1);
 
     const byType = await ctx.app.request('/api/rooms?roomTypeId=room-type-001', { headers: jsonHeaders(staffToken) }, ctx.env);
-    expect(((await byType.json()) as { pagination: { total: number } }).pagination.total).toBe(2);
+    expect(((await byType.json()) as { pagination: { total: number } }).pagination.total).toBe(9);
   });
 });
 
@@ -281,7 +299,31 @@ describe('POST/PATCH/DELETE /api/rooms', () => {
   });
 
   it('refuses to delete a room with reservation history (409)', async () => {
-    const res = await ctx.app.request('/api/rooms/room-001', {
+    // Legacy seeded reservations point at room ids that no longer exist, so
+    // create a real reservation on room-01 to give it history.
+    const booked = await ctx.app.request('/api/reservations', {
+      method: 'POST',
+      headers: jsonHeaders(adminToken),
+      body: JSON.stringify({
+        guestName: 'History Guest',
+        source: 'direct',
+        checkInDate: '2026-11-01',
+        checkOutDate: '2026-11-03',
+        notes: '',
+        rooms: [{ roomId: 'room-01', roomNumber: '01', roomTypeName: 'Standard' }],
+        pricing: {
+          mode: 'same',
+          nightlyRates: [
+            { date: '2026-11-01', rate: 100000 },
+            { date: '2026-11-02', rate: 100000 },
+          ],
+          paymentType: 'no_dp',
+          dpType: 'percentage',
+        },
+      }),
+    }, ctx.env);
+    expect(booked.status).toBe(201);
+    const res = await ctx.app.request('/api/rooms/room-01', {
       method: 'DELETE',
       headers: jsonHeaders(adminToken),
     }, ctx.env);
@@ -303,7 +345,7 @@ describe('GET /api/public/room-types', () => {
     const res = await ctx.app.request('/api/public/room-types', {}, ctx.env);
     expect(res.status).toBe(200);
     const json = (await res.json()) as { data: Array<{ status: string }> };
-    expect(json.data.length).toBe(5);
+    expect(json.data.length).toBe(6);
     expect(json.data.every((t) => t.status === 'active')).toBe(true);
   });
 });
@@ -342,21 +384,48 @@ describe('reservation roomId compatibility (Phase 3)', () => {
   });
 
   it('preserves snapshots: room/type edits never rewrite reservation history', async () => {
-    const before = await ctx.app.request('/api/reservations/res-001', { headers: jsonHeaders(staffToken) }, ctx.env);
+    // Use a reservation on a real seeded room (legacy seeded ids no longer map to rooms).
+    const created = await ctx.app.request('/api/reservations', {
+      method: 'POST',
+      headers: jsonHeaders(staffToken),
+      body: JSON.stringify({
+        guestName: 'Snapshot Guest',
+        source: 'direct',
+        checkInDate: '2026-11-01',
+        checkOutDate: '2026-11-03',
+        notes: '',
+        rooms: [{ roomId: 'room-01', roomNumber: '01', roomTypeName: 'Standard' }],
+        pricing: {
+          mode: 'same',
+          nightlyRates: [
+            { date: '2026-11-01', rate: 100000 },
+            { date: '2026-11-02', rate: 100000 },
+          ],
+          paymentType: 'no_dp',
+          dpType: 'percentage',
+        },
+      }),
+    }, ctx.env);
+    expect(created.status).toBe(201);
+    const resId = ((await created.json()) as { data: { id: string } }).data.id;
+
+    const before = await ctx.app.request(`/api/reservations/${resId}`, { headers: jsonHeaders(staffToken) }, ctx.env);
     const beforeRooms = ((await before.json()) as { data: { rooms: Array<{ roomNumber: string; roomTypeName: string }> } }).data.rooms;
 
-    await ctx.app.request('/api/rooms/room-001', {
+    const roomPatch = await ctx.app.request('/api/rooms/room-01', {
       method: 'PATCH',
       headers: jsonHeaders(adminToken),
       body: JSON.stringify({ roomNumber: '199' }),
     }, ctx.env);
-    await ctx.app.request('/api/room-types/room-type-001', {
+    expect(roomPatch.status).toBe(200);
+    const typePatch = await ctx.app.request('/api/room-types/room-type-001', {
       method: 'PATCH',
       headers: jsonHeaders(adminToken),
       body: JSON.stringify({ name: 'Renamed' }),
     }, ctx.env);
+    expect(typePatch.status).toBe(200);
 
-    const after = await ctx.app.request('/api/reservations/res-001', { headers: jsonHeaders(staffToken) }, ctx.env);
+    const after = await ctx.app.request(`/api/reservations/${resId}`, { headers: jsonHeaders(staffToken) }, ctx.env);
     const afterRooms = ((await after.json()) as { data: { rooms: Array<{ roomNumber: string; roomTypeName: string }> } }).data.rooms;
     expect(afterRooms).toEqual(beforeRooms);
   });

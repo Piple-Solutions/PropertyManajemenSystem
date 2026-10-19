@@ -1,6 +1,8 @@
+import { toLocalISODate } from './localDate';
+
 export function formatDate(date: Date, format: 'short' | 'long' | 'iso' = 'short'): string {
   const d = new Date(date);
-  if (format === 'iso') return d.toISOString().split('T')[0];
+  if (format === 'iso') return toLocalISODate(d);
   if (format === 'short') return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
   return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }

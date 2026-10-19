@@ -1,5 +1,5 @@
 export const appConfig = {
-  name: 'Joglo Seruni',
+  name: 'Homestay Joglo Seruni Syariah',
   version: '1.0.0',
   description: 'Property Management System - Internal & Public Website',
 

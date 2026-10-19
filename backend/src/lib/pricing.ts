@@ -1,3 +1,5 @@
+import { yearInJakarta } from './time';
+
 /**
  * Reservation pricing calculations — server-side mirror of
  * `frontend/src/utils/pricingUtils.ts`.
@@ -29,6 +31,29 @@ export interface PricingCalculation {
 }
 
 export const MAX_NIGHTS = 60;
+
+/**
+ * BE-025: true when `value` (YYYY-MM-DD) is a real calendar day. Values that
+ * do not match the shape are left to the format check (returns true here so a
+ * single, clearer message is reported).
+ */
+export function isRealCalendarDate(value: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!m) return true;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  const t = new Date(Date.UTC(y, mo - 1, d));
+  return t.getUTCFullYear() === y && t.getUTCMonth() === mo - 1 && t.getUTCDate() === d;
+}
+
+/** Whole nights between two YYYY-MM-DD dates (UTC arithmetic, no DST drift). */
+export function nightsBetween(checkIn: string, checkOut: string): number {
+  const a = Date.parse(`${checkIn}T00:00:00Z`);
+  const b = Date.parse(`${checkOut}T00:00:00Z`);
+  if (Number.isNaN(a) || Number.isNaN(b)) return 0;
+  return Math.round((b - a) / 86_400_000);
+}
 
 /** Nights from check-in (inclusive) to check-out (exclusive), `YYYY-MM-DD`. */
 export function enumerateNights(checkInDate: string, checkOutDate: string): string[] {
@@ -107,8 +132,8 @@ export function splitRoomTotals(
   return out;
 }
 
-/** Next `RSV-YYYY-NNN` code. Year comes from the current date. */
-export function nextReservationCode(existingCount: number): string {
-  const year = new Date().getFullYear();
+/** Next `RSV-YYYY-NNN` code. The year is the Asia/Jakarta year (BE-026). */
+export function nextReservationCode(existingCount: number, now: Date = new Date()): string {
+  const year = yearInJakarta(now);
   return `RSV-${year}-${String(existingCount + 1).padStart(3, '0')}`;
 }

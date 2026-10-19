@@ -41,7 +41,7 @@ export function Modal({ open, onClose, title, titleAddon, children, footer, size
     md: '560px',
     lg: '720px',
     xl: '900px',
-    full: '100vw',
+    full: '100%',
   };
 
   return (

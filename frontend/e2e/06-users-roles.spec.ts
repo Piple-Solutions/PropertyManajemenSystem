@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { attachErrorCollectors, loginAsAdmin, login, STAFF } from './helpers';
+import { attachErrorCollectors, loginAsAdmin, login, MANAGER, STAFF } from './helpers';
 
 test.describe('SCN-06 Users Roles Permissions', () => {
   test.beforeEach(async ({ page }) => {
@@ -85,6 +85,10 @@ test.describe('SCN-06 Users Roles Permissions', () => {
 
   test('SCN-06-09 permissions list renders', async ({ page }) => {
     await page.goto('/dashboard/permissions');
+    // Wait for the page heading to confirm the permissions page has mounted
+    await expect(page.getByRole('heading', { name: 'Akses' })).toBeVisible({ timeout: 15000 });
+    // Wait for at least one permission cell to confirm data has finished loading
+    await expect(page.getByRole('cell', { name: 'user.view' })).toBeVisible({ timeout: 15000 });
     const body = await page.locator('body').innerText();
     expect(body).toMatch(/permission|user\.view|reservation/i);
   });
@@ -99,5 +103,17 @@ test.describe('SCN-06 Users Roles Permissions', () => {
     await expect(page.locator('body')).toContainText(/akses ditolak|tidak memiliki izin/i, { timeout: 10000 });
     await page.goto('/dashboard/activity');
     await expect(page.locator('body')).toContainText(/akses ditolak|tidak memiliki izin/i, { timeout: 10000 });
+  });
+
+  test('SCN-06-11 manager login succeeds and users list renders', async ({ page }) => {
+    // Same session hygiene as SCN-06-10: clear the admin session first.
+    // Manager (role-002) holds user.view, so the users list is the
+    // manager-permitted action under test — existing UI flow only.
+    await page.evaluate(() => { localStorage.removeItem('pms_token'); localStorage.removeItem('pms_user'); });
+    await login(page, MANAGER.email, MANAGER.password);
+    await expect(page).toHaveURL(/\/dashboard/, { timeout: 15000 });
+    expect(await page.evaluate(() => localStorage.getItem('pms_token'))).not.toBeNull();
+    await page.goto('/dashboard/users');
+    await expect(page.getByRole('heading', { name: /pengguna/i })).toBeVisible({ timeout: 15000 });
   });
 });

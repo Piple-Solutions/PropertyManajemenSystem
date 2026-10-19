@@ -15,6 +15,7 @@ import {
 import { authenticate, getAuth, type AuthContext } from '../middleware/auth';
 import { requirePermissions } from '../middleware/rbac';
 import { recordActivity } from '../services/activityService';
+import { withIdempotency } from '../lib/idempotency';
 import {
   createReservation,
   getBookedRoomIds,
@@ -79,24 +80,32 @@ reservations.get('/:id', requirePermissions('reservation.view'), async (c) => {
 
 reservations.post('/', requirePermissions('reservation.create'), async (c) => {
   const body = parseOr422(createReservationSchema, await c.req.json().catch(() => ({})));
-  const created = await createReservation(c.get('db'), body);
-  const actor = auditActor(getAuth(c));
-  await recordActivity(c.get('db'), {
-    category: 'reservation',
-    action: 'create',
-    description: `Created new reservation ${created.reservationCode} for ${created.guestName}`,
-    userId: actor.id,
-    userName: actor.name,
-    entityType: 'reservation',
-    entityId: created.id,
-    metadata: {
-      reservationCode: created.reservationCode,
-      guestName: created.guestName,
-      totalAmount: String(created.totalAmount),
-    },
-    ipAddress: auditIp(c),
+  const outcome = await withIdempotency(c, {
+    endpoint: 'POST /api/reservations',
+    body,
+    successCode: 201,
+    execute: (execution) => createReservation(c.get('db'), body, execution ?? undefined),
+    rebuild: (db, entityId) => getReservation(db, entityId),
   });
-  return c.json({ data: created }, 201);
+  if (outcome.mode === 'executed' && outcome.data) {
+    const actor = auditActor(getAuth(c));
+    await recordActivity(c.get('db'), {
+      category: 'reservation',
+      action: 'create',
+      description: `Created new reservation ${outcome.data.reservationCode} for ${outcome.data.guestName}`,
+      userId: actor.id,
+      userName: actor.name,
+      entityType: 'reservation',
+      entityId: outcome.data.id,
+      metadata: {
+        reservationCode: outcome.data.reservationCode,
+        guestName: outcome.data.guestName,
+        totalAmount: String(outcome.data.totalAmount),
+      },
+      ipAddress: auditIp(c),
+    });
+  }
+  return outcome.response;
 });
 
 reservations.patch('/:id', requirePermissions('reservation.update'), async (c) => {

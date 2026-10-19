@@ -70,7 +70,7 @@ seed/seed.sql            generated (gitignored) — never commit
 |---|---|---|
 | `GET /health` | public | — |
 | `POST /auth/login {email,password}` | public | — |
-| `POST /auth/register {name,email,password}` | public | — (assigns Staff `role-003` only) |
+| `POST /auth/register {name,email,password}` | public | — **closed**: always `403` (Block 1, BE-001). Accounts are created by an administrator via `POST /users`. The service code is kept; re-enabling requires a code change to `PUBLIC_REGISTRATION_ENABLED` in `src/lib/security.ts` |
 | `POST /auth/logout` | Bearer | — (stateless: client discards token) |
 | `GET /auth/me` | Bearer | — |
 | `POST /auth/change-password {currentPassword,newPassword}` | Bearer | — (bumps `token_version`) |
@@ -129,10 +129,18 @@ npm install
 #   JWT_SECRET, JWT_EXPIRES_IN, RESET_TOKEN_TTL_MIN,
 #   FRONTEND_ORIGIN, DEV_EXPOSE_RESET_TOKEN=true
 
+# The seed contains well-known DEFAULT credentials (admin/manager/staff mock
+# users). The generator refuses to run unless you opt in (LOCAL ONLY):
+#   PMS_ALLOW_DEFAULT_CREDENTIALS=1   (env var, works with the npm scripts)
+#   --allow-default-credentials       (CLI flag of generate-seed-sql.mjs)
+# NEVER apply a seed generated with default credentials to a remote/production
+# database: create the real admin separately and rotate/remove the defaults.
+
 # Migrate + seed local D1 (repeatable, idempotent):
-npm run db:seed:local
+PMS_ALLOW_DEFAULT_CREDENTIALS=1 npm run db:seed:local
+# PowerShell: $env:PMS_ALLOW_DEFAULT_CREDENTIALS='1'; npm run db:seed:local
 # …or step by step:
-npm run db:seed:sql                                   # regenerates seed/seed.sql
+PMS_ALLOW_DEFAULT_CREDENTIALS=1 npm run db:seed:sql   # regenerates seed/seed.sql
 npm run db:migrate:local                              # wrangler d1 migrations apply --local
 npx wrangler d1 execute pms-internal-db --local --file=seed/seed.sql
 
@@ -178,6 +186,8 @@ implemented except delivery:
    (anti-enumeration).
 2. Locally, `DEV_EXPOSE_RESET_TOKEN=true` also returns `resetToken`, and the
    frontend shows a dev-only reset link. **Production must NOT enable this.**
+   As a second line of defence the token is only ever returned when the
+   request itself is addressed to `localhost`/`127.0.0.1` (BE-008).
 3. `POST /auth/reset-password` consumes the token (single-use), updates the
    hash, bumps `token_version`, and marks the token used.
 
@@ -216,8 +226,22 @@ protected delete, permission union, full RBAC matrix (401/403), privilege
   valid until expiry; password change/reset DO invalidate via `token_version`.
 - localStorage JWT (documented in `frontend/src/services/api.ts`): not
   HttpOnly-cookie equivalent; accepted for the current architecture.
-- No rate limiting on auth endpoints yet — add (e.g. Cloudflare Rate Limiting
-  rules) before public exposure.
+- Auth endpoints have only a best-effort, per-isolate throttle (login: 20
+  failures / 10 min per IP+email; forgot-password: 10 / 10 min per IP+email;
+  reset-password: 20 failures / 10 min per IP; responds `429` + `Retry-After`).
+  It resets when the isolate restarts and is not shared between isolates, so
+  add a real Cloudflare Rate Limiting / WAF rule on `/api/auth/*` before
+  public exposure (owner action).
+- Startup/secret guard: for non-localhost requests a placeholder or empty
+  `JWT_SECRET` (e.g. the value from `.dev.vars.example`) makes every API route
+  except `/api/health` and `/api/public/*` answer `500`. A merely short secret
+  only logs a warning. Rotate the production secret
+  (`wrangler secret put JWT_SECRET`).
+- `GET /api/public/holidays` ignores `force` and never echoes the upstream URL
+  or raw upstream error text (BE-012).
+- API responses carry `X-Content-Type-Options`, `X-Frame-Options`,
+  `Referrer-Policy`, `Cache-Control: no-store` (except `/api/public/*` and
+  `/api/health`) and HSTS on https (BE-014).
 - `GET /users` / `GET /roles` fetch `pageSize=100` from the frontend; fine for
   Phase-1 scale, revisit with server-driven tables later.
 - SQLite notes: `token_version INTEGER`, timestamps as ISO TEXT, `"group"`

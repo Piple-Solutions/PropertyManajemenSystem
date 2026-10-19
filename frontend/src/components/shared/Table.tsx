@@ -15,6 +15,7 @@ interface TableProps<T> {
   emptyMessage?: string;
   density?: 'comfortable' | 'compact';
   headerStyle?: React.CSSProperties;
+  selectedId?: string | null;
 }
 
 export function Table<T extends { id: string }>({
@@ -25,6 +26,7 @@ export function Table<T extends { id: string }>({
   emptyMessage = 'No data available',
   density = 'comfortable',
   headerStyle,
+  selectedId,
 }: TableProps<T>) {
   if (loading) {
     return (
@@ -42,26 +44,25 @@ export function Table<T extends { id: string }>({
     );
   }
 
-  const cellPad = density === 'compact' ? '8px 12px' : '12px 16px';
-
   return (
-    <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid #C7BBAB', backgroundColor: '#FFFFFF' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+    <div className="tbl-wrap" style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid #C7BBAB', backgroundColor: '#FFFFFF', maxWidth: '100%' }}>
+      <table
+        className={`tbl tbl--${density}`}
+        style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', ['--tbl-cols' as string]: columns.length } as React.CSSProperties}
+      >
         <thead>
           <tr style={{ backgroundColor: headerStyle?.backgroundColor || '#97764D' }}>
             {columns.map((col) => (
               <th
                 key={col.key}
                 style={{
-                  padding: cellPad,
                   textAlign: 'center',
                   fontWeight: 600,
-                  fontSize: '12px',
                   textTransform: 'uppercase',
                   letterSpacing: '0.04em',
                   color: headerStyle?.color || '#FFFFFF',
                   borderBottom: '1px solid #C7BBAB',
-                  whiteSpace: 'nowrap',
+                  overflowWrap: 'break-word',
                   ...headerStyle,
                 }}
               >
@@ -71,9 +72,14 @@ export function Table<T extends { id: string }>({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {data.map((item, index) => {
+            // Rows without an id (e.g. aggregated breakdowns) must not match an unset selectedId.
+            const isSelected = selectedId != null && selectedId === item.id;
+            const baseBg = isSelected ? '#E9E6E0' : index % 2 === 0 ? '#FFFFFF' : '#F2F0EB';
+            return (
             <tr
               key={item.id || index}
+              data-room-row={item.id}
               onClick={() => onRowClick?.(item)}
               onKeyDown={(e) => {
                 if (onRowClick && (e.key === 'Enter' || e.key === ' ')) {
@@ -84,15 +90,20 @@ export function Table<T extends { id: string }>({
               tabIndex={onRowClick ? 0 : undefined}
               style={{
                 cursor: onRowClick ? 'pointer' : 'default',
-                backgroundColor: index % 2 === 0 ? '#FFFFFF' : '#F2F0EB',
+                backgroundColor: baseBg,
+                outline: isSelected ? '2px solid #97764D' : 'none',
+                outlineOffset: isSelected ? '-2px' : undefined,
                 transition: 'background-color 150ms ease',
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = '#E9E6E0';
+                if (!isSelected) {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = '#E9E6E0';
+                }
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor =
-                  index % 2 === 0 ? '#FFFFFF' : '#F2F0EB';
+                if (!isSelected) {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = baseBg;
+                }
               }}
               onFocus={(e) => {
                 if (onRowClick) {
@@ -101,25 +112,25 @@ export function Table<T extends { id: string }>({
                 }
               }}
               onBlur={(e) => {
-                (e.currentTarget as HTMLElement).style.outline = 'none';
+                (e.currentTarget as HTMLElement).style.outline = isSelected ? '2px solid #97764D' : 'none';
               }}
             >
               {columns.map((col) => (
                 <td
                   key={col.key}
                   style={{
-                    padding: cellPad,
                     borderBottom: '1px solid #E3DED6',
-                    fontSize: '14px',
                     color: '#232D36',
                     textAlign: 'center',
+                    overflowWrap: 'break-word',
                   }}
                 >
                   {col.render ? col.render(item) : (item as any)[col.key]}
                 </td>
               ))}
-            </tr>
-          ))}
+             </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

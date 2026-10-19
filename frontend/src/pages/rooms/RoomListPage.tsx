@@ -9,6 +9,9 @@ import { Input } from '@/components/shared/Input';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { Modal } from '@/components/shared/Modal';
 import { RoomForm } from '@/components/shared/RoomForm';
+import { Pagination } from '@/components/shared/Pagination';
+import { FloorMapCard } from '@/components/pms/FloorMapCard';
+
 import { Room, RoomType } from '@/types/auth.types';
 import '../../styles/reservation-list.css';
 
@@ -31,6 +34,10 @@ export default function RoomListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [reloadToken, setReloadToken] = useState(0);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const tableRef = useRef<HTMLDivElement>(null);
   const closeModal = () => setModal(null);
 
   const handleModalSuccess = () => {
@@ -87,10 +94,21 @@ export default function RoomListPage() {
 
   const activeFilterCount = (typeFilter !== 'all' ? 1 : 0) + (statusFilter !== 'all' ? 1 : 0);
 
+  const totalPages = Math.max(1, Math.ceil(filteredRooms.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedRooms = useMemo(() => {
+    return filteredRooms.slice((safePage - 1) * pageSize, safePage * pageSize);
+  }, [filteredRooms, safePage, pageSize]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, typeFilter, statusFilter]);
+
   const applyFilters = () => {
     setTypeFilter(draft.type);
     setStatusFilter(draft.status);
     setFilterOpen(false);
+    setCurrentPage(1);
   };
 
   const resetFilters = () => {
@@ -98,6 +116,7 @@ export default function RoomListPage() {
     setTypeFilter('all');
     setStatusFilter('all');
     setActiveCategory(null);
+    setCurrentPage(1);
   };
 
   const closeFilter = () => {
@@ -127,10 +146,32 @@ export default function RoomListPage() {
     setReloadToken((t) => t + 1);
   };
 
+  const handleSelectRoom = (roomId: string | null) => {
+    setSelectedRoomId(roomId);
+    if (roomId) {
+      const index = filteredRooms.findIndex((r) => r.id === roomId);
+      if (index >= 0) {
+        setCurrentPage(Math.floor(index / pageSize) + 1);
+      }
+    }
+  };
+
+  const handleRowClick = (room: Room) => {
+    setSelectedRoomId((prev) => (prev === room.id ? null : room.id));
+  };
+
+  useEffect(() => {
+    if (!selectedRoomId || !tableRef.current) return;
+    const row = tableRef.current.querySelector(`[data-room-row="${selectedRoomId}"]`);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [selectedRoomId, safePage]);
+
   const columns = [
     {
       key: 'roomNumber',
-      header: 'Room Number',
+      header: 'Room',
       render: (item: Room) => (
         <span>{item.roomNumber}</span>
       ),
@@ -144,7 +185,7 @@ export default function RoomListPage() {
       key: 'status',
       header: 'Status',
       render: (item: Room) => (
-        <Badge variant={item.status === 'active' ? 'success' : item.status === 'maintenance' ? 'warning' : 'danger'}>
+        <Badge size="sm" variant={item.status === 'active' ? 'success' : item.status === 'maintenance' ? 'warning' : 'danger'}>
           {item.status}
         </Badge>
       ),
@@ -153,26 +194,26 @@ export default function RoomListPage() {
       key: 'actions',
       header: 'Actions',
       render: (item: Room) => (
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
           <button
             type="button"
             aria-label={`Edit room ${item.roomNumber}`}
-            onClick={() => setModal({ mode: 'edit', id: item.id })}
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #2563EB', backgroundColor: '#2563EB', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#2563EB'; }}
+            onClick={(e) => { e.stopPropagation(); setModal({ mode: 'edit', id: item.id }); }}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '6px', border: '1px solid #97764D', backgroundColor: 'transparent', color: '#232D36', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#232D36'; e.currentTarget.style.borderColor = '#97764D'; }}
           >
-            <Pencil size={14} aria-hidden="true" />
+            <Pencil size={12} aria-hidden="true" />
           </button>
           <button
             type="button"
             aria-label={`Delete room ${item.roomNumber}`}
-            onClick={() => setDeleteConfirm(item.id)}
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #DC2626', backgroundColor: '#DC2626', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#DC2626'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#DC2626'; }}
+            onClick={(e) => { e.stopPropagation(); setDeleteConfirm(item.id); }}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '6px', border: '1px solid #232D36', backgroundColor: '#232D36', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#97764D'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#97764D'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
           >
-            <Trash2 size={14} aria-hidden="true" />
+            <Trash2 size={12} aria-hidden="true" />
           </button>
         </div>
       ),
@@ -181,6 +222,13 @@ export default function RoomListPage() {
 
   return (
     <div style={{ padding: 'var(--space-xl, 20px)', maxWidth: '1400px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 1024px) {
+          .rooms-layout {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#232D36', fontFamily: 'var(--font-family-sans)', margin: 0 }}>Rooms</h1>
@@ -312,7 +360,7 @@ export default function RoomListPage() {
             </>
           )}
         </div>
-        <div className="res-toolbar__search" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="res-toolbar__search rooms-search" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Input
             placeholder="Search room number..."
             value={search}
@@ -327,7 +375,36 @@ export default function RoomListPage() {
 
       {loadError && <p role="alert" style={{ fontSize: '14px', color: '#962222' }}>{loadError}</p>}
 
-      <Table columns={columns} data={filteredRooms} emptyMessage={isLoading ? 'Loading rooms...' : undefined} />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr)',
+          gap: '20px',
+          alignItems: 'start',
+        }}
+        className="rooms-layout"
+      >
+        <FloorMapCard rooms={allRooms} selectedRoomId={selectedRoomId} onSelectRoom={handleSelectRoom} />
+        <div ref={tableRef} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden' }}>
+          <Table
+            columns={columns}
+            data={paginatedRooms}
+            emptyMessage={isLoading ? 'Loading rooms...' : undefined}
+            selectedId={selectedRoomId}
+            onRowClick={handleRowClick}
+            density="compact"
+          />
+          <Pagination
+            currentPage={safePage}
+            totalPages={totalPages}
+            totalItems={filteredRooms.length}
+            pageSize={pageSize}
+            pageSizeOptions={[10, 25]}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(size) => { setPageSize(size); setCurrentPage(1); }}
+          />
+        </div>
+      </div>
 
       <ConfirmDialog
         open={!!deleteConfirm}

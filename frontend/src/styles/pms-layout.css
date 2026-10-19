@@ -35,24 +35,37 @@
 
 .pms-brandrow {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 8px;
   padding: 4px 4px 16px 12px;
   flex-shrink: 0;
 }
 
-.pms-brand {
+.pms-brandblock {
   flex: 1;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.pms-brandlogo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.pms-brand {
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.35;
   color: #FFFFFF;
   font-family: var(--font-family-sans);
-  text-decoration: none;
-  flex-shrink: 0;
+  overflow-wrap: break-word;
 }
 
 .pms-iconbtn {
@@ -315,6 +328,115 @@
 
   .pms-main,
   .pms-footer {
+    transition: none;
+  }
+}
+
+/* Mobile top bar — hidden on tablet/desktop, rendered only below 768px. */
+.pms-topbar {
+  display: none;
+}
+
+/* Mobile drawer (RWD-002): sidebar hidden off-canvas by default below
+ * 768px, opened via the hamburger in the compact top bar. Tablet and
+ * desktop rendering above is untouched.
+ */
+@media (max-width: 767px) {
+  .pms-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-sizing: border-box;
+    min-height: 56px;
+    height: calc(56px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: 8px;
+    padding-right: 16px;
+    background-color: #232D36;
+    color: #FFFFFF;
+    position: sticky;
+    top: 0;
+    z-index: 150;
+    flex-shrink: 0;
+  }
+
+  .pms-topbar__menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .pms-topbar__menu:hover {
+    border-color: #C7BBAB;
+  }
+
+  .pms-topbar__brand {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #FFFFFF;
+    font-family: var(--font-family-sans);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Drawer panel: off-canvas and unfocusable while closed. */
+  .pms-side--drawer {
+    width: 240px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 200;
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform 200ms ease, visibility 0ms linear 200ms;
+  }
+
+  .pms-side--open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 200ms ease;
+  }
+
+  .pms-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 190;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background-color: rgba(35, 45, 54, 0.45);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .pms-drawerhead {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 4px 16px 12px;
+    flex-shrink: 0;
+  }
+
+  /* Content area uses the full width on mobile. */
+  .pms-shell--mobile .pms-main,
+  .pms-shell--mobile .pms-footer {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pms-side--drawer,
+  .pms-backdrop {
     transition: none;
   }
 }

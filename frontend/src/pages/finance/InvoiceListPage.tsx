@@ -12,6 +12,10 @@ import { InvoiceDetailPopup } from '@/components/shared/InvoiceDetailPopup';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { Modal } from '@/components/shared/Modal';
 import { Pagination } from '@/components/shared/Pagination';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { Loading } from '@/components/shared/Loading';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import { apiErrorMessage } from '@/services/api';
 import type { Invoice } from '@/types/auth.types';
 import '../../styles/finance-responsive.css';
 import '../../styles/reservation-list.css';
@@ -58,7 +62,14 @@ export default function InvoiceListPage() {
   const [draft, setDraft] = useState<{ status: string; payment: string }>({ status: 'all', payment: 'all' });
   const filterWrapRef = useRef<HTMLDivElement>(null);
 
-  const invoices = useMemo(() => service.getAll(), [service, refreshKey]);
+  // FE-001: real data (async). `refreshKey` still drives a refetch after every write.
+  const { data: invoices, isLoading, error: loadError, reload } = useAsyncData<Invoice[]>(() => service.getAll(), []);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (refreshKey > 0) reload();
+  }, [refreshKey, reload]);
 
   useEffect(() => {
     if (!feedback) return;
@@ -118,7 +129,7 @@ export default function InvoiceListPage() {
   const safePage = Math.min(currentPage, totalPages);
   const visibleInvoices = filteredInvoices.slice((safePage - 1) * pageSize, safePage * pageSize);
 
-  const detailInvoice = detailInvoiceId ? service.getById(detailInvoiceId) || null : null;
+  const detailInvoice = detailInvoiceId ? invoices.find((inv) => inv.id === detailInvoiceId) || null : null;
 
   const [reservationCodes, setReservationCodes] = useState<Map<string, string>>(new Map());
 
@@ -139,60 +150,50 @@ export default function InvoiceListPage() {
     return reservationCodes.get(inv.reservationId) || inv.reservationId;
   };
 
-  const handleCreate = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
-    const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-    service.create({
-      invoiceNumber: data.invoiceNumber,
-      reservationId: data.reservationId || undefined,
-      guestName: data.guestName,
-      source: data.source,
-      invoiceDate: data.invoiceDate,
-      items: data.items.map((item, index) => ({
-        id: `inv-item-${Date.now()}-${index}`,
-        invoiceId: '',
-        description: item.description,
-        quantity: item.quantity,
-        unitPrice: item.unitPrice,
-        subtotal: item.quantity * item.unitPrice,
-      })),
-      subtotal,
-      discount: data.discount,
-      total: subtotal - data.discount,
-      paymentStatus: data.paymentStatus,
-      invoiceStatus: data.invoiceStatus,
-    });
+  // Totals are computed by the server (discount is a percent); only the
+  // editable fields are sent. A refused write keeps the dialog open and shows
+  // the API's message.
+  const toPayload = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => ({
+    invoiceNumber: data.invoiceNumber,
+    reservationId: data.reservationId || undefined,
+    guestName: data.guestName,
+    source: data.source,
+    invoiceDate: data.invoiceDate,
+    items: data.items.map((item) => ({
+      description: item.description,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+    })),
+    discount: data.discount,
+    paymentStatus: data.paymentStatus,
+    invoiceStatus: data.invoiceStatus,
+  });
+
+  const handleCreate = async (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
+    setSaveError(null);
+    try {
+      await service.create(toPayload(data));
+    } catch (err) {
+      setSaveError(apiErrorMessage(err, ''));
+      return;
+    }
     setFormMode(null);
     setRefreshKey((k) => k + 1);
     setCurrentPage(1);
     setFeedback('Invoice created successfully.');
   };
 
-  const handleUpdate = (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
+  const handleUpdate = async (data: Parameters<Parameters<typeof InvoiceForm>[0]['onSubmit']>[0]) => {
     if (formMode?.kind !== 'edit') return;
-    const existing = service.getById(formMode.invoice.id);
-    if (!existing) return;
-    const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-    service.update(existing.id, {
-      invoiceNumber: data.invoiceNumber,
-      reservationId: data.reservationId || undefined,
-      guestName: data.guestName,
-      source: data.source,
-      invoiceDate: data.invoiceDate,
-      items: data.items.map((item, index) => ({
-        id: existing.items[index]?.id || `inv-item-${Date.now()}-${index}`,
-        invoiceId: existing.id,
-        description: item.description,
-        quantity: item.quantity,
-        unitPrice: item.unitPrice,
-        subtotal: item.quantity * item.unitPrice,
-      })),
-      subtotal,
-      discount: data.discount,
-      total: subtotal - data.discount,
-      paymentStatus: data.paymentStatus,
-      invoiceStatus: data.invoiceStatus,
-    });
-    const updatedId = existing.id;
+    const updatedId = formMode.invoice.id;
+    setSaveError(null);
+    try {
+      const saved = await service.update(updatedId, toPayload(data));
+      if (!saved) return;
+    } catch (err) {
+      setSaveError(apiErrorMessage(err, ''));
+      return;
+    }
     setFormMode(null);
     setDetailInvoiceId(updatedId);
     setRefreshKey((k) => k + 1);
@@ -200,11 +201,19 @@ export default function InvoiceListPage() {
     setFeedback('Invoice updated successfully.');
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!deleteTarget) return;
-    service.delete(deleteTarget.id);
-    if (detailInvoiceId === deleteTarget.id) setDetailInvoiceId(null);
+    const target = deleteTarget;
+    setDeleteError(null);
     setDeleteTarget(null);
+    try {
+      await service.delete(target.id);
+    } catch (err) {
+      // e.g. only Draft invoices can be deleted: show the API's explanation.
+      setDeleteError(apiErrorMessage(err, ''));
+      return;
+    }
+    if (detailInvoiceId === target.id) setDetailInvoiceId(null);
     setRefreshKey((k) => k + 1);
     setCurrentPage(1);
     setFeedback('Invoice deleted successfully.');
@@ -218,8 +227,8 @@ export default function InvoiceListPage() {
 
     { key: 'discount', header: 'Discount', render: (item: Invoice) => <div style={{ textAlign: 'center' }}>{item.discount > 0 ? `${item.discount}%` : '—'}</div> },
     { key: 'total', header: 'Total', render: (item: Invoice) => `Rp ${item.total.toLocaleString('id-ID')}` },
-    { key: 'paymentStatus', header: 'Payment', render: (item: Invoice) => <div style={{ textAlign: 'center' }}><Badge variant={item.paymentStatus === 'Paid' ? 'success' : item.paymentStatus === 'Overdue' ? 'danger' : item.paymentStatus === 'Partial' ? 'warning' : 'default'}>{item.paymentStatus}</Badge></div> },
-    { key: 'invoiceStatus', header: 'Status', render: (item: Invoice) => <div style={{ textAlign: 'center' }}><Badge variant={item.invoiceStatus === 'Completed' ? 'success' : item.invoiceStatus === 'Cancelled' ? 'danger' : item.invoiceStatus === 'Sent' ? 'info' : 'default'}>{item.invoiceStatus}</Badge></div> },
+    { key: 'paymentStatus', header: 'Payment', render: (item: Invoice) => <div style={{ textAlign: 'center' }}><Badge variant={item.paymentStatus === 'Paid' ? 'success' : item.paymentStatus === 'Overdue' ? 'danger' : (item.paymentStatus === 'Partial' || item.paymentStatus === 'Pending') ? 'warning' : 'default'}>{item.paymentStatus}</Badge></div> },
+    { key: 'invoiceStatus', header: 'Status', render: (item: Invoice) => <div style={{ textAlign: 'center' }}><Badge variant={item.invoiceStatus === 'Completed' ? 'success' : item.invoiceStatus === 'Cancelled' ? 'danger' : item.invoiceStatus === 'Sent' ? 'info' : item.invoiceStatus === 'Draft' ? 'warning' : 'default'}>{item.invoiceStatus}</Badge></div> },
     {
       key: 'actions',
       header: 'Actions',
@@ -229,9 +238,9 @@ export default function InvoiceListPage() {
             type="button"
             aria-label={`Edit ${item.invoiceNumber}`}
             onClick={() => { setDetailInvoiceId(null); setFormMode({ kind: 'edit', invoice: item }); }}
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #2563EB', backgroundColor: '#2563EB', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#2563EB'; }}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #97764D', backgroundColor: 'transparent', color: '#232D36', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#232D36'; e.currentTarget.style.borderColor = '#97764D'; }}
           >
             <Pencil size={14} aria-hidden="true" />
           </button>
@@ -239,9 +248,9 @@ export default function InvoiceListPage() {
             type="button"
             aria-label={`Delete ${item.invoiceNumber}`}
             onClick={() => setDeleteTarget(item)}
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #DC2626', backgroundColor: '#DC2626', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#000000'; e.currentTarget.style.borderColor = '#000000'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#DC2626'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#DC2626'; }}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '8px', border: '1px solid #232D36', backgroundColor: '#232D36', color: '#FFFFFF', cursor: 'pointer', transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#97764D'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#97764D'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#232D36'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.borderColor = '#232D36'; }}
           >
             <Trash2 size={14} aria-hidden="true" />
           </button>
@@ -254,7 +263,7 @@ export default function InvoiceListPage() {
     <div className="fin-page">
       <div className="fin-head" style={{ marginBottom: '20px' }}>
         <h1 className="fin-h1" style={{ marginBottom: 0 }}>Invoices</h1>
-        <Button onClick={() => setFormMode({ kind: 'create' })}>+ New Invoice</Button>
+        <Button onClick={() => { setSaveError(null); setFormMode({ kind: 'create' }); }}>+ New Invoice</Button>
       </div>
 
       {feedback && (
@@ -262,6 +271,8 @@ export default function InvoiceListPage() {
           {feedback}
         </div>
       )}
+      {deleteError !== null && <ErrorState description={deleteError || undefined} />}
+      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reload} />}
 
       <div className="res-toolbar" role="search" style={{ marginBottom: '20px' }}>
         <div className="res-toolbar__filterwrap" ref={filterWrapRef}>
@@ -397,12 +408,14 @@ export default function InvoiceListPage() {
       </div>
 
        <Card raised>
+        {isLoading ? <Loading /> : (
         <Table
           columns={columns}
           data={visibleInvoices}
           onRowClick={(item) => setDetailInvoiceId(item.id)}
           emptyMessage="Tidak ada invoice ditemukan"
         />
+        )}
       </Card>
 
       {filteredInvoices.length > 0 && (
@@ -420,7 +433,7 @@ export default function InvoiceListPage() {
       <InvoiceDetailPopup
         invoice={detailInvoice}
         onClose={() => setDetailInvoiceId(null)}
-        onEdit={(inv) => { setDetailInvoiceId(null); setFormMode({ kind: 'edit', invoice: inv }); }}
+        onEdit={(inv) => { setDetailInvoiceId(null); setSaveError(null); setFormMode({ kind: 'edit', invoice: inv }); }}
         onDelete={(inv) => setDeleteTarget(inv)}
       />
 
@@ -431,6 +444,7 @@ export default function InvoiceListPage() {
           title={formMode.kind === 'edit' ? `Edit Invoice ${formMode.invoice.invoiceNumber}` : 'New Invoice'}
           size="xl"
         >
+          {saveError !== null && <ErrorState description={saveError || undefined} />}
           <InvoiceForm
             key={formMode.kind === 'edit' ? formMode.invoice.id : 'new'}
             onSubmit={formMode.kind === 'edit' ? handleUpdate : handleCreate}
