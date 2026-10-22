@@ -13,6 +13,27 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const bcrypt = require('bcryptjs');
 
+// BE-004: the mock users carry well-known DEFAULT credentials (Super Admin
+// included). Refuse to emit them unless the operator opts in explicitly, so
+// the production database is never seeded with documented logins by accident.
+// `PMS_ALLOW_DEFAULT_CREDENTIALS=1` is the equivalent for wrappers such as
+// `npm run db:seed:local` (scripts/seed-local.mjs runs this script as a child).
+const allowDefaultCredentials =
+  process.argv.includes('--allow-default-credentials') || process.env.PMS_ALLOW_DEFAULT_CREDENTIALS === '1';
+if (!allowDefaultCredentials) {
+  console.error(
+    [
+      'REFUSING to generate seed SQL: the mock users have well-known default credentials.',
+      '  - LOCAL development only: re-run with --allow-default-credentials',
+      '      node scripts/generate-seed-sql.mjs --allow-default-credentials',
+      '    or, for `npm run db:seed:local`, set PMS_ALLOW_DEFAULT_CREDENTIALS=1 in the shell.',
+      '  - PRODUCTION: do NOT seed these users. Create the real admin separately and',
+      '    never apply a seed file generated with default credentials to a remote database.',
+    ].join('\n'),
+  );
+  process.exit(1);
+}
+
 const here = dirname(fileURLToPath(import.meta.url));
 const frontendMock = resolve(here, '../../frontend/src/data/mock');
 const outArg = process.argv.find((a) => a.startsWith('--out='));

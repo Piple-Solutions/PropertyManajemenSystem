@@ -1,15 +1,19 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/shared/Button';
 import { Input } from '@/components/shared/Input';
 import { AuthSplitLayout } from '@/components/AuthSplitLayout';
+import { safeReturnTo } from '@/utils/returnTo';
 
 const REMEMBER_KEY = 'pms.rememberedEmail';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, isLoading, error } = useAuth();
+  const location = useLocation();
+  const { login, error } = useAuth();
+  // FE-006: local flag, so the form is not unmounted while the request runs.
+  const [submitting, setSubmitting] = useState(false);
   const [email, setEmail] = useState(() => localStorage.getItem(REMEMBER_KEY) || '');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(() => localStorage.getItem(REMEMBER_KEY) !== null);
@@ -18,8 +22,13 @@ export default function LoginPage() {
     e.preventDefault();
     if (remember) localStorage.setItem(REMEMBER_KEY, email);
     else localStorage.removeItem(REMEMBER_KEY);
-    const success = await login(email, password);
-    if (success) navigate('/dashboard');
+    setSubmitting(true);
+    try {
+      const success = await login(email, password);
+      if (success) navigate(safeReturnTo(location.search) ?? '/dashboard');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -59,7 +68,7 @@ export default function LoginPage() {
           <Link to="/forgot-password" className="auth-link auth-link-muted">Forgot password?</Link>
         </div>
         <div className="auth-actions">
-          <Button type="submit" variant="primary" disabled={isLoading} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#7A5E3E', color: '#FFFFFF', borderColor: '#7A5E3E' }}>{isLoading ? 'Loading...' : 'Login'}</Button>
+          <Button type="submit" variant="primary" disabled={submitting} style={{ backgroundColor: '#97764D', color: '#FFFFFF', borderColor: '#97764D' }} hoverStyle={{ backgroundColor: '#7A5E3E', color: '#FFFFFF', borderColor: '#7A5E3E' }}>{submitting ? 'Loading...' : 'Login'}</Button>
           <Button type="button" variant="outline" onClick={() => navigate('/register')}>Sign Up</Button>
         </div>
       </form>

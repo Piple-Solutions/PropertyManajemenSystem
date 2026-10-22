@@ -46,8 +46,10 @@ async function getOverview(token: string): Promise<Overview> {
 }
 
 /** UTC calendar day — same basis as the server's `today`. */
+// BE-026 (Block 7): the dashboard's "today" is the Asia/Jakarta business day
+// (UTC+7); the tests build their dates the same way. Name kept for the diff.
 function utcToday(offsetDays = 0): string {
-  const d = new Date();
+  const d = new Date(Date.now() + 7 * 60 * 60 * 1000);
   d.setUTCDate(d.getUTCDate() + offsetDays);
   return d.toISOString().slice(0, 10);
 }
@@ -114,7 +116,7 @@ describe('GET /api/dashboard/overview', () => {
     expect((await ctx.app.request('/api/dashboard/overview', { headers: jsonHeaders(adminToken) }, ctx.env)).status).toBe(200);
   });
 
-  it('returns today as the server UTC date (not hardcoded)', async () => {
+  it('returns today as the server Asia/Jakarta date (not hardcoded)', async () => {
     const ov = await getOverview(adminToken);
     expect(ov.today).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(ov.today).toBe(utcToday());
@@ -125,9 +127,9 @@ describe('GET /api/dashboard/overview', () => {
     expect(ov.reservations.total).toBe(15);
     expect(ov.reservations.byStatus).toEqual({ reserved: 8, 'checked-in': 2, 'checked-out': 3, cancelled: 2 });
     expect(Object.values(ov.reservations.byStatus).reduce((a, b) => a + b, 0)).toBe(ov.reservations.total);
-    expect(ov.rooms).toEqual({ total: 8, active: 6, maintenance: 1, inactive: 1 });
-    expect(ov.occupancy).toEqual({ checkedIn: 2, totalRooms: 8, rate: Math.round((2 / 8) * 100) });
-    expect(ov.occupancy.rate).toBe(25);
+    expect(ov.rooms).toEqual({ total: 21, active: 21, maintenance: 0, inactive: 0 });
+    expect(ov.occupancy).toEqual({ checkedIn: 2, totalRooms: 21, rate: Math.round((2 / 21) * 100) });
+    expect(ov.occupancy.rate).toBe(10);
   });
 
   it('returns the 5 newest reservations with table fields, newest first', async () => {

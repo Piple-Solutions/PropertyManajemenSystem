@@ -108,6 +108,8 @@ export async function forgotPassword(
   db: AppDb,
   env: AppEnv,
   email: string,
+  /** BE-008: route passes `false` for non-localhost origins so the dev flag can never leak a token. */
+  exposeAllowed = true,
 ): Promise<{ resetToken?: string }> {
   const normalized = email.trim().toLowerCase();
   const rows = await db
@@ -129,7 +131,7 @@ export async function forgotPassword(
     createdAt: now.toISOString(),
   });
 
-  if (env.DEV_EXPOSE_RESET_TOKEN === 'true') {
+  if (exposeAllowed && env.DEV_EXPOSE_RESET_TOKEN === 'true') {
     return { resetToken: token };
   }
   return {};
@@ -160,6 +162,17 @@ export async function resetPassword(
   const user = userRows[0] as (typeof userRows)[number] | undefined;
   if (!user) throw unprocessable('Invalid or expired reset token', { token: ['Invalid or expired reset token'] });
 
+  // BE-011: claim the token with a conditional single-statement update so only
+  // one of several concurrent resets can proceed (D1 statements are atomic).
+  const claim = await db
+    .update(passwordResetTokens)
+    .set({ usedAt: now })
+    .where(and(eq(passwordResetTokens.id, row.id), isNull(passwordResetTokens.usedAt)))
+    .run();
+  if (!claim.meta || claim.meta.changes !== 1) {
+    throw unprocessable('Invalid or expired reset token', { token: ['Invalid or expired reset token'] });
+  }
+
   await db
     .update(users)
     .set({
@@ -168,6 +181,10 @@ export async function resetPassword(
       updatedAt: now,
     })
     .where(eq(users.id, user.id));
-  await db.update(passwordResetTokens).set({ usedAt: now }).where(eq(passwordResetTokens.id, row.id));
+  // Any other outstanding token for this user is now void as well.
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: now })
+    .where(and(eq(passwordResetTokens.userId, user.id), isNull(passwordResetTokens.usedAt)));
   return { userId: user.id, userName: user.name };
 }

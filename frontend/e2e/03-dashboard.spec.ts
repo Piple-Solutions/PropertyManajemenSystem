@@ -8,7 +8,7 @@ test.describe('SCN-03 Dashboard + SCN-09 cross-cutting', () => {
   });
 
   test('SCN-03-01 dashboard stats render', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: /^dashboard$/i })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: /homestay joglo seruni syariah/i })).toBeVisible({ timeout: 15000 });
     for (const stat of [/check-in hari ini/i, /reservasi aktif/i, /omzet hari ini/i, /invoice tertunda/i, /okupansi/i, /total reservasi/i]) {
       await expect(page.locator('body').getByText(stat).first()).toBeVisible();
     }

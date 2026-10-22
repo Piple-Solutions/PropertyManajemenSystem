@@ -58,5 +58,17 @@
     "status": "active",
     "createdAt": "2026-02-01T00:00:00Z",
     "updatedAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "id": "room-type-006",
+    "name": "Joglo",
+    "description": "Joglo rental venue for events and gatherings",
+    "capacity": 50,
+    "facilities": ["-"],
+    "defaultRate": 1000000,
+    "images": [],
+    "status": "active",
+    "createdAt": "2026-04-25T00:00:00Z",
+    "updatedAt": "2026-09-14T00:00:00Z"
   }
 ]

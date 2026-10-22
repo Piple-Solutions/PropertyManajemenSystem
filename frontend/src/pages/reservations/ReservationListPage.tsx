@@ -5,6 +5,8 @@ import { reservationService } from '@/services/reservationService';
 import { roomService } from '@/services/roomService';
 import { roomTypeService } from '@/services/roomTypeService';
 import { invoiceService } from '@/services/invoiceService';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import type { Invoice } from '@/types/auth.types';
 import { ReservationCard } from '@/components/shared/ReservationCard';
 import { Button } from '@/components/shared/Button';
 import { Card } from '@/components/shared/Card';
@@ -252,9 +254,11 @@ export default function ReservationListPage() {
       cancelled = true;
     };
   }, [showForm, service]);
+  // FE-001: real invoices (async); none for users without the invoice permission.
+  const { data: allInvoices } = useAsyncData<Invoice[]>(() => invoiceService.getAllIfPermitted(), []);
   const invoiceByReservationId = useMemo(() => {
-    return new Map(invoiceService.getAll().map((inv) => [inv.reservationId, inv]));
-  }, []);
+    return new Map(allInvoices.map((inv) => [inv.reservationId, inv]));
+  }, [allInvoices]);
 
   const filteredReservations = useMemo(() => {
     const roomTypeByRoomId = new Map(allRooms.map((r) => [r.id, r.roomTypeId]));

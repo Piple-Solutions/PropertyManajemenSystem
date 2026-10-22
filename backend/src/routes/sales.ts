@@ -2,10 +2,10 @@ import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import type { AppDb } from '../db/client';
 import { badRequest, ok, paginated } from '../lib/errors';
-import { parseOr422, salesListQuerySchema } from '../lib/validation';
+import { parseOr422, salesBreakdownQuerySchema, salesListQuerySchema } from '../lib/validation';
 import { authenticate, type AuthContext } from '../middleware/auth';
 import { requirePermissions } from '../middleware/rbac';
-import { listSales, salesSourceBreakdown } from '../services/salesService';
+import { listSales, salesSourceBreakdown, salesSummary } from '../services/salesService';
 
 type Vars = { db: AppDb; auth: AuthContext };
 
@@ -27,10 +27,24 @@ sales.get('/', requirePermissions('finance.sales.view'), async (c) => {
   return paginated(c, items, { page: query.page, pageSize: query.pageSize, total });
 });
 
+/** BE-022: billed vs paid totals (same filters as the list, no paging). */
+sales.get('/summary', requirePermissions('finance.sales.view'), async (c) => {
+  const query = parseOr422(salesListQuerySchema, {
+    start: c.req.query('start'),
+    end: c.req.query('end'),
+    source: c.req.query('source'),
+  });
+  if (query.start && query.end && query.end < query.start) throw badRequest('`end` must be on or after `start`.');
+  return ok(c, await salesSummary(c.get('db'), query.start ?? '', query.end ?? '', query.source));
+});
+
 sales.get('/breakdown', requirePermissions('finance.sales.view'), async (c) => {
-  const start = c.req.query('start') ?? '';
-  const end = c.req.query('end') ?? '';
-  return ok(c, await salesSourceBreakdown(c.get('db'), start, end));
+  const query = parseOr422(salesBreakdownQuerySchema, {
+    start: c.req.query('start') || undefined,
+    end: c.req.query('end') || undefined,
+  });
+  if (query.start && query.end && query.end < query.start) throw badRequest('`end` must be on or after `start`.');
+  return ok(c, await salesSourceBreakdown(c.get('db'), query.start ?? '', query.end ?? ''));
 });
 
 export default sales;

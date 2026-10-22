@@ -1,0 +1,1719 @@
+[
+  {
+    "step": "list invoices",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-001",
+          "invoiceNumber": "INV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "invoiceDate": "2026-09-15",
+          "items": [
+            {
+              "id": "inv-item-001",
+              "invoiceId": "inv-001",
+              "description": "Room 101 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "reservationId": "res-001"
+        },
+        {
+          "id": "inv-002",
+          "invoiceNumber": "INV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-16",
+          "items": [
+            {
+              "id": "inv-item-002",
+              "invoiceId": "inv-002",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 800000,
+              "subtotal": 2400000
+            }
+          ],
+          "subtotal": 2400000,
+          "discount": 10,
+          "total": 2160000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-16T00:00:00Z",
+          "updatedAt": "2026-09-16T00:00:00Z",
+          "reservationId": "res-002"
+        },
+        {
+          "id": "inv-003",
+          "invoiceNumber": "INV-2026-003",
+          "guestName": "Robert Johnson",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-10",
+          "items": [
+            {
+              "id": "inv-item-003",
+              "invoiceId": "inv-003",
+              "description": "Room 103 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-10T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "reservationId": "res-003"
+        },
+        {
+          "id": "inv-004",
+          "invoiceNumber": "INV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "ota",
+          "invoiceDate": "2026-09-20",
+          "items": [
+            {
+              "id": "inv-item-004",
+              "invoiceId": "inv-004",
+              "description": "Room 201 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 1200000,
+              "subtotal": 3600000
+            }
+          ],
+          "subtotal": 3600000,
+          "discount": 0,
+          "total": 3600000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-20T00:00:00Z",
+          "updatedAt": "2026-09-20T00:00:00Z",
+          "reservationId": "res-004"
+        },
+        {
+          "id": "inv-005",
+          "invoiceNumber": "INV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "invoiceDate": "2026-09-18",
+          "items": [
+            {
+              "id": "inv-item-005",
+              "invoiceId": "inv-005",
+              "description": "Room 202 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 900000,
+              "subtotal": 1800000
+            }
+          ],
+          "subtotal": 1800000,
+          "discount": 0,
+          "total": 1800000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-18T00:00:00Z",
+          "updatedAt": "2026-09-18T00:00:00Z",
+          "reservationId": "res-005"
+        },
+        {
+          "id": "inv-006",
+          "invoiceNumber": "INV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "invoiceDate": "2026-09-21",
+          "items": [
+            {
+              "id": "inv-item-006",
+              "invoiceId": "inv-006",
+              "description": "Room 102 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "reservationId": "res-006"
+        },
+        {
+          "id": "inv-007",
+          "invoiceNumber": "INV-2026-007",
+          "guestName": "Maria Garcia",
+          "source": "direct",
+          "invoiceDate": "2026-09-05",
+          "items": [
+            {
+              "id": "inv-item-007",
+              "invoiceId": "inv-007",
+              "description": "Room 101 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            },
+            {
+              "id": "inv-item-008",
+              "invoiceId": "inv-007",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            }
+          ],
+          "subtotal": 4200000,
+          "discount": 10,
+          "total": 3780000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "reservationId": "res-011"
+        },
+        {
+          "id": "inv-008",
+          "invoiceNumber": "INV-2026-008",
+          "guestName": "Ahmad Hidayat",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-28",
+          "items": [
+            {
+              "id": "inv-item-009",
+              "invoiceId": "inv-008",
+              "description": "Room 103 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 1150000,
+              "subtotal": 2300000
+            }
+          ],
+          "subtotal": 2300000,
+          "discount": 0,
+          "total": 2300000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-28T00:00:00Z",
+          "updatedAt": "2026-09-28T00:00:00Z",
+          "reservationId": "res-012"
+        },
+        {
+          "id": "inv-009",
+          "invoiceNumber": "INV-2026-009",
+          "guestName": "Keluarga Santoso",
+          "source": "direct",
+          "invoiceDate": "2026-09-25",
+          "items": [
+            {
+              "id": "inv-item-010",
+              "invoiceId": "inv-009",
+              "description": "Room 101 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-011",
+              "invoiceId": "inv-009",
+              "description": "Room 102 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-012",
+              "invoiceId": "inv-009",
+              "description": "Room 201 - 5 nights",
+              "quantity": 5,
+              "unitPrice": 1200000,
+              "subtotal": 6000000
+            },
+            {
+              "id": "inv-item-013",
+              "invoiceId": "inv-009",
+              "description": "Extra bed - 7 nights",
+              "quantity": 7,
+              "unitPrice": 150000,
+              "subtotal": 1050000
+            },
+            {
+              "id": "inv-item-014",
+              "invoiceId": "inv-009",
+              "description": "Breakfast - 4 pax x 7 days",
+              "quantity": 28,
+              "unitPrice": 50000,
+              "subtotal": 1400000
+            },
+            {
+              "id": "inv-item-015",
+              "invoiceId": "inv-009",
+              "description": "Dinner - 4 pax x 3 days",
+              "quantity": 12,
+              "unitPrice": 75000,
+              "subtotal": 900000
+            },
+            {
+              "id": "inv-item-016",
+              "invoiceId": "inv-009",
+              "description": "Airport pickup (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-017",
+              "invoiceId": "inv-009",
+              "description": "Airport drop (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-018",
+              "invoiceId": "inv-009",
+              "description": "Laundry - 12 kg",
+              "quantity": 12,
+              "unitPrice": 25000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-019",
+              "invoiceId": "inv-009",
+              "description": "Motor rental - 3 days",
+              "quantity": 3,
+              "unitPrice": 100000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-020",
+              "invoiceId": "inv-009",
+              "description": "Borobudur tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 200000,
+              "subtotal": 800000
+            },
+            {
+              "id": "inv-item-021",
+              "invoiceId": "inv-009",
+              "description": "Prambanan tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 175000,
+              "subtotal": 700000
+            },
+            {
+              "id": "inv-item-022",
+              "invoiceId": "inv-009",
+              "description": "Late checkout - Room 101",
+              "quantity": 1,
+              "unitPrice": 200000,
+              "subtotal": 200000
+            },
+            {
+              "id": "inv-item-023",
+              "invoiceId": "inv-009",
+              "description": "Minibar - Room 102",
+              "quantity": 1,
+              "unitPrice": 185000,
+              "subtotal": 185000
+            },
+            {
+              "id": "inv-item-024",
+              "invoiceId": "inv-009",
+              "description": "Welcome drinks - 4 pax",
+              "quantity": 4,
+              "unitPrice": 25000,
+              "subtotal": 100000
+            },
+            {
+              "id": "inv-item-025",
+              "invoiceId": "inv-009",
+              "description": "Meeting room - half day",
+              "quantity": 1,
+              "unitPrice": 500000,
+              "subtotal": 500000
+            },
+            {
+              "id": "inv-item-026",
+              "invoiceId": "inv-009",
+              "description": "Projector rental",
+              "quantity": 1,
+              "unitPrice": 150000,
+              "subtotal": 150000
+            },
+            {
+              "id": "inv-item-027",
+              "invoiceId": "inv-009",
+              "description": "Snack box - 20 pax",
+              "quantity": 20,
+              "unitPrice": 30000,
+              "subtotal": 600000
+            }
+          ],
+          "subtotal": 24185000,
+          "discount": 5,
+          "total": 22975750,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-25T00:00:00Z",
+          "updatedAt": "2026-09-30T00:00:00Z",
+          "reservationId": "res-013"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 9
+      }
+    }
+  },
+  {
+    "step": "list default paging",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-001",
+          "invoiceNumber": "INV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "invoiceDate": "2026-09-15",
+          "items": [
+            {
+              "id": "inv-item-001",
+              "invoiceId": "inv-001",
+              "description": "Room 101 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "reservationId": "res-001"
+        },
+        {
+          "id": "inv-002",
+          "invoiceNumber": "INV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-16",
+          "items": [
+            {
+              "id": "inv-item-002",
+              "invoiceId": "inv-002",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 800000,
+              "subtotal": 2400000
+            }
+          ],
+          "subtotal": 2400000,
+          "discount": 10,
+          "total": 2160000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-16T00:00:00Z",
+          "updatedAt": "2026-09-16T00:00:00Z",
+          "reservationId": "res-002"
+        },
+        {
+          "id": "inv-003",
+          "invoiceNumber": "INV-2026-003",
+          "guestName": "Robert Johnson",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-10",
+          "items": [
+            {
+              "id": "inv-item-003",
+              "invoiceId": "inv-003",
+              "description": "Room 103 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-10T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "reservationId": "res-003"
+        },
+        {
+          "id": "inv-004",
+          "invoiceNumber": "INV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "ota",
+          "invoiceDate": "2026-09-20",
+          "items": [
+            {
+              "id": "inv-item-004",
+              "invoiceId": "inv-004",
+              "description": "Room 201 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 1200000,
+              "subtotal": 3600000
+            }
+          ],
+          "subtotal": 3600000,
+          "discount": 0,
+          "total": 3600000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-20T00:00:00Z",
+          "updatedAt": "2026-09-20T00:00:00Z",
+          "reservationId": "res-004"
+        },
+        {
+          "id": "inv-005",
+          "invoiceNumber": "INV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "invoiceDate": "2026-09-18",
+          "items": [
+            {
+              "id": "inv-item-005",
+              "invoiceId": "inv-005",
+              "description": "Room 202 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 900000,
+              "subtotal": 1800000
+            }
+          ],
+          "subtotal": 1800000,
+          "discount": 0,
+          "total": 1800000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-18T00:00:00Z",
+          "updatedAt": "2026-09-18T00:00:00Z",
+          "reservationId": "res-005"
+        },
+        {
+          "id": "inv-006",
+          "invoiceNumber": "INV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "invoiceDate": "2026-09-21",
+          "items": [
+            {
+              "id": "inv-item-006",
+              "invoiceId": "inv-006",
+              "description": "Room 102 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "reservationId": "res-006"
+        },
+        {
+          "id": "inv-007",
+          "invoiceNumber": "INV-2026-007",
+          "guestName": "Maria Garcia",
+          "source": "direct",
+          "invoiceDate": "2026-09-05",
+          "items": [
+            {
+              "id": "inv-item-007",
+              "invoiceId": "inv-007",
+              "description": "Room 101 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            },
+            {
+              "id": "inv-item-008",
+              "invoiceId": "inv-007",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            }
+          ],
+          "subtotal": 4200000,
+          "discount": 10,
+          "total": 3780000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "reservationId": "res-011"
+        },
+        {
+          "id": "inv-008",
+          "invoiceNumber": "INV-2026-008",
+          "guestName": "Ahmad Hidayat",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-28",
+          "items": [
+            {
+              "id": "inv-item-009",
+              "invoiceId": "inv-008",
+              "description": "Room 103 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 1150000,
+              "subtotal": 2300000
+            }
+          ],
+          "subtotal": 2300000,
+          "discount": 0,
+          "total": 2300000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-28T00:00:00Z",
+          "updatedAt": "2026-09-28T00:00:00Z",
+          "reservationId": "res-012"
+        },
+        {
+          "id": "inv-009",
+          "invoiceNumber": "INV-2026-009",
+          "guestName": "Keluarga Santoso",
+          "source": "direct",
+          "invoiceDate": "2026-09-25",
+          "items": [
+            {
+              "id": "inv-item-010",
+              "invoiceId": "inv-009",
+              "description": "Room 101 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-011",
+              "invoiceId": "inv-009",
+              "description": "Room 102 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-012",
+              "invoiceId": "inv-009",
+              "description": "Room 201 - 5 nights",
+              "quantity": 5,
+              "unitPrice": 1200000,
+              "subtotal": 6000000
+            },
+            {
+              "id": "inv-item-013",
+              "invoiceId": "inv-009",
+              "description": "Extra bed - 7 nights",
+              "quantity": 7,
+              "unitPrice": 150000,
+              "subtotal": 1050000
+            },
+            {
+              "id": "inv-item-014",
+              "invoiceId": "inv-009",
+              "description": "Breakfast - 4 pax x 7 days",
+              "quantity": 28,
+              "unitPrice": 50000,
+              "subtotal": 1400000
+            },
+            {
+              "id": "inv-item-015",
+              "invoiceId": "inv-009",
+              "description": "Dinner - 4 pax x 3 days",
+              "quantity": 12,
+              "unitPrice": 75000,
+              "subtotal": 900000
+            },
+            {
+              "id": "inv-item-016",
+              "invoiceId": "inv-009",
+              "description": "Airport pickup (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-017",
+              "invoiceId": "inv-009",
+              "description": "Airport drop (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-018",
+              "invoiceId": "inv-009",
+              "description": "Laundry - 12 kg",
+              "quantity": 12,
+              "unitPrice": 25000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-019",
+              "invoiceId": "inv-009",
+              "description": "Motor rental - 3 days",
+              "quantity": 3,
+              "unitPrice": 100000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-020",
+              "invoiceId": "inv-009",
+              "description": "Borobudur tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 200000,
+              "subtotal": 800000
+            },
+            {
+              "id": "inv-item-021",
+              "invoiceId": "inv-009",
+              "description": "Prambanan tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 175000,
+              "subtotal": 700000
+            },
+            {
+              "id": "inv-item-022",
+              "invoiceId": "inv-009",
+              "description": "Late checkout - Room 101",
+              "quantity": 1,
+              "unitPrice": 200000,
+              "subtotal": 200000
+            },
+            {
+              "id": "inv-item-023",
+              "invoiceId": "inv-009",
+              "description": "Minibar - Room 102",
+              "quantity": 1,
+              "unitPrice": 185000,
+              "subtotal": 185000
+            },
+            {
+              "id": "inv-item-024",
+              "invoiceId": "inv-009",
+              "description": "Welcome drinks - 4 pax",
+              "quantity": 4,
+              "unitPrice": 25000,
+              "subtotal": 100000
+            },
+            {
+              "id": "inv-item-025",
+              "invoiceId": "inv-009",
+              "description": "Meeting room - half day",
+              "quantity": 1,
+              "unitPrice": 500000,
+              "subtotal": 500000
+            },
+            {
+              "id": "inv-item-026",
+              "invoiceId": "inv-009",
+              "description": "Projector rental",
+              "quantity": 1,
+              "unitPrice": 150000,
+              "subtotal": 150000
+            },
+            {
+              "id": "inv-item-027",
+              "invoiceId": "inv-009",
+              "description": "Snack box - 20 pax",
+              "quantity": 20,
+              "unitPrice": 30000,
+              "subtotal": 600000
+            }
+          ],
+          "subtotal": 24185000,
+          "discount": 5,
+          "total": 22975750,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-25T00:00:00Z",
+          "updatedAt": "2026-09-30T00:00:00Z",
+          "reservationId": "res-013"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 9
+      }
+    }
+  },
+  {
+    "step": "filter status",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-001",
+          "invoiceNumber": "INV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "invoiceDate": "2026-09-15",
+          "items": [
+            {
+              "id": "inv-item-001",
+              "invoiceId": "inv-001",
+              "description": "Room 101 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "reservationId": "res-001"
+        },
+        {
+          "id": "inv-002",
+          "invoiceNumber": "INV-2026-002",
+          "guestName": "Jane Smith",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-16",
+          "items": [
+            {
+              "id": "inv-item-002",
+              "invoiceId": "inv-002",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 800000,
+              "subtotal": 2400000
+            }
+          ],
+          "subtotal": 2400000,
+          "discount": 10,
+          "total": 2160000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-16T00:00:00Z",
+          "updatedAt": "2026-09-16T00:00:00Z",
+          "reservationId": "res-002"
+        },
+        {
+          "id": "inv-007",
+          "invoiceNumber": "INV-2026-007",
+          "guestName": "Maria Garcia",
+          "source": "direct",
+          "invoiceDate": "2026-09-05",
+          "items": [
+            {
+              "id": "inv-item-007",
+              "invoiceId": "inv-007",
+              "description": "Room 101 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            },
+            {
+              "id": "inv-item-008",
+              "invoiceId": "inv-007",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            }
+          ],
+          "subtotal": 4200000,
+          "discount": 10,
+          "total": 3780000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "reservationId": "res-011"
+        },
+        {
+          "id": "inv-009",
+          "invoiceNumber": "INV-2026-009",
+          "guestName": "Keluarga Santoso",
+          "source": "direct",
+          "invoiceDate": "2026-09-25",
+          "items": [
+            {
+              "id": "inv-item-010",
+              "invoiceId": "inv-009",
+              "description": "Room 101 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-011",
+              "invoiceId": "inv-009",
+              "description": "Room 102 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-012",
+              "invoiceId": "inv-009",
+              "description": "Room 201 - 5 nights",
+              "quantity": 5,
+              "unitPrice": 1200000,
+              "subtotal": 6000000
+            },
+            {
+              "id": "inv-item-013",
+              "invoiceId": "inv-009",
+              "description": "Extra bed - 7 nights",
+              "quantity": 7,
+              "unitPrice": 150000,
+              "subtotal": 1050000
+            },
+            {
+              "id": "inv-item-014",
+              "invoiceId": "inv-009",
+              "description": "Breakfast - 4 pax x 7 days",
+              "quantity": 28,
+              "unitPrice": 50000,
+              "subtotal": 1400000
+            },
+            {
+              "id": "inv-item-015",
+              "invoiceId": "inv-009",
+              "description": "Dinner - 4 pax x 3 days",
+              "quantity": 12,
+              "unitPrice": 75000,
+              "subtotal": 900000
+            },
+            {
+              "id": "inv-item-016",
+              "invoiceId": "inv-009",
+              "description": "Airport pickup (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-017",
+              "invoiceId": "inv-009",
+              "description": "Airport drop (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-018",
+              "invoiceId": "inv-009",
+              "description": "Laundry - 12 kg",
+              "quantity": 12,
+              "unitPrice": 25000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-019",
+              "invoiceId": "inv-009",
+              "description": "Motor rental - 3 days",
+              "quantity": 3,
+              "unitPrice": 100000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-020",
+              "invoiceId": "inv-009",
+              "description": "Borobudur tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 200000,
+              "subtotal": 800000
+            },
+            {
+              "id": "inv-item-021",
+              "invoiceId": "inv-009",
+              "description": "Prambanan tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 175000,
+              "subtotal": 700000
+            },
+            {
+              "id": "inv-item-022",
+              "invoiceId": "inv-009",
+              "description": "Late checkout - Room 101",
+              "quantity": 1,
+              "unitPrice": 200000,
+              "subtotal": 200000
+            },
+            {
+              "id": "inv-item-023",
+              "invoiceId": "inv-009",
+              "description": "Minibar - Room 102",
+              "quantity": 1,
+              "unitPrice": 185000,
+              "subtotal": 185000
+            },
+            {
+              "id": "inv-item-024",
+              "invoiceId": "inv-009",
+              "description": "Welcome drinks - 4 pax",
+              "quantity": 4,
+              "unitPrice": 25000,
+              "subtotal": 100000
+            },
+            {
+              "id": "inv-item-025",
+              "invoiceId": "inv-009",
+              "description": "Meeting room - half day",
+              "quantity": 1,
+              "unitPrice": 500000,
+              "subtotal": 500000
+            },
+            {
+              "id": "inv-item-026",
+              "invoiceId": "inv-009",
+              "description": "Projector rental",
+              "quantity": 1,
+              "unitPrice": 150000,
+              "subtotal": 150000
+            },
+            {
+              "id": "inv-item-027",
+              "invoiceId": "inv-009",
+              "description": "Snack box - 20 pax",
+              "quantity": 20,
+              "unitPrice": 30000,
+              "subtotal": 600000
+            }
+          ],
+          "subtotal": 24185000,
+          "discount": 5,
+          "total": 22975750,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-25T00:00:00Z",
+          "updatedAt": "2026-09-30T00:00:00Z",
+          "reservationId": "res-013"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 4
+      }
+    }
+  },
+  {
+    "step": "filter payment",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-003",
+          "invoiceNumber": "INV-2026-003",
+          "guestName": "Robert Johnson",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-10",
+          "items": [
+            {
+              "id": "inv-item-003",
+              "invoiceId": "inv-003",
+              "description": "Room 103 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-10T00:00:00Z",
+          "updatedAt": "2026-09-10T00:00:00Z",
+          "reservationId": "res-003"
+        },
+        {
+          "id": "inv-004",
+          "invoiceNumber": "INV-2026-004",
+          "guestName": "Emily Wilson",
+          "source": "ota",
+          "invoiceDate": "2026-09-20",
+          "items": [
+            {
+              "id": "inv-item-004",
+              "invoiceId": "inv-004",
+              "description": "Room 201 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 1200000,
+              "subtotal": 3600000
+            }
+          ],
+          "subtotal": 3600000,
+          "discount": 0,
+          "total": 3600000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-20T00:00:00Z",
+          "updatedAt": "2026-09-20T00:00:00Z",
+          "reservationId": "res-004"
+        },
+        {
+          "id": "inv-005",
+          "invoiceNumber": "INV-2026-005",
+          "guestName": "Michael Brown",
+          "source": "ota",
+          "invoiceDate": "2026-09-18",
+          "items": [
+            {
+              "id": "inv-item-005",
+              "invoiceId": "inv-005",
+              "description": "Room 202 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 900000,
+              "subtotal": 1800000
+            }
+          ],
+          "subtotal": 1800000,
+          "discount": 0,
+          "total": 1800000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-18T00:00:00Z",
+          "updatedAt": "2026-09-18T00:00:00Z",
+          "reservationId": "res-005"
+        },
+        {
+          "id": "inv-006",
+          "invoiceNumber": "INV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "invoiceDate": "2026-09-21",
+          "items": [
+            {
+              "id": "inv-item-006",
+              "invoiceId": "inv-006",
+              "description": "Room 102 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "reservationId": "res-006"
+        },
+        {
+          "id": "inv-008",
+          "invoiceNumber": "INV-2026-008",
+          "guestName": "Ahmad Hidayat",
+          "source": "whatsapp",
+          "invoiceDate": "2026-09-28",
+          "items": [
+            {
+              "id": "inv-item-009",
+              "invoiceId": "inv-008",
+              "description": "Room 103 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 1150000,
+              "subtotal": 2300000
+            }
+          ],
+          "subtotal": 2300000,
+          "discount": 0,
+          "total": 2300000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-28T00:00:00Z",
+          "updatedAt": "2026-09-28T00:00:00Z",
+          "reservationId": "res-012"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 5
+      }
+    }
+  },
+  {
+    "step": "filter source + range",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-007",
+          "invoiceNumber": "INV-2026-007",
+          "guestName": "Maria Garcia",
+          "source": "direct",
+          "invoiceDate": "2026-09-05",
+          "items": [
+            {
+              "id": "inv-item-007",
+              "invoiceId": "inv-007",
+              "description": "Room 101 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            },
+            {
+              "id": "inv-item-008",
+              "invoiceId": "inv-007",
+              "description": "Room 102 - 3 nights",
+              "quantity": 3,
+              "unitPrice": 700000,
+              "subtotal": 2100000
+            }
+          ],
+          "subtotal": 4200000,
+          "discount": 10,
+          "total": 3780000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-05T00:00:00Z",
+          "updatedAt": "2026-09-08T00:00:00Z",
+          "reservationId": "res-011"
+        },
+        {
+          "id": "inv-001",
+          "invoiceNumber": "INV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "invoiceDate": "2026-09-15",
+          "items": [
+            {
+              "id": "inv-item-001",
+              "invoiceId": "inv-001",
+              "description": "Room 101 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "reservationId": "res-001"
+        },
+        {
+          "id": "inv-006",
+          "invoiceNumber": "INV-2026-006",
+          "guestName": "Sarah Connor",
+          "source": "direct",
+          "invoiceDate": "2026-09-21",
+          "items": [
+            {
+              "id": "inv-item-006",
+              "invoiceId": "inv-006",
+              "description": "Room 102 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Pending",
+          "invoiceStatus": "Draft",
+          "createdAt": "2026-09-21T00:00:00Z",
+          "updatedAt": "2026-09-21T00:00:00Z",
+          "reservationId": "res-006"
+        },
+        {
+          "id": "inv-009",
+          "invoiceNumber": "INV-2026-009",
+          "guestName": "Keluarga Santoso",
+          "source": "direct",
+          "invoiceDate": "2026-09-25",
+          "items": [
+            {
+              "id": "inv-item-010",
+              "invoiceId": "inv-009",
+              "description": "Room 101 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-011",
+              "invoiceId": "inv-009",
+              "description": "Room 102 - 7 nights",
+              "quantity": 7,
+              "unitPrice": 750000,
+              "subtotal": 5250000
+            },
+            {
+              "id": "inv-item-012",
+              "invoiceId": "inv-009",
+              "description": "Room 201 - 5 nights",
+              "quantity": 5,
+              "unitPrice": 1200000,
+              "subtotal": 6000000
+            },
+            {
+              "id": "inv-item-013",
+              "invoiceId": "inv-009",
+              "description": "Extra bed - 7 nights",
+              "quantity": 7,
+              "unitPrice": 150000,
+              "subtotal": 1050000
+            },
+            {
+              "id": "inv-item-014",
+              "invoiceId": "inv-009",
+              "description": "Breakfast - 4 pax x 7 days",
+              "quantity": 28,
+              "unitPrice": 50000,
+              "subtotal": 1400000
+            },
+            {
+              "id": "inv-item-015",
+              "invoiceId": "inv-009",
+              "description": "Dinner - 4 pax x 3 days",
+              "quantity": 12,
+              "unitPrice": 75000,
+              "subtotal": 900000
+            },
+            {
+              "id": "inv-item-016",
+              "invoiceId": "inv-009",
+              "description": "Airport pickup (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-017",
+              "invoiceId": "inv-009",
+              "description": "Airport drop (Avanza)",
+              "quantity": 1,
+              "unitPrice": 250000,
+              "subtotal": 250000
+            },
+            {
+              "id": "inv-item-018",
+              "invoiceId": "inv-009",
+              "description": "Laundry - 12 kg",
+              "quantity": 12,
+              "unitPrice": 25000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-019",
+              "invoiceId": "inv-009",
+              "description": "Motor rental - 3 days",
+              "quantity": 3,
+              "unitPrice": 100000,
+              "subtotal": 300000
+            },
+            {
+              "id": "inv-item-020",
+              "invoiceId": "inv-009",
+              "description": "Borobudur tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 200000,
+              "subtotal": 800000
+            },
+            {
+              "id": "inv-item-021",
+              "invoiceId": "inv-009",
+              "description": "Prambanan tour - 4 pax",
+              "quantity": 4,
+              "unitPrice": 175000,
+              "subtotal": 700000
+            },
+            {
+              "id": "inv-item-022",
+              "invoiceId": "inv-009",
+              "description": "Late checkout - Room 101",
+              "quantity": 1,
+              "unitPrice": 200000,
+              "subtotal": 200000
+            },
+            {
+              "id": "inv-item-023",
+              "invoiceId": "inv-009",
+              "description": "Minibar - Room 102",
+              "quantity": 1,
+              "unitPrice": 185000,
+              "subtotal": 185000
+            },
+            {
+              "id": "inv-item-024",
+              "invoiceId": "inv-009",
+              "description": "Welcome drinks - 4 pax",
+              "quantity": 4,
+              "unitPrice": 25000,
+              "subtotal": 100000
+            },
+            {
+              "id": "inv-item-025",
+              "invoiceId": "inv-009",
+              "description": "Meeting room - half day",
+              "quantity": 1,
+              "unitPrice": 500000,
+              "subtotal": 500000
+            },
+            {
+              "id": "inv-item-026",
+              "invoiceId": "inv-009",
+              "description": "Projector rental",
+              "quantity": 1,
+              "unitPrice": 150000,
+              "subtotal": 150000
+            },
+            {
+              "id": "inv-item-027",
+              "invoiceId": "inv-009",
+              "description": "Snack box - 20 pax",
+              "quantity": 20,
+              "unitPrice": 30000,
+              "subtotal": 600000
+            }
+          ],
+          "subtotal": 24185000,
+          "discount": 5,
+          "total": 22975750,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-25T00:00:00Z",
+          "updatedAt": "2026-09-30T00:00:00Z",
+          "reservationId": "res-013"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 4
+      }
+    }
+  },
+  {
+    "step": "search",
+    "status": 200,
+    "body": {
+      "data": [
+        {
+          "id": "inv-001",
+          "invoiceNumber": "INV-2026-001",
+          "guestName": "John Doe",
+          "source": "direct",
+          "invoiceDate": "2026-09-15",
+          "items": [
+            {
+              "id": "inv-item-001",
+              "invoiceId": "inv-001",
+              "description": "Room 101 - 2 nights",
+              "quantity": 2,
+              "unitPrice": 750000,
+              "subtotal": 1500000
+            }
+          ],
+          "subtotal": 1500000,
+          "discount": 0,
+          "total": 1500000,
+          "paymentStatus": "Paid",
+          "invoiceStatus": "Completed",
+          "createdAt": "2026-09-15T00:00:00Z",
+          "updatedAt": "2026-09-15T00:00:00Z",
+          "reservationId": "res-001"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "pageSize": 10,
+        "total": 1
+      }
+    }
+  },
+  {
+    "step": "bad range",
+    "status": 400,
+    "body": {
+      "message": "`end` must be on or after `start`."
+    }
+  },
+  {
+    "step": "get",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "inv-001",
+        "invoiceNumber": "INV-2026-001",
+        "guestName": "John Doe",
+        "source": "direct",
+        "invoiceDate": "2026-09-15",
+        "items": [
+          {
+            "id": "inv-item-001",
+            "invoiceId": "inv-001",
+            "description": "Room 101 - 2 nights",
+            "quantity": 2,
+            "unitPrice": 750000,
+            "subtotal": 1500000
+          }
+        ],
+        "subtotal": 1500000,
+        "discount": 0,
+        "total": 1500000,
+        "paymentStatus": "Paid",
+        "invoiceStatus": "Completed",
+        "createdAt": "2026-09-15T00:00:00Z",
+        "updatedAt": "2026-09-15T00:00:00Z",
+        "reservationId": "res-001"
+      }
+    }
+  },
+  {
+    "step": "get 404",
+    "status": 404,
+    "body": {
+      "message": "Invoice not found"
+    }
+  },
+  {
+    "step": "next number",
+    "status": 200,
+    "body": {
+      "data": {
+        "invoiceNumber": "INV-2026-010"
+      }
+    }
+  },
+  {
+    "step": "staff has no finance permission (403)",
+    "status": 403,
+    "body": {
+      "message": "Missing required permission(s): finance.invoice.view"
+    }
+  },
+  {
+    "step": "create (server-allocated number)",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "inv-<id-1>",
+        "invoiceNumber": "INV-2026-010",
+        "guestName": "Golden Invoice Guest",
+        "source": "direct",
+        "invoiceDate": "2026-09-18",
+        "items": [
+          {
+            "id": "inv-item-<id-2>",
+            "invoiceId": "inv-<id-1>",
+            "description": "Room 04 - 2 nights",
+            "quantity": 2,
+            "unitPrice": 600000,
+            "subtotal": 1200000
+          },
+          {
+            "id": "inv-item-<id-3>",
+            "invoiceId": "inv-<id-1>",
+            "description": "Breakfast",
+            "quantity": 4,
+            "unitPrice": 25000,
+            "subtotal": 100000
+          }
+        ],
+        "subtotal": 1300000,
+        "discount": 10,
+        "total": 1170000,
+        "paymentStatus": "Pending",
+        "invoiceStatus": "Draft",
+        "createdAt": "2026-09-20T03:00:13.000Z",
+        "updatedAt": "2026-09-20T03:00:13.000Z"
+      }
+    }
+  },
+  {
+    "step": "create validation error",
+    "status": 422,
+    "body": {
+      "message": "Validation failed",
+      "errors": {
+        "items": [
+          "At least one item is required"
+        ]
+      }
+    }
+  },
+  {
+    "step": "patch items + discount",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "inv-<id-1>",
+        "invoiceNumber": "INV-2026-010",
+        "guestName": "Golden Invoice Guest",
+        "source": "direct",
+        "invoiceDate": "2026-09-18",
+        "items": [
+          {
+            "id": "inv-item-<id-4>",
+            "invoiceId": "inv-<id-1>",
+            "description": "Room 04 - 1 night",
+            "quantity": 1,
+            "unitPrice": 600000,
+            "subtotal": 600000
+          }
+        ],
+        "subtotal": 600000,
+        "discount": 0,
+        "total": 600000,
+        "paymentStatus": "Pending",
+        "invoiceStatus": "Draft",
+        "createdAt": "2026-09-20T03:00:13.000Z",
+        "updatedAt": "2026-09-20T03:00:15.000Z"
+      }
+    }
+  },
+  {
+    "step": "send",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "inv-<id-1>",
+        "invoiceNumber": "INV-2026-010",
+        "guestName": "Golden Invoice Guest",
+        "source": "direct",
+        "invoiceDate": "2026-09-18",
+        "items": [
+          {
+            "id": "inv-item-<id-4>",
+            "invoiceId": "inv-<id-1>",
+            "description": "Room 04 - 1 night",
+            "quantity": 1,
+            "unitPrice": 600000,
+            "subtotal": 600000
+          }
+        ],
+        "subtotal": 600000,
+        "discount": 0,
+        "total": 600000,
+        "paymentStatus": "Pending",
+        "invoiceStatus": "Sent",
+        "createdAt": "2026-09-20T03:00:13.000Z",
+        "updatedAt": "2026-09-20T03:00:16.000Z"
+      }
+    }
+  },
+  {
+    "step": "pay",
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "inv-<id-1>",
+        "invoiceNumber": "INV-2026-010",
+        "guestName": "Golden Invoice Guest",
+        "source": "direct",
+        "invoiceDate": "2026-09-18",
+        "items": [
+          {
+            "id": "inv-item-<id-4>",
+            "invoiceId": "inv-<id-1>",
+            "description": "Room 04 - 1 night",
+            "quantity": 1,
+            "unitPrice": 600000,
+            "subtotal": 600000
+          }
+        ],
+        "subtotal": 600000,
+        "discount": 0,
+        "total": 600000,
+        "paymentStatus": "Paid",
+        "invoiceStatus": "Completed",
+        "createdAt": "2026-09-20T03:00:13.000Z",
+        "updatedAt": "2026-09-20T03:00:17.000Z"
+      }
+    }
+  },
+  {
+    "step": "cancel after paid (current behavior)",
+    "status": 409,
+    "body": {
+      "message": "Only Draft or Sent invoices can be cancelled (current: Completed).",
+      "errors": {
+        "invoiceStatus": [
+          "Only Draft or Sent invoices can be cancelled."
+        ]
+      }
+    }
+  },
+  {
+    "step": "create draft to delete",
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "inv-<id-5>",
+        "invoiceNumber": "INV-2026-011",
+        "guestName": "Draft To Delete",
+        "source": "direct",
+        "invoiceDate": "2026-09-18",
+        "items": [
+          {
+            "id": "inv-item-<id-6>",
+            "invoiceId": "inv-<id-5>",
+            "description": "Room 04 - 2 nights",
+            "quantity": 2,
+            "unitPrice": 600000,
+            "subtotal": 1200000
+          },
+          {
+            "id": "inv-item-<id-7>",
+            "invoiceId": "inv-<id-5>",
+            "description": "Breakfast",
+            "quantity": 4,
+            "unitPrice": 25000,
+            "subtotal": 100000
+          }
+        ],
+        "subtotal": 1300000,
+        "discount": 10,
+        "total": 1170000,
+        "paymentStatus": "Pending",
+        "invoiceStatus": "Draft",
+        "createdAt": "2026-09-20T03:00:19.000Z",
+        "updatedAt": "2026-09-20T03:00:19.000Z"
+      }
+    }
+  },
+  {
+    "step": "delete draft",
+    "status": 204,
+    "body": null
+  },
+  {
+    "step": "delete draft again 404",
+    "status": 404,
+    "body": {
+      "message": "Invoice not found"
+    }
+  }
+]

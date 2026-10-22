@@ -18,8 +18,12 @@ describe('GET /api/users', () => {
     expect(res.status).toBe(401);
   });
 
-  it('lists users with pagination metadata (staff has user.view)', async () => {
-    const res = await ctx.app.request('/api/users?page=1&pageSize=2', { headers: jsonHeaders(staffToken) }, ctx.env);
+  it('denies staff without user.view (403); manager lists users', async () => {
+    const denied = await ctx.app.request('/api/users?page=1&pageSize=2', { headers: jsonHeaders(staffToken) }, ctx.env);
+    expect(denied.status).toBe(403);
+
+    const managerToken = await loginAs(ctx.app, ctx.env, 'manager@hotel.com', 'manager123');
+    const res = await ctx.app.request('/api/users?page=1&pageSize=2', { headers: jsonHeaders(managerToken) }, ctx.env);
     expect(res.status).toBe(200);
     const json = (await res.json()) as {
       data: Array<{ id: string; passwordHash?: string }>;

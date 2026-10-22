@@ -7,7 +7,9 @@ import { AuthSplitLayout } from '@/components/AuthSplitLayout';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { register, isLoading, error } = useAuth();
+  const { register, error } = useAuth();
+  // FE-006: local flag (the global loading flag would unmount this form).
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [formErrors, setFormErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string }>({});
 
@@ -24,7 +26,12 @@ export default function RegisterPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    await register(formData.name, formData.email, formData.password);
+    setSubmitting(true);
+    try {
+      await register(formData.name, formData.email, formData.password);
+    } finally {
+      setSubmitting(false);
+    }
     navigate('/login');
   };
 
@@ -75,7 +82,7 @@ export default function RegisterPage() {
         />
         {error && <div role="alert" className="auth-error">{error}</div>}
         <div className="auth-actions">
-          <Button type="submit" variant="primary" disabled={isLoading}>{isLoading ? 'Creating Account...' : 'Sign Up'}</Button>
+          <Button type="submit" variant="primary" disabled={submitting}>{submitting ? 'Creating Account...' : 'Sign Up'}</Button>
         </div>
         <div className="auth-foot">
           Already have an account? <Link to="/login" className="auth-link">Sign in</Link>

@@ -1,5 +1,6 @@
-import salesData from '../data/mock/sales.json';
 import { reservationSourceLabels, reservationSourceColors } from '@/constants/reservationStatuses';
+import type { Sale } from '@/types/auth.types';
+import { ApiError, fetchAllPages } from './api';
 
 interface SourceBreakdown {
   source: string;
@@ -20,37 +21,51 @@ interface SalesSummary {
   averagePerTransaction: number;
 }
 
+/**
+ * Sales client backed by the real API (`/api/sales`) — FE-001.
+ *
+ * There is no sales table: the server DERIVES one sale per non-cancelled
+ * invoice (`date = invoiceDate`, `amount = total`), so a sale appears as soon
+ * as its invoice exists (Draft and Sent included: "billed", not "received").
+ * Read-only; method names match the previous mock service and are now async.
+ */
 class SalesService {
-  private data: any[] = [...salesData];
-
-  getAll(): any[] {
-    return this.data.map((item) => ({ ...item }));
+  async getAll(): Promise<Sale[]> {
+    return fetchAllPages<Sale>('/api/sales');
   }
 
-  getById(id: string): any | undefined {
-    return this.data.find((item) => item.id === id);
+  /** A user without `finance.sales.view` has no sales to show (dashboard). */
+  async getAllIfPermitted(): Promise<Sale[]> {
+    try {
+      return await this.getAll();
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 403) return [];
+      throw err;
+    }
   }
 
-  getByDateRange(startDate: string, endDate: string): any[] {
-    return this.data.filter((item) => {
-      const date = new Date(item.date);
-      return date >= new Date(startDate) && date <= new Date(endDate);
-    });
+  async getById(id: string): Promise<Sale | undefined> {
+    return (await this.getAll()).find((item) => item.id === id);
   }
 
-  getTotalByPeriod(startDate: string, endDate: string): number {
-    return this.getByDateRange(startDate, endDate).reduce((sum, item) => sum + item.amount, 0);
+  async getByDateRange(startDate: string, endDate: string): Promise<Sale[]> {
+    return (await this.getAll()).filter((item) => item.date >= startDate && item.date <= endDate);
   }
 
-  getBySource(source: string): any[] {
-    return this.data.filter((item) => item.source === source);
+  async getTotalByPeriod(startDate: string, endDate: string): Promise<number> {
+    return (await this.getByDateRange(startDate, endDate)).reduce((sum, item) => sum + item.amount, 0);
   }
 
-  getSourceBreakdown(): SourceBreakdown[] {
-    const total = this.data.reduce((sum, item) => sum + item.amount, 0);
+  async getBySource(source: string): Promise<Sale[]> {
+    return (await this.getAll()).filter((item) => item.source === source);
+  }
+
+  async getSourceBreakdown(): Promise<SourceBreakdown[]> {
+    const data = await this.getAll();
+    const total = data.reduce((sum, item) => sum + item.amount, 0);
     const sourceMap: Record<string, number> = {};
     const countMap: Record<string, number> = {};
-    this.data.forEach((item) => {
+    data.forEach((item) => {
       sourceMap[item.source] = (sourceMap[item.source] || 0) + item.amount;
       countMap[item.source] = (countMap[item.source] || 0) + 1;
     });
@@ -64,9 +79,9 @@ class SalesService {
     }));
   }
 
-  getSummary(startDate: string, endDate: string): SalesSummary {
-    const filtered = this.getByDateRange(startDate, endDate);
-    const totalSales = filtered.reduce((sum: number, s: any) => sum + s.amount, 0);
+  async getSummary(startDate: string, endDate: string): Promise<SalesSummary> {
+    const filtered = await this.getByDateRange(startDate, endDate);
+    const totalSales = filtered.reduce((sum, s) => sum + s.amount, 0);
     return {
       totalSales,
       totalIncome: totalSales,
@@ -76,15 +91,6 @@ class SalesService {
       totalTransactions: filtered.length,
       averagePerTransaction: filtered.length > 0 ? Math.round(totalSales / filtered.length) : 0,
     };
-  }
-
-  create(data: any): any {
-    const newItem = {
-      ...data,
-      id: `sale-${String(this.data.length + 1).padStart(3, '0')}`,
-    };
-    this.data.push(newItem);
-    return { ...newItem };
   }
 }
 

@@ -16,6 +16,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    // FE-008: maps are generated (for error tracking) but not referenced from
+    // the bundles, so browsers do not download or expose the source.
+    sourcemap: 'hidden',
   },
 });

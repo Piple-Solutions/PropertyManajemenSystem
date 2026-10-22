@@ -24,6 +24,7 @@ export { DayReservationsPopup } from './DayReservationsPopup';
 export { InvoiceStatusBadge } from './InvoiceStatusBadge';
 export { InvoiceDetailPopup } from './InvoiceDetailPopup';
 export { InvoicePrintDocument } from './InvoicePrintDocument';
+export { LunasWatermark } from './LunasWatermark';
 export { ReportPrintDocument } from './ReportPrintDocument';
 export { InvoiceForm } from './InvoiceForm';
 export { ActivityFeed } from './ActivityFeed';

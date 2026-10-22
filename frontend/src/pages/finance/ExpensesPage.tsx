@@ -8,6 +8,11 @@ import { Modal } from '@/components/shared/Modal';
 import { expenseService } from '@/services/expenseService';
 import { expenseCategories, expenseCategoryLabels, expenseStatusLabels } from '@/constants/expenseCategories';
 import { ExpenseForm } from '@/components/shared/ExpenseForm';
+import { useAsyncData } from '@/hooks/useAsyncData';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { Loading } from '@/components/shared/Loading';
+import { apiErrorMessage } from '@/services/api';
+import type { Expense } from '@/types/auth.types';
 import '../../styles/finance-responsive.css';
 import '../../styles/reservation-list.css';
 
@@ -40,7 +45,9 @@ export default function ExpensesPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [draft, setDraft] = useState<Record<string, string>>({ category: 'all', status: 'all' });
   const filterWrapRef = useRef<HTMLDivElement>(null);
-  const expenses = service.getAll();
+  // FE-001: real data (async) + reload after a successful create.
+  const { data: expenses, isLoading, error: loadError, reload } = useAsyncData<Expense[]>(() => service.getAll(), []);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const filteredExpenses = useMemo(() => {
     let result = expenses;
@@ -98,20 +105,27 @@ export default function ExpensesPage() {
     <div className="fin-page">
       <div className="fin-head" style={{ marginBottom: '20px' }}>
         <h1 className="fin-h1" style={{ marginBottom: 0 }}>Expenses</h1>
-        <Button onClick={() => setShowForm(true)}>+ New Expense</Button>
+        <Button onClick={() => { setSaveError(null); setShowForm(true); }}>+ New Expense</Button>
       </div>
       {showForm && (
         <Modal open={showForm} onClose={() => setShowForm(false)} title="New Expense" size="md">
+          {saveError !== null && <ErrorState description={saveError || undefined} />}
           <ExpenseForm
-            onSubmit={(data) => {
-              service.create({
-                category: data.category,
-                description: data.description,
-                amount: data.amount,
-                date: data.date,
-                status: data.status,
-              });
-              setShowForm(false);
+            onSubmit={async (data) => {
+              setSaveError(null);
+              try {
+                await service.create({
+                  category: data.category,
+                  description: data.description,
+                  amount: data.amount,
+                  date: data.date,
+                  status: data.status,
+                });
+                setShowForm(false);
+                reload();
+              } catch (err) {
+                setSaveError(apiErrorMessage(err, ''));
+              }
             }}
             onCancel={() => setShowForm(false)}
           />
@@ -247,8 +261,9 @@ export default function ExpensesPage() {
           </span>
         </div>
       </div>
+      {loadError !== null && <ErrorState description={loadError || undefined} onRetry={reload} />}
       <Card>
-        <Table columns={columns} data={filteredExpenses} emptyMessage="Tidak ada pengeluaran ditemukan" />
+        {isLoading ? <Loading /> : <Table columns={columns} data={filteredExpenses} emptyMessage="Tidak ada pengeluaran ditemukan" />}
       </Card>
     </div>
   );

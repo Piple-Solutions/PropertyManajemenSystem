@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import type { AppDb } from '../db/client';
 import { badRequest, ok, paginated } from '../lib/errors';
-import { auditActor, auditIp } from '../lib/audit';
+import { auditActor, auditIp, withPrefix } from '../lib/audit';
+import { todayInJakarta } from '../lib/time';
 import {
   createInvoiceSchema,
   invoiceListQuerySchema,
@@ -13,6 +14,7 @@ import {
 import { authenticate, getAuth, type AuthContext } from '../middleware/auth';
 import { requirePermissions } from '../middleware/rbac';
 import { recordActivity } from '../services/activityService';
+import { withIdempotency } from '../lib/idempotency';
 import {
   cancelInvoice,
   createInvoice,
@@ -30,6 +32,18 @@ type Vars = { db: AppDb; auth: AuthContext };
 const invoices = new Hono<{ Bindings: AppEnv; Variables: Vars }>();
 
 invoices.use('*', authenticate);
+
+type Before = Record<string, string>;
+type Money = { subtotal: number; discount: number; total: number; invoiceStatus: string; paymentStatus: string };
+const imageOf = (r: Money) => ({
+  subtotal: r.subtotal,
+  discount: r.discount,
+  total: r.total,
+  invoiceStatus: r.invoiceStatus,
+  paymentStatus: r.paymentStatus,
+});
+const invoiceBefore = (r: Money): Before => withPrefix('before', imageOf(r));
+const invoiceAfter = (r: Money): Before => withPrefix('after', imageOf(r));
 
 function financeMeta(inv: { invoiceNumber: string; guestName: string; total: number }) {
   return { invoiceNumber: inv.invoiceNumber, guestName: inv.guestName, total: String(inv.total) };
@@ -52,7 +66,7 @@ invoices.get('/', requirePermissions('finance.invoice.view'), async (c) => {
 });
 
 invoices.get('/next-number', requirePermissions('finance.invoice.create'), async (c) => {
-  const date = c.req.query('date') ?? new Date().toISOString().slice(0, 10);
+  const date = c.req.query('date') ?? todayInJakarta();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw badRequest('`date` must be YYYY-MM-DD.');
   return ok(c, { invoiceNumber: await nextInvoiceNumber(c.get('db'), date) });
 });
@@ -63,25 +77,36 @@ invoices.get('/:id', requirePermissions('finance.invoice.view'), async (c) => {
 
 invoices.post('/', requirePermissions('finance.invoice.create'), async (c) => {
   const body = parseOr422(createInvoiceSchema, await c.req.json().catch(() => ({})));
-  const created = await createInvoice(c.get('db'), body);
-  const actor = auditActor(getAuth(c));
-  await recordActivity(c.get('db'), {
-    category: 'finance',
-    action: 'invoice_create',
-    description: `Created invoice ${created.invoiceNumber} for ${created.guestName}`,
-    userId: actor.id,
-    userName: actor.name,
-    entityType: 'invoice',
-    entityId: created.id,
-    metadata: financeMeta(created),
-    ipAddress: auditIp(c),
+  const outcome = await withIdempotency(c, {
+    endpoint: 'POST /api/invoices',
+    body,
+    successCode: 201,
+    execute: (execution) => createInvoice(c.get('db'), body, execution ?? undefined),
+    rebuild: (db, entityId) => getInvoice(db, entityId),
   });
-  return c.json({ data: created }, 201);
+  if (outcome.mode === 'executed' && outcome.data) {
+    const actor = auditActor(getAuth(c));
+    await recordActivity(c.get('db'), {
+      category: 'finance',
+      action: 'invoice_create',
+      description: `Created invoice ${outcome.data.invoiceNumber} for ${outcome.data.guestName}`,
+      userId: actor.id,
+      userName: actor.name,
+      entityType: 'invoice',
+      entityId: outcome.data.id,
+      metadata: financeMeta(outcome.data),
+      ipAddress: auditIp(c),
+    });
+  }
+  return outcome.response;
 });
 
 invoices.patch('/:id', requirePermissions('finance.invoice.update'), async (c) => {
   const body = parseOr422(updateInvoiceSchema, await c.req.json().catch(() => ({})));
-  const updated = await updateInvoice(c.get('db'), pathParam(c, 'id'), body);
+  let before: Before = {};
+  const updated = await updateInvoice(c.get('db'), pathParam(c, 'id'), body, (row) => {
+    before = invoiceBefore(row);
+  });
   const actor = auditActor(getAuth(c));
   await recordActivity(c.get('db'), {
     category: 'finance',
@@ -91,14 +116,17 @@ invoices.patch('/:id', requirePermissions('finance.invoice.update'), async (c) =
     userName: actor.name,
     entityType: 'invoice',
     entityId: updated.id,
-    metadata: financeMeta(updated),
+    metadata: { ...financeMeta(updated), ...before, ...invoiceAfter(updated) },
     ipAddress: auditIp(c),
   });
   return ok(c, updated);
 });
 
 invoices.post('/:id/send', requirePermissions('finance.invoice.update'), async (c) => {
-  const updated = await sendInvoice(c.get('db'), pathParam(c, 'id'));
+  let before: Before = {};
+  const updated = await sendInvoice(c.get('db'), pathParam(c, 'id'), (row) => {
+    before = invoiceBefore(row);
+  });
   const actor = auditActor(getAuth(c));
   await recordActivity(c.get('db'), {
     category: 'finance',
@@ -108,14 +136,17 @@ invoices.post('/:id/send', requirePermissions('finance.invoice.update'), async (
     userName: actor.name,
     entityType: 'invoice',
     entityId: updated.id,
-    metadata: financeMeta(updated),
+    metadata: { ...financeMeta(updated), ...before, ...invoiceAfter(updated) },
     ipAddress: auditIp(c),
   });
   return ok(c, updated);
 });
 
 invoices.post('/:id/pay', requirePermissions('finance.invoice.update'), async (c) => {
-  const updated = await payInvoice(c.get('db'), pathParam(c, 'id'));
+  let before: Before = {};
+  const updated = await payInvoice(c.get('db'), pathParam(c, 'id'), (row) => {
+    before = invoiceBefore(row);
+  });
   const actor = auditActor(getAuth(c));
   await recordActivity(c.get('db'), {
     category: 'finance',
@@ -125,14 +156,17 @@ invoices.post('/:id/pay', requirePermissions('finance.invoice.update'), async (c
     userName: actor.name,
     entityType: 'invoice',
     entityId: updated.id,
-    metadata: financeMeta(updated),
+    metadata: { ...financeMeta(updated), ...before, ...invoiceAfter(updated) },
     ipAddress: auditIp(c),
   });
   return ok(c, updated);
 });
 
 invoices.post('/:id/cancel', requirePermissions('finance.invoice.update'), async (c) => {
-  const updated = await cancelInvoice(c.get('db'), pathParam(c, 'id'));
+  let before: Before = {};
+  const updated = await cancelInvoice(c.get('db'), pathParam(c, 'id'), (row) => {
+    before = invoiceBefore(row);
+  });
   const actor = auditActor(getAuth(c));
   await recordActivity(c.get('db'), {
     category: 'finance',
@@ -142,7 +176,7 @@ invoices.post('/:id/cancel', requirePermissions('finance.invoice.update'), async
     userName: actor.name,
     entityType: 'invoice',
     entityId: updated.id,
-    metadata: financeMeta(updated),
+    metadata: { ...financeMeta(updated), ...before, ...invoiceAfter(updated) },
     ipAddress: auditIp(c),
   });
   return ok(c, updated);
@@ -161,7 +195,7 @@ invoices.delete('/:id', requirePermissions('finance.invoice.delete'), async (c) 
     userName: actor.name,
     entityType: 'invoice',
     entityId: id,
-    metadata: { invoiceNumber: existing.invoiceNumber },
+    metadata: { invoiceNumber: existing.invoiceNumber, ...invoiceBefore(existing) },
     ipAddress: auditIp(c),
   });
   return c.body(null, 204);

@@ -1,8 +1,16 @@
 import { Hono } from 'hono';
 import type { AppEnv } from '../env';
 import type { AppDb } from '../db/client';
-import { ok } from '../lib/errors';
-import { auditActor, auditIp } from '../lib/audit';
+import { forbidden, ok } from '../lib/errors';
+import {
+  AttemptLimiter,
+  PUBLIC_REGISTRATION_ENABLED,
+  REGISTRATION_CLOSED_MESSAGE,
+  clientAddress,
+  isLocalhostUrl,
+  tooManyAttempts,
+} from '../lib/security';
+import { auditActor, auditIp, maskEmail, runDeferred } from '../lib/audit';
 import {
   changePasswordSchema,
   forgotPasswordSchema,
@@ -19,15 +27,59 @@ import {
   register,
   resetPassword,
 } from '../services/authService';
-import { recordActivity } from '../services/activityService';
+import { recordActivity, writeAudit } from '../services/activityService';
+import { eq } from 'drizzle-orm';
+import { users } from '../db/schema';
 
 type Vars = { db: AppDb; auth: AuthContext };
 
 const auth = new Hono<{ Bindings: AppEnv; Variables: Vars }>();
 
+/**
+ * BE-006: in-isolate, best-effort throttles (no D1 writes). Keyed by
+ * client address + identifier; generous so shared-NAT users are never locked
+ * out by ordinary typos. Real protection = Cloudflare rate-limiting rule.
+ */
+const WINDOW_MS = 10 * 60_000;
+const loginFailures = new AttemptLimiter(20, WINDOW_MS);
+const forgotRequests = new AttemptLimiter(10, WINDOW_MS);
+const resetFailures = new AttemptLimiter(20, WINDOW_MS);
+
 auth.post('/login', async (c) => {
   const body = parseOr422(loginSchema, await c.req.json().catch(() => ({})));
-  const result = await login(c.get('db'), c.env, body.email, body.password);
+  const key = `${clientAddress(c.req)}|${body.email}`;
+  const wait = loginFailures.blockedFor(key);
+  if (wait > 0) {
+    c.header('Retry-After', String(wait));
+    throw tooManyAttempts(wait);
+  }
+  let result;
+  try {
+    result = await login(c.get('db'), c.env, body.email, body.password);
+  } catch (err) {
+    if ((err as { status?: number }).status === 401) {
+      loginFailures.recordFailure(key);
+      // BE-023: failed logins are audited (masked email, never the password).
+      // waitUntil when available so the 401 is not delayed; best-effort.
+      const db = c.get('db');
+      const ip = auditIp(c);
+      const reason = (err as Error).message === 'User is inactive' ? 'inactive' : 'invalid_credentials';
+      await runDeferred(c, async () => {
+        const known = await db.select({ id: users.id, name: users.name }).from(users).where(eq(users.email, body.email)).limit(1);
+        await writeAudit(db, {
+          category: 'authentication',
+          action: 'login_failed',
+          description: 'Failed login attempt',
+          userId: known[0]?.id ?? 'anonymous',
+          userName: known[0]?.name ?? '',
+          metadata: { email: maskEmail(body.email), reason },
+          ipAddress: ip,
+        });
+      });
+    }
+    throw err;
+  }
+  loginFailures.clear(key);
   await recordActivity(c.get('db'), {
     category: 'authentication',
     action: 'login',
@@ -41,6 +93,8 @@ auth.post('/login', async (c) => {
 });
 
 auth.post('/register', async (c) => {
+  // BE-001: public self-registration is closed (in-code constant, no env var).
+  if (!PUBLIC_REGISTRATION_ENABLED) throw forbidden(REGISTRATION_CLOSED_MESSAGE);
   const body = parseOr422(registerSchema, await c.req.json().catch(() => ({})));
   const result = await register(c.get('db'), c.env, body);
   await recordActivity(c.get('db'), {
@@ -97,7 +151,15 @@ auth.post('/change-password', authenticate, async (c) => {
 
 auth.post('/forgot-password', async (c) => {
   const body = parseOr422(forgotPasswordSchema, await c.req.json().catch(() => ({})));
-  const { resetToken } = await forgotPassword(c.get('db'), c.env, body.email);
+  const key = `${clientAddress(c.req)}|${body.email}`;
+  const wait = forgotRequests.blockedFor(key);
+  if (wait > 0) {
+    c.header('Retry-After', String(wait));
+    throw tooManyAttempts(wait);
+  }
+  forgotRequests.recordFailure(key); // counts every request: it is the abuse signal here
+  // BE-008: the dev flag only takes effect for a localhost origin.
+  const { resetToken } = await forgotPassword(c.get('db'), c.env, body.email, isLocalhostUrl(c.req.url));
   // Generic message regardless of outcome — prevents account enumeration.
   // No audit row: the caller is unauthenticated and the outcome is
   // intentionally indistinguishable, so there is no trustworthy actor.
@@ -110,7 +172,20 @@ auth.post('/forgot-password', async (c) => {
 
 auth.post('/reset-password', async (c) => {
   const body = parseOr422(resetPasswordSchema, await c.req.json().catch(() => ({})));
-  const { userId, userName } = await resetPassword(c.get('db'), body.token, body.newPassword);
+  const resetKey = `${clientAddress(c.req)}|reset`;
+  const resetWait = resetFailures.blockedFor(resetKey);
+  if (resetWait > 0) {
+    c.header('Retry-After', String(resetWait));
+    throw tooManyAttempts(resetWait);
+  }
+  let userId: string;
+  let userName: string;
+  try {
+    ({ userId, userName } = await resetPassword(c.get('db'), body.token, body.newPassword));
+  } catch (err) {
+    if ((err as { status?: number }).status === 422) resetFailures.recordFailure(resetKey);
+    throw err;
+  }
   await recordActivity(c.get('db'), {
     category: 'authentication',
     action: 'password_change',

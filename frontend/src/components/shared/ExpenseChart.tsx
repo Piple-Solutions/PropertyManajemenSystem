@@ -23,13 +23,13 @@ export function ExpenseChart({ data, total, formatCurrency, emptyMessage = 'Tida
   return (
     <div role="img" aria-label={summary} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       {data.map((item) => (
-        <div key={item.category} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div key={item.category} className="ec-row">
           <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: item.color, flexShrink: 0 }} />
-<span style={{ fontSize: '14px', color: '#232D36', width: '100px' }}>{item.label}</span>
-           <div style={{ flex: 1, height: '8px', backgroundColor: '#EEEDE9', border: '1px solid #C7BBAB', borderRadius: '999px', overflow: 'hidden' }}>
+<span className="ec-label" title={item.label} style={{ fontSize: '14px', color: '#232D36' }}>{item.label}</span>
+           <div className="ec-bar" style={{ height: '8px', backgroundColor: '#EEEDE9', border: '1px solid #C7BBAB', borderRadius: '999px', overflow: 'hidden' }}>
              <div style={{ width: `${(item.amount / maxAmount) * 100}%`, height: '100%', backgroundColor: item.color, borderRadius: '999px' }} />
            </div>
-           <span style={{ fontSize: '14px', fontWeight: 600, color: '#232D36', width: '100px', textAlign: 'right' }}>{formatCurrency(item.amount)}</span>
+           <span className="ec-amount" style={{ fontSize: '14px', fontWeight: 600, color: '#232D36' }}>{formatCurrency(item.amount)}</span>
         </div>
       ))}
        <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #C7BBAB', display: 'flex', justifyContent: 'space-between' }}>

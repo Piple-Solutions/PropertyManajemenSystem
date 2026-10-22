@@ -1,5 +1,6 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { startOfMonth, parseISO, format, isValid } from 'date-fns';
 import { Filter, X, Check, ChevronRight, ChevronLeft } from 'lucide-react';
 import { CalendarView } from '@/components/shared/CalendarView';
 import { DayReservationsPopup } from '@/components/shared/DayReservationsPopup';
@@ -35,6 +36,7 @@ const CAL_STATUS_OPTIONS = [
 
 export default function ReservationCalendarPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [appliedRoom, setAppliedRoom] = useState('all');
   const [appliedStatus, setAppliedStatus] = useState('all');
   const [draftRoom, setDraftRoom] = useState('all');
@@ -45,6 +47,25 @@ export default function ReservationCalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [mounted, setMounted] = useState(false);
   const filterWrapRef = useRef<HTMLDivElement>(null);
+
+  // The visible month is real "now" unless `?month=YYYY-MM` deep-links one.
+  // Parsed once on mount; later navigation is driven by the prev/next buttons.
+  const [month, setMonth] = useState<Date>(() => {
+    const raw = searchParams.get('month');
+    if (raw && /^\d{4}-\d{2}$/.test(raw)) {
+      const parsed = parseISO(`${raw}-01`);
+      if (isValid(parsed)) return startOfMonth(parsed);
+    }
+    return startOfMonth(new Date());
+  });
+
+  const handleMonthChange = useCallback(
+    (next: Date) => {
+      setMonth(startOfMonth(next));
+      setSearchParams({ month: format(next, 'yyyy-MM') }, { replace: true });
+    },
+    [setSearchParams],
+  );
 
   useEffect(() => {
     const t = window.setTimeout(() => setMounted(true), 60);
@@ -172,7 +193,7 @@ export default function ReservationCalendarPage() {
 
   return (
     <div style={{ padding: 'var(--space-xl, 20px)', maxWidth: '1400px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#232D36', fontFamily: 'var(--font-family-sans)', margin: 0 }}>Reservation Calendar</h1>
           <p style={{ color: '#6B7881', margin: '4px 0 0 0', fontSize: '14px' }}>Visualize reservations by date</p>
@@ -308,6 +329,8 @@ export default function ReservationCalendarPage() {
       </p>
 
       <CalendarView
+        month={month}
+        onMonthChange={handleMonthChange}
         filterRoomId={appliedRoom !== 'all' ? appliedRoom : undefined}
         filterStatus={appliedStatus !== 'all' ? appliedStatus : undefined}
         filterSearch={search}

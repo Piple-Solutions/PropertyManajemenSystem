@@ -1,4 +1,4 @@
-import { integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { index, integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 /**
  * Phase 1 schema — Cloudflare D1 (SQLite).
@@ -264,3 +264,32 @@ export const expenses = sqliteTable('expenses', {
 export type InvoiceRow = typeof invoices.$inferSelect;
 export type InvoiceItemRow = typeof invoiceItems.$inferSelect;
 export type ExpenseRow = typeof expenses.$inferSelect;
+
+/**
+ * Idempotency keys (migration 0007). Scope/safety key is the composite
+ * PRIMARY KEY (user_id, endpoint, key): claims race on it and cross-user
+ * replay is impossible. Lifecycle + crash semantics are documented in
+ * `src/lib/idempotency.ts` and the migration header.
+ */
+export const idempotencyKeys = sqliteTable(
+  'idempotency_keys',
+  {
+    userId: text('user_id').notNull(),
+    endpoint: text('endpoint').notNull(),
+    key: text('key').notNull(),
+    requestHash: text('request_hash').notNull(),
+    status: text('status').notNull(),
+    resultCode: integer('result_code'),
+    entityId: text('entity_id'),
+    responseBody: text('response_body'),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+    expiresAt: text('expires_at').notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.endpoint, t.key] }),
+    index('idx_idempotency_expiry').on(t.expiresAt),
+  ],
+);
+
+export type IdempotencyKeyRow = typeof idempotencyKeys.$inferSelect;
